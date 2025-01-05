@@ -1,0 +1,98 @@
+@import "../../styles/constants";
+
+$button-spacing: 1rem;
+
+.button,
+button {
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: $font-size-base;
+  font-weight: 400;
+  height: 2.4em;
+  min-width: 6em;
+  line-height: 2.4em;
+  padding: 0 1.4em;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  margin-right: $button-spacing;
+  margin-bottom: 0.5em;
+  position: relative;
+  z-index: 0;
+  user-select: none;
+  background: $primary;
+  border: 1px solid $primary;
+  border-radius: $border-radius-input;
+  outline: 0.25em solid transparent;
+  transition: .2s;
+
+  &.button-block {
+    display: block;
+    width: 100%;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &.small {
+    font-size: 0.85*$font-size-base;
+    padding: 0 0.5em;
+    height: 2em;
+    line-height: 2em;
+  }
+
+  &:hover {
+    text-decoration: none;
+    outline-color: rgba(1,83,225, .25);
+  }
+
+  &[disabled],
+  &.disabled {
+    cursor: default !important;
+    opacity: 0.7;
+
+    &:hover,
+    &:active {
+      background: $primary;
+      outline: 0;
+    }
+  }
+
+  &.button-outline {
+    background: transparent;
+    color: $primary;
+
+    &:hover {
+      color: #fff;
+      background: $primary;
+    }
+
+    &[disabled],
+    &.disabled {
+      background: initial;
+      border-color: $primary;
+      outline: 0;
+
+      &:focus,
+      &:hover {
+        color: $primary;
+      }
+    }
+  }
+
+  [class^="icon-"], [class*=" icon-"] {
+    margin-right: 0.75em;
+  }
+}
+
+@media (max-width: $responsive-mobile-browser-width) {
+  button,
+  .button {
+    &.stackable {
+      display: block;
+      width: 100%;
+    }
+  }
+}

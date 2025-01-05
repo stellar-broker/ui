@@ -1,0 +1,27 @@
+@import "../../styles/constants";
+
+.chart {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  z-index: 0;
+}
+
+.chart-placeholder {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.04;
+  display: flex;
+  align-items: flex-end;
+  padding: $space-standard;
+
+  & > * {
+    background: #000;
+    margin: $space-micro;
+    width: 100%;
+  }
+}

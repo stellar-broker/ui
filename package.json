@@ -1,0 +1,30 @@
+{
+  "name": "@stellar-broker/ui",
+  "version": "0.2.5",
+  "description": "Website UI for StellarBroker service",
+  "author": "team@stellar.broker",
+  "homepage": "https://stellar.broker",
+  "license": "MIT",
+  "scripts": {
+    "build-app": "webpack --mode=production --config webpack-config.js",
+    "watch-app": "webpack serve --mode=development --config webpack-config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stellar-broker/ui"
+  },
+  "dependencies": {
+    "@stellar/stellar-sdk": "13.1.0",
+    "highcharts": "8.1.0",
+    "throttle-debounce": "^5.0.0",
+    "classnames": "^2.5.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-fast-compare": "^3.2.1",
+    "react-router-dom": "^6.14.1"
+  },
+  "devDependencies": {
+    "@stellar-expert/webpack-template": "^1.4.0"
+  },
+  "private": true
+}

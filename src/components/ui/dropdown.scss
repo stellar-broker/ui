@@ -1,0 +1,159 @@
+@import "../../styles/constants";
+
+.dd-wrapper {
+  display: inline-block;
+  position: relative;
+  padding-right: 0.3em;
+
+  &.reset {
+    //reset styles
+    font-size: $font-size-base;
+    font-weight: $font-weight-base;
+    line-height: $font-line-height-base;
+  }
+
+  .dd-toggle {
+    $toggle-size: 0.4em;
+    display: inline-block;
+    width: $toggle-size;
+    height: $toggle-size;
+    border: 1px solid #000;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    transform: rotateZ(135deg) translate($toggle-size*0.4, -$toggle-size*0.4);
+    transform-origin: top right;
+    transition: transform 0.2s;
+
+    &.visible {
+      transform: rotateZ(135deg) scale(-1) translate($toggle-size*0.2, -$toggle-size*0.2);
+    }
+  }
+
+  .dd-header {
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+
+    &.button {
+      color: #fff;
+    }
+  }
+
+  .button .dd-toggle {
+    margin-left: 0.2em;
+  }
+
+  &:hover {
+    a {
+      text-decoration: none;
+      color: initial;
+    }
+  }
+
+  &.disabled {
+    .dd-toggle {
+      border-top-color: $gray;
+      border-right-color: $gray;
+    }
+  }
+}
+
+.dd-list {
+  font-size: $font-size-base;
+  font-weight: $font-weight-base;
+  line-height: $font-line-height-base;
+  letter-spacing: normal;
+  position: absolute;
+  z-index: 1000;
+  visibility: hidden;
+  text-align: left;
+  top: calc(100% - 0.1em);
+  background: #fff;
+  border: 1px solid var(--color-contrast-border);
+  border-radius: $border-radius-input;
+  box-shadow: 2px 3px 6px -1px rgba(0, 0, 0, .3);
+  text-transform: none;
+  user-select: none;
+  margin-left: -0.8em;
+
+  &.align-right {
+    right: -0.2em
+  }
+
+  > ul {
+    display: block;
+    overflow-y: auto;
+    color: #000;
+    margin: 0;
+    height: 0;
+  }
+
+  .dd-list-header, .dd-list-footer {
+    padding: .7em;
+  }
+
+  .dd-list-header + .hr {
+    margin-top: 0;
+  }
+
+  &.visible {
+    visibility: visible;
+
+    > ul {
+      height: auto;
+    }
+  }
+
+  .dd-list-item {
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+
+    > a {
+      padding: .4em .7em;
+      display: block;
+      color: inherit;
+      white-space: nowrap;
+
+      &:hover {
+        text-decoration: none;
+        background: $gray
+      }
+
+      &.selected {
+        cursor: default;
+        color: #000;
+        background: $light;
+      }
+    }
+  }
+
+  &.solo {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    max-height: 90vh !important;
+    max-width: 40rem;
+    z-index: 1002;
+
+    @media (max-width: $responsive-mobile-browser-width) {
+      min-width: 50vw;
+      max-width: 90vw;
+      width: 90vw;
+    }
+  }
+}
+
+.dd-backdrop.solo {
+  cursor: pointer;
+  background: rgba(0,0,0, .25);
+  display: block;
+  position: fixed;
+  z-index: 1001;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+}

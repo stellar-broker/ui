@@ -1,0 +1,38 @@
+@import "../styles/constants";
+
+.swap-widget {
+  padding: $space-standard;
+  background: #fff;
+  border-radius: $border-radius-input;
+
+  .asset-value {
+    position: relative;
+    padding: $space-micro;
+    border: 1px solid $gray;
+    border-radius: $border-radius-input;
+
+    .asset-selector {
+      position: absolute;
+      top: $space-micro;
+      right: 1em;
+      padding: $space-nano $space-micro;
+      border: 1px solid $gray;
+      border-radius: $space-standard;
+    }
+  }
+
+  input {
+    background: #fff;
+    display: inline-block;
+    font-size: 1.3em;
+    font-weight: bold;
+    width: 100%;
+    height: 1.2em;
+    line-height: 1.6em;
+    padding: 0 5em 0 0;
+    z-index: 0;
+    user-select: none;
+    outline: 0;
+    border: none;
+  }
+}

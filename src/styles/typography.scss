@@ -1,0 +1,112 @@
+@import "constants";
+
+b,
+strong,
+.strong {
+  font-weight: bold;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin-bottom: 0.25em;
+  margin-top: 0.25em;
+}
+
+h1 {
+  font-size: 3rem;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 2.4rem;
+  line-height: 1.3;
+}
+
+h3 {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+h4 {
+  font-size: 1.6rem;
+  line-height: 1.2;
+}
+
+h5 {
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+
+.text-small {
+  font-size: 0.85*$font-size-base !important;
+}
+
+.text-tiny {
+  font-size: 0.75*$font-size-base !important;
+}
+
+.text-nano {
+  font-size: 0.65*$font-size-base !important;
+}
+
+.text-large {
+  font-size: 1.125*$font-size-base !important;
+}
+
+.text-huge {
+  font-size: 1.25*$font-size-base !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-justify {
+  text-align: justify !important;
+}
+
+.condensed {
+  letter-spacing: -0.045em;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.word-break {
+  word-break: break-all;
+}
+
+.text-overflow {
+  max-width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.text-upper {
+  text-transform: uppercase;
+}
+
+.vtop {
+  vertical-align: top;
+}
+
+.text-active {
+  color: $primary;
+}
+
+.dimmed,
+.label,
+label {
+  color: $color-label;
+}

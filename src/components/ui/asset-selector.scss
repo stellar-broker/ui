@@ -1,0 +1,47 @@
+@import "../../styles/constants";
+
+.asset-selector {
+  .dd-header {
+    color: #000;
+    font-size: 0.85*$font-size-base;
+
+    .asset-issuer {
+      display: none;
+    }
+  }
+
+  h5 {
+    margin-bottom: 0.3em;
+  }
+
+  .dd-list {
+    width: 22em;
+    max-width: 94vw;
+  }
+
+  .dd-list-header {
+    min-width: 16em;
+
+    .icon-search {
+      position: absolute;
+      right: 1em;
+      top: 2.8em;
+      opacity: 0.5;
+      font-size: $font-size-base;
+    }
+
+    input {
+      padding: 0 2em 0 0;
+      margin-bottom: 0;
+
+      &:not(:placeholder-shown) + .icon-search {
+        display: none;
+      }
+
+      &::placeholder {
+        font-size: 0.85em;
+        line-height: 1;
+      }
+    }
+  }
+}

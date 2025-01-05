@@ -1,0 +1,70 @@
+@import "constants";
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: $light;
+  min-height: 100vh;
+
+  .container {
+    margin: 0 auto;
+    max-width: 86rem;
+    padding: 0 2rem;
+    width: 100%;
+  }
+
+  .widget-block {
+    position: relative;
+    z-index: 1;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: -3em;
+      left: 10em;
+      width: 100%;
+      height: calc(100% + 6em);
+      z-index: -1;
+      background: $gray;
+      border-radius: $border-radius-input;
+    }
+  }
+}
+
+.header {
+  padding: $space-standard 0;
+}
+
+.heading {
+  font-size: 3.6em;
+  line-height: 1.2;
+  span {
+    color: $primary
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: $space-standard $space-micro;
+  height: 100%;
+  background: $gray;
+  border-radius: $border-radius-input;
+
+  .preview {
+    width: 100%;
+    min-height: 15em;
+    background: linear-gradient(180deg, #fff 0%, $gray 100%);
+    border-radius: $border-radius-badge;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.promo {
+  margin-left: 10%;
+  border-radius: $border-radius-input;
+  outline: 10px solid rgba(255,255,255, 0.15);
+}

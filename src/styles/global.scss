@@ -1,0 +1,71 @@
+@import "constants";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+input, textarea {
+  font-family: $font-face-primary, sans-serif;
+  font-size: $font-size-base;
+}
+
+a {
+  color: $primary;
+  text-decoration: none;
+  transition: .2s;
+  &.dimmed:hover {
+    color: initial;
+    text-decoration: initial;
+  }
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+html {
+  height: 100%;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-family: $font-face-primary, sans-serif;
+  font-size: $font-size-base;
+  font-weight: $font-weight-base;
+  line-height: $font-line-height-base;
+  color: #000;
+  background: #fff;
+  overflow-x: hidden;
+  @media (max-width: $responsive-mobile-browser-width) {
+    font-size: 1em;
+  }
+}
+
+.label,
+label {
+  padding: 0.25em 0;
+}
+
+.color-primary {
+  color: $primary;
+}
+
+.bg-color-primary {
+  background-color: $primary;
+}
+
+.bg-color-gray {
+  background-color: $gray;
+}
+
+.hr {
+  width: 100%;
+  border-bottom: 1px solid $gray;
+}
