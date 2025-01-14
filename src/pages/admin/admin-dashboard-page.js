@@ -3,6 +3,6 @@ import React from 'react'
 export default function AdminDashboardPage() {
 
     return <div>
-        Dashboard
+        <h4>Dashboard</h4>
     </div>
 }

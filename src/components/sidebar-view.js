@@ -2,6 +2,14 @@ import {Link} from 'react-router-dom'
 import Logo from '../layout/logo'
 import NavSidebarView from './nav-sidebar-view'
 
+const navLinks = {
+    'dashboard': {title: 'Dashboard', link: '/account', icon: 'chart'},
+    'transactions': {title: 'Transactions', link: '/account/transactions', icon: 'clock'},
+    'payouts': {title: 'Payouts', link: '/account/payouts', icon: 'send-circle'},
+    'api-keys': {title: 'API keys', link: '/account/api-keys', icon: 'key'},
+    'documentation': {title: 'Documentation', link: '/account/documentation', icon: 'document'},
+}
+
 function SidebarView() {
     return <div className="sidebar">
         <Logo/>
@@ -16,7 +24,7 @@ function SidebarView() {
             </div>
         </div>
         <div className="hr micro-space"/>
-        <NavSidebarView/>
+        <NavSidebarView navLinks={navLinks}/>
         <div className="hr micro-space"/>
         <div className="links">
             <li>
