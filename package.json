@@ -1,6 +1,6 @@
 {
   "name": "@stellar-broker/ui",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Website UI for StellarBroker service",
   "author": "team@stellar.broker",
   "homepage": "https://stellar.broker",
@@ -25,6 +25,10 @@
     "react-copy-to-clipboard": "^5.1.0"
   },
   "devDependencies": {
+    "@stellar-expert/asset-descriptor": "^1.4.0",
+    "@stellar-expert/eslint-config-js": "^1.1.0",
+    "@stellar-expert/eslint-config-react": "^1.1.0",
+    "@stellar-expert/formatter": "^2.5.0",
     "@stellar-expert/webpack-template": "^1.4.0"
   },
   "private": true

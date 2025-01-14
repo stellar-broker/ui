@@ -1,0 +1,13 @@
+.account-address {
+  white-space: nowrap;
+
+  .account-key {
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  &.plain * {
+    font: inherit;
+    white-space: normal;
+  }
+}

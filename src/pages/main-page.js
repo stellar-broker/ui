@@ -18,6 +18,7 @@ export default function MainPage() {
                     <Button href="/request-access">Request Access</Button>
                     <Button href="/sign-in" outline>Sign In</Button>
                 </div>
+                <div className="mobile-only double-space"></div>
             </div>
             <div className="column column-40">
                 <div className="widget-block">

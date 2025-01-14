@@ -18,8 +18,8 @@ module.exports = initWebpackConfig({
     },
     devServer: {
         host: '0.0.0.0',
-        https: false,
-        port: 9004
+        https: true,
+        port: 9001
     },
     inlineSvg: true,
     ignoreCallback: function (resource, context) {

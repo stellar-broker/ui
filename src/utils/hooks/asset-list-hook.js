@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import {throttle} from 'throttle-debounce'
 import equal from 'react-fast-compare'
+import {fetchExplorerApi} from '../fetch-explorer-api'
+import {stringifyQuery} from '../query'
 
 const defaults = {
     limit: 20,
@@ -29,19 +31,28 @@ export function useAssetList(params) {
             if (equal(params, assets.params)) {
                 requestParams.cursor = getCurrentCursor(assets.data)
             }
-            //TODO: get asset list from API
-            const records = []
-            setAssets(existing => {
-                let data = records
-                if (equal(params, existing.params)) {
-                    data = [...existing.data, ...records]
-                }
-                return {data, params}
-            })
+            const endpoint = 'asset' + stringifyQuery(requestParams)
+            setLoading(true)
+            fetchExplorerApi(endpoint)
+                .then(res => {
+                    const {records} = res._embedded
+                    setAssets(existing => {
+                        let data = records
+                        if (equal(params, existing.params)) {
+                            data = [...existing.data, ...records]
+                        }
+                        return {data, params}
+                    })
+                    setLoading(false)
+                })
+                .catch(e => console.error(e))
+                .finally(() => {
+                    setLoading(false)
+                })
         })
     useEffect(() => {
         loadPage()
-    }, [params])
+    }, [JSON.stringify(params)])
 
     return {assets: assets.data, loadPage, loading}
 }

@@ -1,0 +1,28 @@
+@import "../../styles/constants";
+
+.asset-link {
+  white-space: nowrap;
+
+  .asset-issuer {
+    color: $color-dimmed;
+    font-size: 0.65em;
+    padding-left: 0.1em;
+  }
+
+  .asset-icon {
+    display: inline-block;
+    color: $color-text;
+    width: 1.1em;
+    height: 1.1em;
+    vertical-align: middle;
+    margin-right: .1em;
+    line-height: 1.1;
+    background: transparent center center no-repeat;
+    background-size: contain;
+    margin-top: -0.2em;
+
+    &.icon {
+      margin-top: 0;
+    }
+  }
+}
