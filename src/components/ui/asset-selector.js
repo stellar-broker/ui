@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from 'react'
+import React, {useCallback, useRef, useState, memo} from 'react'
 import {useAssetList} from '../../utils/hooks/asset-list-hook'
 import {Dropdown} from './dropdown'
 import {AssetLink} from './asset-link'
@@ -14,7 +14,7 @@ import './asset-selector.scss'
  * @return {JSX.Element}
  * @constructor
  */
-export function AssetSelector({value, predefinedAssets, onChange, restricted, title, expanded}) {
+export const AssetSelector = memo(function AssetSelector({value, predefinedAssets, onChange, restricted, title, expanded}) {
     const [search, setSearch] = useState('')
     const searchRef = useRef()
     const options = []
@@ -56,7 +56,7 @@ export function AssetSelector({value, predefinedAssets, onChange, restricted, ti
     }
 
     return <Dropdown solo className="asset-selector" options={options} value={value} onOpen={focusSearch} title={title} expanded={expanded}
-                     showToggle={!title} onChange={onChange} onScroll={e => e.rel === 'bottom' && loadNextPage?.call(this)}
+                     showToggle={!title} onChange={onChange} disabled={!onChange} onScroll={e => e.rel === 'bottom' && loadNextPage?.call(this)}
                      header={<>
                          <h5>SELECT ASSET</h5>
                          <div className="relative">
@@ -65,7 +65,7 @@ export function AssetSelector({value, predefinedAssets, onChange, restricted, ti
                              <i className="icon-search dimmed"/>
                          </div>
                      </>}/>
-}
+})
 
 /**
  * @callback AssetSelectorOnAssetChanged
