@@ -1,5 +1,5 @@
 {
-  "name": "@stellar-broker/ui",,
+  "name": "@stellar-broker/ui",
   "private": true,
   "version": "0.3.0",
   "description": "Website UI for StellarBroker service",
