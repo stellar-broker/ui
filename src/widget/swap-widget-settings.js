@@ -83,7 +83,7 @@ export default class SwapWidgetSettings {
             this.onUpdate()
         })
         client.on('paused', e => {
-            this.message = 'Quotation paused'
+            this.message = 'Quotation paused. Change parameters to continue.'
             this.onUpdate()
         })
         //subscribe to the quote notifications
