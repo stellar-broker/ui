@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react'
 import {swaps} from '../utils/swaps-demo'
 import {formatDate, formatStroopPrice} from '../utils/formatter'
 import {useAssetInfo} from '../utils/hooks/asset-info-hook'
-import AssetIcon from './ui/asset-icon'
+import {AssetIcon} from './ui/asset-link'
 import dateFormat from '../utils/date-formater'
 
 function parseAsset(asset) {
@@ -76,8 +76,8 @@ function AssetPairView({pair}) {
         return null
 
     return <span className="flex-inline">
-       <AssetIcon asset={sellingAsset.code} icon={sellingAsset.icon}/>
-       <AssetIcon asset={buyingAsset.code} icon={buyingAsset.icon}/>&nbsp;
+       <AssetIcon asset={pair[0].asset}/>
+       <AssetIcon asset={pair[1].asset}/>&nbsp;
     <span>
             <span>{sellingAsset.code} <i className="icon-switch text-tiny"/> {buyingAsset.code}</span>
     {(sellingAsset.domain && buyingAsset.domain) && <span className="dimmed text-tiny block">

@@ -58,7 +58,7 @@
     }
 
     > div {
-      color: #000;
+      color: $color-text;
       font-size: 0.9em;
       @media (max-width: $responsive-mobile-browser-width) {
         font-size: 0.85em;

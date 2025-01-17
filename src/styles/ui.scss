@@ -106,7 +106,7 @@ input {
           height: 1.6em;
           margin-right: 0.6em;
 
-          [class^="icon-"] {
+          &:before {
             font-size: 1.6em;
           }
         }
