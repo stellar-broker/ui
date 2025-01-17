@@ -1,6 +1,7 @@
-import React, {useCallback, useRef, useState} from 'react'
+import React, {useCallback, useRef, useState, memo} from 'react'
 import {useAssetList} from '../../utils/hooks/asset-list-hook'
 import {Dropdown} from './dropdown'
+import {AssetLink} from './asset-link'
 import './asset-selector.scss'
 
 /**
@@ -13,7 +14,7 @@ import './asset-selector.scss'
  * @return {JSX.Element}
  * @constructor
  */
-export function AssetSelector({value, predefinedAssets, onChange, restricted, title, expanded}) {
+export const AssetSelector = memo(function AssetSelector({value, predefinedAssets, onChange, restricted, title, expanded}) {
     const [search, setSearch] = useState('')
     const searchRef = useRef()
     const options = []
@@ -34,30 +35,39 @@ export function AssetSelector({value, predefinedAssets, onChange, restricted, ti
 
     let loadNextPage
     if (!restricted) {
-        const assets = [{asset: 'XLM', icon: ''}, {asset: 'USDC', icon: ''}, {asset: 'AQUA', icon: ''}]
+        const {assets, loadPage, loading} = useAssetList({search: search?.trim() || undefined})
         for (let {asset} of assets) {
             if (!predefinedAssets || !predefinedAssets.includes(asset)) {
-                options.push({value: asset, title: <>{asset}</>})
+                options.push({value: asset, title: <AssetLink link={false} asset={asset}/>})
             }
         }
         if (!options.filter(opt => !opt.hidden).length) {
-            options.push({
-                value: 'no',
-                disabled: true,
-                title: <div className="dimmed text-center text-small">(not found)</div>
-            })
+            if (loading) {
+                options.push({value: '...', disabled: true, title: <div className="loader"/>})
+            } else {
+                options.push({
+                    value: 'no',
+                    disabled: true,
+                    title: <div className="dimmed text-center text-small">(not found)</div>
+                })
+            }
         }
-        // loadNextPage = loadPage
+        loadNextPage = loadPage
     }
 
     return <Dropdown solo className="asset-selector" options={options} value={value} onOpen={focusSearch} title={title} expanded={expanded}
-                     showToggle={!title} onChange={onChange} onScroll={e => e.rel === 'bottom' && loadNextPage?.call(this)} disabled
+                     showToggle={!title} onChange={onChange} disabled={!onChange} onScroll={e => e.rel === 'bottom' && loadNextPage?.call(this)}
                      header={<>
-                         <h5>Select an asset</h5>
+                         <h5>SELECT ASSET</h5>
                          <div className="relative">
                              <input type="text" value={search} ref={searchRef} onChange={e => setSearch(e.target.value)}
                                     placeholder="Search by asset code or website"/>
                              <i className="icon-search dimmed"/>
                          </div>
                      </>}/>
-}
+})
+
+/**
+ * @callback AssetSelectorOnAssetChanged
+ * @param {String} value
+ */

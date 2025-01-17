@@ -12,15 +12,19 @@
 
   h5 {
     margin-bottom: 0.3em;
+    letter-spacing: -0.05em;
   }
 
   .dd-list {
     width: 22em;
     max-width: 94vw;
+    border-radius: 8px;
+    overflow: hidden;
   }
 
   .dd-list-header {
     min-width: 16em;
+    background: $gray;
 
     .icon-search {
       position: absolute;
@@ -33,6 +37,7 @@
     input {
       padding: 0 2em 0 0;
       margin-bottom: 0;
+      background: transparent;
 
       &:not(:placeholder-shown) + .icon-search {
         display: none;

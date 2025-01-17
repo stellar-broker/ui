@@ -12,6 +12,9 @@
     max-width: 86rem;
     padding: 0 2rem;
     width: 100%;
+    @media (max-width: $responsive-mobile-browser-width) {
+      padding: 0 1rem;
+    }
   }
 
   .widget-block {
@@ -39,6 +42,7 @@
 .heading {
   font-size: 3.6em;
   line-height: 1.2;
+
   span {
     color: $primary
   }
@@ -66,5 +70,5 @@
 .promo {
   margin-left: 10%;
   border-radius: $border-radius-input;
-  outline: 10px solid rgba(255,255,255, 0.15);
+  outline: 10px solid rgba(255, 255, 255, 0.15);
 }
