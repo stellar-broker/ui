@@ -63,6 +63,7 @@ function ValueSettingView({title, valueDefault = '', onUpdate, validation, confi
             setValue('')
             setConfirmValue('')
         }
+        notify({type: "success", message: "Changes saved"})
     }, [value, onUpdate])
 
     return <div className="row">

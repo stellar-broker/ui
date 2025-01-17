@@ -49,7 +49,6 @@ function PartnerEditForm({id}) {
     const changeFee = useCallback(e => changeValue('fee', e.target.value.replace(/[^\d.]/g, '')), [])
 
     const onSave = useCallback(() => {
-        console.log('Save partner settings')
         navigate('/admin/partners')
     }, [])
 
@@ -90,36 +89,6 @@ function PartnerEditForm({id}) {
                 <Button block disabled={!isValid} onClick={onSave}>Save</Button>
             </div>
         </div>
-    </div>
-}
-
-function ValueSettingView({title, valueDefault = '', onChange, confirm, onlyNumber}) {
-    const [value, setValue] = useState(valueDefault)
-    const [confirmValue, setConfirmValue] = useState('')
-
-    useEffect(() => {
-        setValue(valueDefault)
-    }, [valueDefault])
-
-    const changeValue = useCallback(e => {
-        const val = onlyNumber ? e.target.value.replace(/[^\d.]/g, '') : e.target.value.trim()
-        setValue(val)
-        onChange()
-    }, [onChange, valueDefault])
-
-    return <div className="row">
-        <div className="column column-33">
-        <div className="space">
-                <p className="label text-small">{title}</p>
-                <input value={value} onChange={changeValue} className="styled-input"/>
-            </div>
-        </div>
-        {confirm && <div className="column column-33">
-            <div className="space">
-                <p className="label text-small">Confirm</p>
-                <input value={confirmValue} onChange={changeValue} className="styled-input"/>
-            </div>
-        </div>}
     </div>
 }
 

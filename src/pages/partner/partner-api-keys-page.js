@@ -54,6 +54,7 @@ function AddApiKeyForm({updateKeyList}) {
         updateKeyList(prev => ([...prev, {key: apiKey, accessibility: 'Active'}]))
         toggleDialog(false)
         setApiKey('')
+        notify({type: "success", message: "New API key has been added"})
     }, [apiKey, updateKeyList, toggleDialog])
 
     return <>
