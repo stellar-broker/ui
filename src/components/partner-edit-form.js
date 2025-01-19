@@ -3,15 +3,15 @@ import {Button} from './ui/button'
 import {useNavigate} from 'react-router-dom'
 
 const partnerTest = {
-    "id": "667eb324cd3ceaa40a1ba14e",
-    "email": "test-partner@swapstrider.net",
+    "id": "5983b324cd3ceaa40a1ba10a",
+    "email": "test-partner@test.com",
     "created": "2024-06-28T12:57:08.744Z",
     "settings": {
         "partnerVarFee": 200,
         "striderVarFee": 100
     },
     "keys": [
-        "5Z1F...CRdo"
+        "471F...dp78"
     ]
 }
 
