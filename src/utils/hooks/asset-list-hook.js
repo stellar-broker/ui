@@ -3,6 +3,7 @@ import {throttle} from 'throttle-debounce'
 import equal from 'react-fast-compare'
 import {fetchExplorerApi} from '../fetch-explorer-api'
 import {stringifyQuery} from '../query'
+import {loadAssetMetaBatch} from './asset-meta-hook'
 
 const defaults = {
     limit: 20,
@@ -26,7 +27,8 @@ export function useAssetList(params) {
         loadPage = throttle(1000, function () {
             if (loading) return
             const requestParams = {
-                ...defaults, ...params
+                ...defaults,
+                ...params
             }
             if (equal(params, assets.params)) {
                 requestParams.cursor = getCurrentCursor(assets.data)
@@ -41,6 +43,7 @@ export function useAssetList(params) {
                         if (equal(params, existing.params)) {
                             data = [...existing.data, ...records]
                         }
+                        loadAssetMetaBatch(records.map(r => r.asset))
                         return {data, params}
                     })
                     setLoading(false)

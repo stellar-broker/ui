@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react'
+import {fromStroops, toStroops} from '@stellar-expert/formatter'
 import {Button} from '../components/ui/button'
 import {AssetSelector} from '../components/ui/asset-selector'
 import SwapWidgetSettings from './swap-widget-settings'
 import './swap-widget.scss'
-import {fromStroops, toStroops} from '@stellar-expert/formatter'
 
 export const SwapWidget = function SmartSwapWidget({className}) {
     const [update, setUpdate] = useState(0)

@@ -22,7 +22,10 @@ import {ExplorerBatchInfoLoader} from '../explorer-batch-info-loader'
 const cache = new Map()
 
 const loader = new ExplorerBatchInfoLoader(batch => {
-    return fetchExplorerApi('asset/meta' + stringifyQuery({asset: batch, origin: window.location.origin}))
+    return fetchExplorerApi('asset/meta' + stringifyQuery({
+        asset: batch,
+        origin: window.location.origin
+    }))
 }, entry => {
     cache.set(entry.name, entry)
     return {
@@ -64,4 +67,10 @@ export function useAssetMeta(asset) {
     }, [asset])
 
     return assetInfo
+}
+
+export function loadAssetMetaBatch(assets) {
+    for (const asset of assets) {
+        loader.loadEntry(asset)
+    }
 }

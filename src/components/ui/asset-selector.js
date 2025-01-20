@@ -9,12 +9,11 @@ import './asset-selector.scss'
  * @param {String} [value] - Selected asset
  * @param {String[]} [predefinedAssets] - Optional lists of predefined assets that should be shown at the top of the dropdown list
  * @param {Boolean} [restricted] - If set, the selector is limited to the predefined assets list only
- * @param {String} [title] - Dropdown selector title
  * @param {String} [expanded] - Expanded by default
  * @return {JSX.Element}
  * @constructor
  */
-export const AssetSelector = memo(function AssetSelector({value, predefinedAssets, onChange, restricted, title, expanded}) {
+export const AssetSelector = memo(function AssetSelector({value, predefinedAssets, onChange, restricted, expanded}) {
     const [search, setSearch] = useState('')
     const searchRef = useRef()
     const options = []
@@ -35,7 +34,10 @@ export const AssetSelector = memo(function AssetSelector({value, predefinedAsset
 
     let loadNextPage
     if (!restricted) {
-        const {assets, loadPage, loading} = useAssetList({search: search?.trim() || undefined})
+        const {assets, loadPage, loading} = useAssetList({
+            limit: 50,
+            search: search?.trim() || undefined
+        })
         for (let {asset} of assets) {
             if (!predefinedAssets || !predefinedAssets.includes(asset)) {
                 options.push({value: asset, title: <AssetLink link={false} asset={asset}/>})
@@ -54,9 +56,9 @@ export const AssetSelector = memo(function AssetSelector({value, predefinedAsset
         }
         loadNextPage = loadPage
     }
-
+    const title = <AssetLink link={false} asset={value}/>
     return <Dropdown solo className="asset-selector" options={options} value={value} onOpen={focusSearch} title={title} expanded={expanded}
-                     showToggle={!title} onChange={onChange} disabled={!onChange} onScroll={e => e.rel === 'bottom' && loadNextPage?.call(this)}
+                     onChange={onChange} disabled={!onChange} onScroll={e => e.rel === 'bottom' && loadNextPage?.call(this)}
                      header={<>
                          <h5>SELECT ASSET</h5>
                          <div className="relative">
