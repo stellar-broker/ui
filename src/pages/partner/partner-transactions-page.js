@@ -30,14 +30,19 @@ function PartnerTransactionsPage() {
     }, [swaps])
 
     return <div>
-        <div className="dual-layout middle">
-            <div className="flex-middle">
-                <h4>Transactions</h4>&nbsp;
-                <span className="badge">{AllTransactions?.length}</span>
+        <div className="row nano-space">
+            <div className="column column-75">
+                <div className="flex-middle">
+                    <h4>Transactions</h4>&nbsp;
+                    <span className="badge">{AllTransactions?.length}</span>
+                </div>
+                <p className="text-small dimmed nano-space">All swaps executed with your partner key</p>
             </div>
-            <ExportFileCreator data={dataExportFile} header={headerExportFile} fileName="transaction"/>
+            <div className="column column-25">
+                <div className="nano-space"/>
+                <ExportFileCreator data={dataExportFile} header={headerExportFile} fileName="transaction"/>
+            </div>
         </div>
-        <p className="text-small dimmed space">All swaps executed with your partner key</p>
         <div className="hr space"/>
         <TransactionsView/>
     </div>

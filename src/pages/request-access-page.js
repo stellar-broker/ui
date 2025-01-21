@@ -12,7 +12,7 @@ function RequestAccessPage() {
     return <div className="row row-no-padding dual-screen">
         <div className="column column-33">
             <div className="middle-layout">
-                <div>
+                <div className="space">
                     <Logo/>
                 </div>
                 <div>

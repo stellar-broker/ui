@@ -11,8 +11,8 @@ function AdminPartnerEditPage() {
             <h4>{isEdit ? 'Edit' : 'Add'} partner</h4>
         </div>
         {isEdit ?
-            <p className="text-small dimmed space">ID {id}</p> :
-            <p className="text-small dimmed space">Manage new partner</p>}
+            <p className="text-small dimmed mini-space">ID {id}</p> :
+            <p className="text-small dimmed mini-space">Manage new partner</p>}
         <div className="hr space"/>
         <PartnerEditForm id={id}/>
     </div>

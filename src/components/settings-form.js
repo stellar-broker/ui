@@ -4,8 +4,7 @@ import {Button} from './ui/button'
 function SettingsForm() {
     const [settings, setSettings] = useState({
         email: 'test@gmail.com',
-        password: null,
-        fee: 1
+        password: null
     })
 
     const validateEmail = useCallback(email => {
@@ -13,7 +12,6 @@ function SettingsForm() {
         return emailRegex.test(email)
     }, [])
     const validatePassword = useCallback(password => password?.length >= 8, [])
-    const validateFee = useCallback(fee => fee, [])
 
     const updateEmail = useCallback(email => {
         setSettings(prev => ({...prev, email}))
@@ -21,18 +19,14 @@ function SettingsForm() {
     const updatePassword = useCallback(password => {
         setSettings(prev => ({...prev, password: ''}))
     }, [])
-    const updateFee = useCallback(fee => {
-        setSettings(prev => ({...prev, fee}))
-    }, [])
 
     return <>
         <ValueSettingView title="Your email" valueDefault={settings.email} onUpdate={updateEmail} validation={validateEmail}/>
         <ValueSettingView title="Your password" valueDefault={settings.password || ''} onUpdate={updatePassword} validation={validatePassword} confirm/>
-        <ValueSettingView title="Your fee (%)" valueDefault={settings.fee} onUpdate={updateFee} validation={validateFee} onlyNumber/>
     </>
 }
 
-function ValueSettingView({title, valueDefault = '', onUpdate, validation, confirm, onlyNumber}) {
+function ValueSettingView({title, valueDefault = '', onUpdate, validation, confirm}) {
     const [value, setValue] = useState(valueDefault)
     const [confirmValue, setConfirmValue] = useState('')
     const [isChanged, setIsChanged] = useState(false)
@@ -43,7 +37,7 @@ function ValueSettingView({title, valueDefault = '', onUpdate, validation, confi
     }, [valueDefault])
 
     const changeValue = useCallback(e => {
-        const val = onlyNumber ? e.target.value.replace(/[^\d.]/g, '') : e.target.value.trim()
+        const val = e.target.value.trim()
         const validValue = confirm ? confirmValue === val && validation(val) : validation(val)
         setValue(val)
         setValid(validValue)
@@ -51,7 +45,7 @@ function ValueSettingView({title, valueDefault = '', onUpdate, validation, confi
     }, [confirmValue, valueDefault, validation])
 
     const changeConfirm = useCallback(e => {
-        const val = onlyNumber ? e.target.value.replace(/[^\d.]/g, '') : e.target.value.trim()
+        const val = e.target.value.trim()
         setConfirmValue(val)
         setValid(value === val && validation(val))
     }, [value, valueDefault, validation])

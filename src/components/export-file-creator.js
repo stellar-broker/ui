@@ -13,7 +13,7 @@ function ExportFileCreator({data, header, fileName}) {
         }
     }, [data, header, fileName])
 
-    return <Button outline className="text-small" onClick={downloadFile}>
+    return <Button block outline onClick={downloadFile}>
         <i className="icon-download"/>Export to .CSV</Button>
 }
 
