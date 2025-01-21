@@ -54,7 +54,13 @@
   padding: $space-standard $space-micro;
   height: 100%;
   background: $gray;
+  border: 1px solid $gray;
   border-radius: $border-radius-input;
+
+  &.outline {
+    height: auto;
+    background: $light;
+  }
 
   .preview {
     width: 100%;

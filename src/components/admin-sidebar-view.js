@@ -1,4 +1,4 @@
-import Logo from '../layout/logo'
+import SidebarView from './sidebar-view'
 import NavSidebarView from './nav-sidebar-view'
 
 const navLinks = {
@@ -6,12 +6,10 @@ const navLinks = {
     'partners': {title: 'Partners', link: '/admin/partners', icon: 'user-group'},
 }
 
-function SidebarView() {
-    return <div className="sidebar">
-        <Logo/>
-        <div className="double-space"/>
+function AdminSidebarView() {
+    return <SidebarView>
         <NavSidebarView navLinks={navLinks}/>
-    </div>
+    </SidebarView>
 }
 
-export default SidebarView
+export default AdminSidebarView

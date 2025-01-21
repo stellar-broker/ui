@@ -1,0 +1,159 @@
+@import "../../styles/constants";
+
+.toast-notifications-container {
+  $toast-space: 0.5*$space-standard;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: calc(100% - $space-standard);
+  max-width: 30em;
+  padding: 4px 4px 0 0;
+  z-index: 999;
+  display: flex;
+  flex-direction: column-reverse;
+
+  &:not(:first-child) {
+    margin-bottom: 0.375em;
+  }
+
+  .toast-notification {
+    position: relative;
+    display: flex;
+    align-items: start;
+    width: 100%;
+    padding: $toast-space;
+    padding-right: $toast-space*2;
+    transition: transform 0.3s ease-out;
+    line-height: 2rem;
+    margin-bottom: 4px;
+
+    @media (max-width: $responsive-mobile-browser-width) {
+      padding: 0.5*$space-standard;
+      padding-right: $space-standard;
+    }
+
+    &:hover {
+      .lifetime {
+        animation-play-state: paused;
+      }
+    }
+
+    &.slide-in {
+      animation: .3s slideIn ease-in-out;
+    }
+
+    &.slide-out {
+      transform: translateX(150%);
+      flex: 0;
+    }
+
+    > .toast-notification-icon {
+      font-size: 1.2em;
+      padding-right: $space-micro;
+      @media (max-width: $responsive-mobile-browser-width) {
+        font-size: 1em;
+        padding-right: $space-micro/2;
+      }
+    }
+
+    > div {
+      color: $color-text;
+      font-size: 0.9em;
+      padding-right: $space-micro;
+      @media (max-width: $responsive-mobile-browser-width) {
+        font-size: 0.85em;
+      }
+    }
+
+    .icon-cancel {
+      cursor: pointer;
+      position: absolute;
+      text-decoration: none;
+      top: $toast-space;
+      right: 0;
+
+      @media (max-width: $responsive-mobile-browser-width) {
+        top: $space-micro;
+      }
+    }
+
+    .lifetime {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      max-width: 0;
+      height: 2px;
+      animation-name: timeToClose;
+      animation-duration: 10s;
+      animation-timing-function: linear;
+    }
+
+    &.info {
+      background-color: $light;
+
+      .toast-notification-icon {
+        color: $info;
+      }
+
+      .lifetime {
+        background-color: $info;
+      }
+    }
+
+    &.success {
+      background-color: #b6e3c0;
+
+      .toast-notification-icon {
+        color: $green
+      }
+
+      .lifetime {
+        background-color: $green;
+      }
+    }
+
+    &.warning {
+      background-color: #dbc194;
+
+      .toast-notification-icon {
+        color: $warning;
+      }
+
+      .lifetime {
+        background-color: $warning;
+      }
+    }
+
+    &.error {
+      background: #eb949c;
+
+      .toast-notification-icon {
+        color: $red;
+      }
+
+      .lifetime {
+        background-color: $red;
+      }
+    }
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes timeToClose {
+  from {
+    max-width: 100%;
+  }
+  to {
+    max-width: 0;
+  }
+}

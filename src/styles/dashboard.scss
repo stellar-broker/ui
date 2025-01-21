@@ -33,6 +33,7 @@
 
   .nav-sidebar {
     flex-grow: 1;
+    overflow-y: auto;
   }
 
   .nav-sidebar, .links {
@@ -68,7 +69,7 @@
         height: 2.4em;
         min-width: 6em;
         padding: 0 1em;
-        color: #000;
+        color: $color-text;
         font-weight: 700;
         text-decoration: none;
         line-height: 2.5em;
@@ -79,6 +80,61 @@
         }
       }
     }
+
+    @media all and (max-width: $responsive-mobile-browser-width) {
+      > li a {
+        font-size: 0.85em !important;
+        height: 2em;
+        padding: 0 0.5em;
+
+        [class^="icon-"], [class*=" icon-"] {
+          margin-right: 0.5em;
+        }
+      }
+    }
+  }
+
+  .top-menu-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .toggle-menu {
+    display: none;
+  }
+
+  @media all and (max-width: $responsive-mobile-browser-width) {
+    position: absolute;
+    width: 15em;
+    left: -200%;
+    top: 0;
+    padding-bottom: 0;
+    background: #fff;
+    transition: left .3s;
+    z-index: 999;
+
+    &.active {
+      left: 0;
+    }
+
+    .top-menu-block {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      padding: $space-nano $space-micro;
+      background: #fff;
+      border-bottom: 1px solid $gray;
+
+      .logo img {
+        max-height: 3em !important;
+      }
+
+      .toggle-menu {
+        display: block;
+      }
+    }
   }
 }
 
@@ -86,4 +142,8 @@
   max-height: 100vh;
   padding: $space-standard $space-standard 0;
   overflow: auto;
+
+  @media all and (max-width: $responsive-mobile-browser-width) {
+    padding: $space-double*1.5 $space-micro $space-micro
+  }
 }

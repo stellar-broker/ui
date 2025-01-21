@@ -1,57 +1,43 @@
 import {useCallback} from 'react'
 import cn from 'classnames'
 import {CopyToClipboard} from '../utils/copy-to-clipboard'
+import {shortenString} from '@stellar-expert/formatter'
 
 function ApiKeysView({keyList, updateKeyList}) {
 
-    return <div className="table space">
-        <table>
-            <thead className="text-tiny dimmed">
-                <tr>
-                    <th>API key</th>
-                    <th>Accessibility</th>
-                    <th className="collapsing text-right">Action</th>
-                </tr>
-            </thead>
-            <tbody className="condensed">
-                {keyList?.map((apiKey) => {
-                    const active = apiKey.accessibility === 'Active' ? 'success' : ''
-                    return <tr key={apiKey.key}>
-                        <td data-header="API key: " className={cn({'dimmed': apiKey.accessibility !== 'Active'})}>
-                            {apiKey.key}
-                        </td>
-                        <td data-header="Accessibility: ">
-                            <span className={cn('badge', active)}>{apiKey.accessibility}</span>
-                        </td>
-                        <td>
-                            <ApiKeyControlsView apiKey={apiKey} updateKeyList={updateKeyList}/>
-                        </td>
-                    </tr>
-                })}
-            </tbody>
-        </table>
+    return <div className="row">
+        {keyList?.map((apiKey) => {
+            return <div key={apiKey.key} className="column column-50 micro-space">
+                <ApiKeyEntry apiKey={apiKey} updateKeyList={updateKeyList}/>
+            </div>
+        })}
     </div>
 }
 
-function ApiKeyControlsView({apiKey, updateKeyList}) {
-    const isActive = apiKey.accessibility === 'Active'
-    const accessibilityIcon = isActive ? 'icon-block' : 'icon-add-circle'
-    const accessibilityTitle = isActive ? 'Disable' : 'Activate'
+function ApiKeyEntry({apiKey, updateKeyList}) {
+    const isActive = apiKey.status === 'Active'
+    const active = apiKey.status === 'Active' ? 'success' : ''
+    const statusTitle = isActive ? 'Disable' : 'Enable'
 
     const toggleApiKey = useCallback(() => {
         updateKeyList(prev => {
             return prev.map(k => {
                 if (apiKey.key === k.key) {
-                    k.accessibility = !isActive ? 'Active' : 'Disabled'
+                    k.status = !isActive ? 'Active' : 'Disabled'
                 }
                 return k
             })
         })
     }, [isActive, apiKey, updateKeyList])
 
-    return <div className="table-controls">
-        <CopyToClipboard text={apiKey.key}/>
-        <a href="#" className={accessibilityIcon} onClick={toggleApiKey} title={`${accessibilityTitle} API key`}/>
+    return <div className="card outline space">
+        <div className="nano-space">
+            <b>API key: </b><span>{apiKey.key}</span> <CopyToClipboard text={apiKey.key}/>
+        </div>
+        <div>
+            <b>Status: </b><span className={cn('badge', active)}>{apiKey.status}</span>&emsp;
+            <a href="#" onClick={toggleApiKey} className="text-tiny">{statusTitle}</a>
+        </div>
     </div>
 }
 

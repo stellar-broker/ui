@@ -24,7 +24,7 @@ const defaultTextStyle = {
     fontSize: '12px',
     fontFamily: 'Roboto,sans-serif',
     fontWeight: 400,
-    color: '#000'
+    color: '#333'
 }
 
 const theme = Highcharts.theme = {

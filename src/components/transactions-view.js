@@ -2,6 +2,8 @@ import {useEffect, useState} from 'react'
 import {swaps} from '../utils/swaps-demo'
 import {formatDate, formatStroopPrice} from '../utils/formatter'
 import {useAssetInfo} from '../utils/hooks/asset-info-hook'
+import {AssetIcon} from './ui/asset-link'
+import dateFormat from '../utils/date-formater'
 
 function parseAsset(asset) {
     const [code, issuer] = asset.split('-')
@@ -56,9 +58,9 @@ function TransactionsView({compact}) {
                         <td className="text-small" data-header="Get: ">
                             {get} {pair[1].code}
                         </td>
-                        <td className="text-small" data-header="Date: ">{date}</td>
-                        <td><a href={`https://stellar.expert/explorer/public/ledger/` + ledger} className="dimmed" target="_blank">
-                            <i className="icon-external "/></a></td>
+                        <td className="text-small" data-header="Date: ">{dateFormat(date)}</td>
+                        <td><a href={`https://stellar.expert/explorer/public/ledger/` + ledger} target="_blank">
+                            <i className="icon-open-new-window"/></a></td>
                     </tr>
                 })}
             </tbody>
@@ -74,12 +76,10 @@ function AssetPairView({pair}) {
         return null
 
     return <span className="flex-inline">
-       <span className="asset-icon"
-             style={{backgroundImage: `url(${sellingAsset.icon})`}}/>
-       <span className="asset-icon"
-             style={{backgroundImage: `url(${buyingAsset.icon})`}}/>&nbsp;
+       <AssetIcon asset={pair[0].asset}/>
+       <AssetIcon asset={pair[1].asset}/>&nbsp;
     <span>
-            <span>{sellingAsset.code} <i className="icon-arrow-right text-tiny"/> {buyingAsset.code}</span>
+            <span>{sellingAsset.code} <i className="icon-switch text-tiny"/> {buyingAsset.code}</span>
     {(sellingAsset.domain && buyingAsset.domain) && <span className="dimmed text-tiny block">
                 {sellingAsset.domain} / {buyingAsset.domain}
             </span>}

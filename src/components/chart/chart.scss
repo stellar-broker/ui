@@ -20,7 +20,7 @@
   padding: $space-standard;
 
   & > * {
-    background: #000;
+    background: $color-text;
     margin: $space-micro;
     width: 100%;
   }
