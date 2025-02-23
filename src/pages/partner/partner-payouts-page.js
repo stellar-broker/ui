@@ -4,14 +4,16 @@ import {Button} from '../../components/ui/button'
 function PartnerPayoutsPage() {
 
     return <div>
-        <div className="dual-layout middle">
-            <div className="flex-middle">
-                <h4>Payouts</h4>&nbsp;
-                <span className="badge">103</span>
+        <div className="row nano-space">
+            <div className="column column-75">
+                <h4>Payouts</h4>
+                <p className="text-small dimmed nano-space">All payments executed with your partner key</p>
             </div>
-            <Button outline className="text-small"><i className="icon-download"/>Export to .CSV</Button>
+            <div className="column column-25">
+                <div className="nano-space"/>
+                <Button block outline><i className="icon-download"/>Export to .CSV</Button>
+            </div>
         </div>
-        <p className="text-small dimmed space">All payments executed with your partner key</p>
         <div className="hr space"/>
     </div>
 }

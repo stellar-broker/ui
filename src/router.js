@@ -5,6 +5,7 @@ import RequestAccessPage from './pages/request-access-page'
 import MainPage from './pages/main-page'
 import NotFoundPage from './pages/not-found-page'
 import SignInPage from './pages/sign-in-page'
+import PasswordRecoveryPage from './pages/password-recovery-page'
 
 function AppRouter() {
     return <BrowserRouter>
@@ -13,6 +14,7 @@ function AppRouter() {
             <Route path="/account/*" element={<AdminLayout role="partner"/>}/>
             <Route path="/request-access" exact element={<RequestAccessPage/>}/>
             <Route path="/sign-in" exact element={<SignInPage/>}/>
+            <Route path="/password-recovery/:id" exact element={<PasswordRecoveryPage/>}/>
             <Route path="/" exact element={<MainPage/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
         </Routes>
