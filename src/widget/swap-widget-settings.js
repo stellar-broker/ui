@@ -1,9 +1,8 @@
 import {debounce} from 'throttle-debounce'
-import {Horizon} from '@stellar/stellar-sdk'
-import {Asset, Keypair, TransactionBuilder, Networks} from '@stellar/stellar-base'
+import {Asset} from '@stellar/stellar-sdk'
 import {AssetDescriptor} from '@stellar-expert/asset-descriptor'
 import {fromStroops, toStroops} from '@stellar-expert/formatter'
-import StellarBroker from '@stellar-broker/client'
+import {StellarBrokerClient} from '@stellar-broker/client'
 
 export default class SwapWidgetSettings {
     constructor(onUpdate) {
@@ -20,7 +19,7 @@ export default class SwapWidgetSettings {
     }
 
     /**
-     * @type {StellarBroker}
+     * @type {StellarBrokerClient}
      */
     brokerClient
     /**
@@ -71,7 +70,7 @@ export default class SwapWidgetSettings {
     }
 
     async connectToBroker() {
-        const client = new StellarBroker({
+        const client = new StellarBrokerClient({
             partnerKey: '5Z1F4hiq1bGL1JKYnGXFojhg1bmjQTdPjLowJySVuEX7ajx1Xszr9yMQXN6m8ZCRdo',
             account: 'GBW7T3IVZWUF5AEUYUFG5FXBFJNEJCJYEMCG23NIZI36CNUBOPLDKBPA',
             authorization: payload => {
