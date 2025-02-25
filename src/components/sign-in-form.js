@@ -1,11 +1,8 @@
 import {useCallback, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Button} from './ui/button'
-
-function validation({email, password}) {
-    const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/
-    return emailRegex.test(email) && !!password
-}
+import {authenticate} from '../api/auth'
+import {performApiCall} from '../api/api-call'
 
 function SignInForm({login}) {
     const [credentials, setCredentials] = useState()
@@ -14,15 +11,19 @@ function SignInForm({login}) {
     const changeInfo = useCallback((key, val) => {
         setCredentials(prev => {
             const newInfo = {...prev, [key]: val.trim()}
-            setIsValid(validation(newInfo))
+            setIsValid(!!newInfo.email && !!newInfo.password)
             return newInfo
         })
     }, [])
 
-    const onAuth = useCallback(() => {
-        //TODO add logic
-        login(true)
-    }, [login])
+    const onAuth = () => {
+        performApiCall('login', {method: 'POST', params: credentials})
+            .then((result) => {
+                if (result.error)
+                    return notify({type: 'error', message: 'Sign in failed. ' + result.error})
+                login(authenticate(result.accessToken))
+            })
+    }
 
     const changeEmail = useCallback(e => changeInfo('email', e.target.value), [changeInfo])
     const changePassword = useCallback(e => changeInfo('password', e.target.value), [changeInfo])
@@ -32,7 +33,7 @@ function SignInForm({login}) {
         <p className="text-small dimmed space">Access your partner account</p>
         <div className="micro-space">
             <p className="label text-small">Email</p>
-            <input value={credentials?.email || ''}  onChange={changeEmail} className="styled-input"/>
+            <input value={credentials?.email || ''} onChange={changeEmail} className="styled-input"/>
         </div>
         <div className="space">
             <p className="label text-small">Password</p>

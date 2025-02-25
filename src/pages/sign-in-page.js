@@ -1,9 +1,15 @@
-import React from 'react'
+import React, {useCallback} from 'react'
+import {redirect} from 'react-router-dom'
 import SignInForm from '../components/sign-in-form'
 import Logo from '../layout/logo'
 import Footer from '../layout/footer'
 
-function SignInPage({login}) {
+export default function SignInPage() {
+    const login = useCallback((authenticated) => {
+        if (authenticated) {
+            redirect('/')
+        }
+    }, [])
     return <div className="row row-no-padding dual-screen">
         <div className="column column-50">
             <div className="middle-layout">
@@ -21,5 +27,3 @@ function SignInPage({login}) {
         </div>
     </div>
 }
-
-export default SignInPage

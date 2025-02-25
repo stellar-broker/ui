@@ -1,8 +1,5 @@
-const path = require('path')
 const {initWebpackConfig} = require('@stellar-expert/webpack-template')
 const pkgInfo = require('./package.json')
-
-const isProduction = !process.argv.some(a => a === '--mode=development')
 
 module.exports = initWebpackConfig({
     entries: {
@@ -14,7 +11,8 @@ module.exports = initWebpackConfig({
     outputPath: './distr/',
     staticFilesPath: ['./src/static/'],
     define: {
-        appVersion: pkgInfo.version
+        appVersion: pkgInfo.version,
+        managementApiOrigin: process.env.API_ORIGIN || 'https://management.stellar.broker'
     },
     devServer: {
         host: '0.0.0.0',
