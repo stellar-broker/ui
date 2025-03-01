@@ -3,7 +3,7 @@ import {jwtDecode} from 'jwt-decode'
 const authKey = 'auth'
 
 export function getAuth() {
-    const token = localStorage.getItem(authKey)
+    const token = getJwt()
     if (!token)
         return null
     const parsed = parseJwt(token)
@@ -12,6 +12,7 @@ export function getAuth() {
         return null
     }
     return {
+        id: parsed.id,
         roles: parsed.roles,
         email: parsed.email
     }
@@ -37,4 +38,8 @@ function checkJwt(token) {
 
 export function parseJwt(token) {
     return jwtDecode(token)
+}
+
+export function getJwt() {
+    return localStorage.getItem(authKey)
 }

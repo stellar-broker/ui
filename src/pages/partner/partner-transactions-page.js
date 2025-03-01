@@ -38,7 +38,7 @@ function PartnerTransactionsPage() {
                 </div>
                 <p className="text-small dimmed nano-space">All swaps executed with your partner key</p>
             </div>
-            <div className="column column-25">
+            <div className="column column-25 text-right">
                 <div className="nano-space"/>
                 <ExportFileCreator data={dataExportFile} header={headerExportFile} fileName="transaction"/>
             </div>

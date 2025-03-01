@@ -1,81 +1,114 @@
-import {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useState} from 'react'
+import {performApiCall} from '../api/api-call'
+import {getAuth} from '../api/auth'
 import {Button} from './ui/button'
 
 function SettingsForm() {
-    const [settings, setSettings] = useState({
-        email: 'test@gmail.com',
-        password: null
-    })
-
-    const validateEmail = useCallback(email => {
-        const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/
-        return emailRegex.test(email)
-    }, [])
-    const validatePassword = useCallback(password => password?.length >= 8, [])
-
-    const updateEmail = useCallback(email => {
-        setSettings(prev => ({...prev, email}))
-    }, [])
-    const updatePassword = useCallback(password => {
-        setSettings(prev => ({...prev, password: ''}))
-    }, [])
 
     return <>
-        <ValueSettingView title="Your email" valueDefault={settings.email} onUpdate={updateEmail} validation={validateEmail}/>
-        <ValueSettingView title="Your password" valueDefault={settings.password || ''} onUpdate={updatePassword} validation={validatePassword} confirm/>
+        <EmailEditForm/>
+        <div className="hr space"/>
+        <PasswordEditForm/>
     </>
 }
 
-function ValueSettingView({title, valueDefault = '', onUpdate, validation, confirm}) {
-    const [value, setValue] = useState(valueDefault)
-    const [confirmValue, setConfirmValue] = useState('')
-    const [isChanged, setIsChanged] = useState(false)
-    const [isValid, setValid] = useState(false)
+function validationPassword({password, newPassword, confirm}) {
+    if (!password || !confirm || newPassword === password)
+        return false
+    return newPassword === confirm && newPassword.length >= 8
+}
 
-    useEffect(() => {
-        setValue(valueDefault)
-    }, [valueDefault])
+function PasswordEditForm() {
+    const [credentials, setCredentials] = useState()
+    const [isValid, setIsValid] = useState(false)
 
-    const changeValue = useCallback(e => {
-        const val = e.target.value.trim()
-        const validValue = confirm ? confirmValue === val && validation(val) : validation(val)
-        setValue(val)
-        setValid(validValue)
-        setIsChanged(val !== valueDefault)
-    }, [confirmValue, valueDefault, validation])
+    const changeInfo = useCallback((key, val) => {
+        setCredentials(prev => {
+            const credentials = {...prev, [key]: val.trim()}
+            setIsValid(validationPassword(credentials))
+            return credentials
+        })
+    }, [])
 
-    const changeConfirm = useCallback(e => {
-        const val = e.target.value.trim()
-        setConfirmValue(val)
-        setValid(value === val && validation(val))
-    }, [value, valueDefault, validation])
+    const updatePassword = useCallback(() => {
+        const {confirm, ...params} = credentials
+        performApiCall('partner/password', {method: 'PUT', auth: true, params})
+            .then((result) => {
+                if (result.error)
+                    return notify({type: 'error', message: 'Failed to update password. ' + result.error})
+                //reset form
+                setCredentials({})
+                notify({type: "success", message: "Password changed successfully"})
+            })
+    }, [credentials])
 
-    const onSave = useCallback(() => {
-        onUpdate(value)
-        setIsChanged(false)
-        if (confirm) {
-            setValue('')
-            setConfirmValue('')
+    const changePassword = useCallback(e => changeInfo('password', e.target.value), [changeInfo])
+    const changeNewPassword = useCallback(e => changeInfo('newPassword', e.target.value), [changeInfo])
+    const changeConfirm = useCallback(e => changeInfo('confirm', e.target.value), [changeInfo])
+    const onKeyDown = useCallback(e => {
+        if (e.keyCode === 13 && isValid) {
+            updatePassword()
         }
-        notify({type: "success", message: "Changes saved"})
-    }, [value, onUpdate])
+    }, [isValid])
 
     return <div className="row">
         <div className="column column-33">
             <div className="space">
-                <p className="label text-small">{title}</p>
-                <input value={value} onChange={changeValue} className="styled-input"/>
+                <p className="label text-small">Password</p>
+                <input type="password" value={credentials?.password || ''} onChange={changePassword} onKeyDown={onKeyDown}
+                       className="styled-input"/>
             </div>
         </div>
-        {confirm && isChanged && <div className="column column-33">
+        <div className="column column-33">
             <div className="space">
-                <p className="label text-small">Confirm</p>
-                <input value={confirmValue} onChange={changeConfirm} className="styled-input"/>
+                <p className="label text-small">New password</p>
+                <input type="password" value={credentials?.newPassword || ''} onChange={changeNewPassword} onKeyDown={onKeyDown}
+                       className="styled-input"/>
             </div>
-        </div>}
+        </div>
+        <div className="column column-33">
+            <div className="space">
+                <p className="label text-small">Confirm new password</p>
+                <input type="password" value={credentials?.confirm || ''} onChange={changeConfirm} onKeyDown={onKeyDown}
+                       className="styled-input"/>
+            </div>
+        </div>
+        <div className="column column-33 column-offset-66 text-right">
+            <div className="label-space"/>
+            <Button disabled={!isValid} onClick={updatePassword}>Save</Button>
+        </div>
+    </div>
+}
+
+function EmailEditForm() {
+    const userData = getAuth()
+    const [email, setEmail] = useState(userData.email)
+    const [isChanged, setIsChanged] = useState(false)
+    const [isValid, setIsValid] = useState(false)
+
+    const changeEmail = useCallback(e => {
+        const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/
+        const val = e.target.value.trim()
+        setEmail(val)
+        setIsValid(emailRegex.test(val))
+        setIsChanged(val !== userData.email)
+    }, [])
+
+    const updateEmail = useCallback(() => {
+        //TODO update email use API
+        notify({type: "success", message: "Email changed successfully"})
+    }, [email])
+
+    return <div className="row">
+        <div className="column column-33">
+            <div className="space">
+                <p className="label text-small">Email</p>
+                <input value={email || ''} onChange={changeEmail} className="styled-input"/>
+            </div>
+        </div>
         <div className="column column-33">
             <div className="label-space"/>
-            {isChanged && <Button disabled={!isValid} onClick={onSave}>Save</Button>}
+            {isChanged && <Button disabled={!isValid} onClick={updateEmail}>Save</Button>}
         </div>
     </div>
 }

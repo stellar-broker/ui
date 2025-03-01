@@ -3,7 +3,7 @@ import {swaps} from '../utils/swaps-demo'
 import {formatDate, formatStroopPrice} from '../utils/formatter'
 import {useAssetInfo} from '../utils/hooks/asset-info-hook'
 import {AssetIcon} from './ui/asset-link'
-import dateFormat from '../utils/date-formater'
+import formatDateTime from '../utils/date-formater'
 
 function parseAsset(asset) {
     const [code, issuer] = asset.split('-')
@@ -58,7 +58,7 @@ function TransactionsView({compact}) {
                         <td className="text-small" data-header="Get: ">
                             {get} {pair[1].code}
                         </td>
-                        <td className="text-small" data-header="Date: ">{dateFormat(date)}</td>
+                        <td className="text-small" data-header="Date: ">{formatDateTime(date)}</td>
                         <td><a href={`https://stellar.expert/explorer/public/ledger/` + ledger} target="_blank">
                             <i className="icon-open-new-window"/></a></td>
                     </tr>

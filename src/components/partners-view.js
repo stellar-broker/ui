@@ -1,23 +1,27 @@
-import {Link} from 'react-router-dom'
-import dateFormat from '../utils/date-formater'
+import {useEffect} from 'react'
+import {performApiCall} from '../api/api-call'
+import {stringifyQuery} from '../utils/query'
 import {Button} from './ui/button'
+import formatDateTime from '../utils/date-formater'
 
 function PartnersView({partnerList}) {
     return <div className="row">
         {partnerList?.map((partner) => {
-            return <div key={partner.id} className="column column-33 micro-space">
+            const partnerVarFee = partner.settings?.partnerVarFee ? partner.settings.partnerVarFee / 100 + '%' : '-'
+            const brokerVarFee = partner.settings?.brokerVarFee ? partner.settings.brokerVarFee / 100 + '%' : '-'
+            return <div key={partner.id} className="column column-25 micro-space">
                 <div className="card outline space">
                     <div className="nano-space">
                         <b>Email: </b><span>{partner.email}</span>
                     </div>
                     <div className="nano-space">
-                        <b>Dynamic fee: </b><span>{partner.settings.partnerVarFee / 100}%</span>
+                        <b>Partner fee: </b><span>{partnerVarFee}</span>
                     </div>
                     <div className="nano-space">
-                        <b>Fixed fee: </b><span>{partner.settings.striderVarFee / 100}%</span>
+                        <b>Broker fee: </b><span>{brokerVarFee}</span>
                     </div>
                     <div className="micro-space">
-                        <b>Created: </b><span>{dateFormat(partner.created, true)}</span>
+                        <b>Created: </b><span>{partner.created ? formatDateTime(partner.created, true) : '-'}</span>
                     </div>
                     <div className="hr micro-space"/>
                     <PartnerStatView id={partner.id}/>
@@ -33,6 +37,18 @@ function PartnersView({partnerList}) {
 }
 
 function PartnerStatView({id}) {
+    useEffect(() => {
+        const params = {
+            limit: 1,
+            order: 'desc'
+        }
+        performApiCall(`partner/${id}/swaps${stringifyQuery(params)}`, {auth: true})
+            .then((result) => {
+                if (result.error)
+                    return notify({type: 'error', message: 'Failed to retrieve partner statistics. ' + result.error})
+            })
+    }, [id])
+
     return <div className="micro-space">
         <div className="nano-space text-small">
             <span>Daily volume:</span> <span className="dimmed">$1,220</span>

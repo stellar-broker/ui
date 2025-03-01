@@ -7,7 +7,7 @@ import AuthLayout from './auth-layout'
 import '../styles/dashboard.scss'
 
 function AdminLayout({role}) {
-    return <AuthLayout>
+    return <AuthLayout role={role}>
         <div className="dual-layout mobile-flex-wrap">
             {role === 'admin' ? <>
                 <AdminSidebarView/>

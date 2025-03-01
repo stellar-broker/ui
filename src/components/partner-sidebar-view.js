@@ -1,5 +1,5 @@
 import {Link} from 'react-router-dom'
-import SidebarView from './sidebar-view'
+import SidebarView, {LogoutView} from './sidebar-view'
 import NavSidebarView from './nav-sidebar-view'
 
 const navLinks = {
@@ -24,7 +24,7 @@ function PartnerSidebarView() {
         <div className="hr micro-space"/>
         <NavSidebarView navLinks={navLinks}/>
         <div className="hr micro-space"/>
-        <div className="links">
+        <ul className="links">
             <li>
                 <Link to="settings" className="text-small">
                     <span><i className="icon-cog"/>Settings</span>
@@ -35,7 +35,8 @@ function PartnerSidebarView() {
                     <span><i className="icon-document"/>Contact Support</span>
                 </Link>
             </li>
-        </div>
+            <li><LogoutView/></li>
+        </ul>
     </SidebarView>
 }
 

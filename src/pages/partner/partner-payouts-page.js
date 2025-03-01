@@ -9,9 +9,9 @@ function PartnerPayoutsPage() {
                 <h4>Payouts</h4>
                 <p className="text-small dimmed nano-space">All payments executed with your partner key</p>
             </div>
-            <div className="column column-25">
+            <div className="column column-25 text-right">
                 <div className="nano-space"/>
-                <Button block outline><i className="icon-download"/>Export to .CSV</Button>
+                <Button stackable outline><i className="icon-download"/>Export to .CSV</Button>
             </div>
         </div>
         <div className="hr space"/>
