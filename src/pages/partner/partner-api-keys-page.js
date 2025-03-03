@@ -8,12 +8,11 @@ function PartnerApiKeysPage() {
     const [keyList, setKeyList] = useState()
 
     useEffect(() => {
-        performApiCall(`partner/api-key`, {auth: true})
+        performApiCall(`partner/api-key`)
             .then((result) => {
                 if (result.error)
                     return notify({type: 'error', message: 'Failed to retrieve API keys. ' + result.error})
-
-                setKeyList(result.map(key => ({key, status: 'Active'})))
+                setKeyList(result)
             })
     }, [])
 
@@ -39,33 +38,35 @@ function AddApiKeyForm({updateKeyList}) {
     const toggleDialog = useCallback(() => setIsOpen(prev => !prev), [])
 
     const generateApiKey = useCallback(() => {
-        performApiCall(`partner/api-key`, {method: 'POST', auth: true})
+        toggleDialog(false)
+        performApiCall(`partner/api-key`, {method: 'POST'})
             .then((result) => {
                 if (result.error)
                     return notify({type: 'error', message: 'Failed to generate new API key. ' + result.error})
 
                 updateKeyList(prev => ([...prev, {key: result.key, status: 'Active'}]))
-                toggleDialog(false)
-                notify({type: "success", message: "New API key has been added"})
+                notify({type: 'success', message: 'New API key has been added'})
             })
     }, [updateKeyList, toggleDialog])
 
     return <>
         <Button stackable outline onClick={toggleDialog}><i className="icon-key-add"/>Add new API key</Button>
-        <Dialog dialogOpen={isOpen}>
-            <div className="micro-space"><h5>Add new API key</h5></div>
-            <div className="space">
-                Submit a request to get a new API key. Server will generate you API key witch you can use immediately.
-            </div>
-            <div className="row">
-                <div className="column column-33 column-offset-33">
-                    <Button outline block onClick={toggleDialog}>Cancel</Button>
+        <div className="text-left">
+            <Dialog dialogOpen={isOpen}>
+                <div className="micro-space"><h5>Add new API key</h5></div>
+                <div className="space">
+                    Generate new API key? Each partner account can contain up to 10 unique keys.
                 </div>
-                <div className="column column-33">
-                    <Button block onClick={generateApiKey}>Generate</Button>
+                <div className="row">
+                    <div className="column column-33 column-offset-33">
+                        <Button outline block onClick={toggleDialog}>Cancel</Button>
+                    </div>
+                    <div className="column column-33">
+                        <Button block onClick={generateApiKey}>Generate</Button>
+                    </div>
                 </div>
-            </div>
-        </Dialog>
+            </Dialog>
+        </div>
     </>
 }
 

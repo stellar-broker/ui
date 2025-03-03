@@ -2,12 +2,12 @@ import {useCallback} from 'react'
 import cn from 'classnames'
 import {CopyToClipboard} from '../utils/copy-to-clipboard'
 import {shortenString} from '@stellar-expert/formatter'
+import {performApiCall} from '../api/api-call'
 
 function ApiKeysView({keyList, updateKeyList}) {
-
-    return <div className="row">
+    return <div>
         {keyList?.map((apiKey) => {
-            return <div key={apiKey.key} className="column column-25 micro-space">
+            return <div key={apiKey} className="card outline">
                 <ApiKeyEntry apiKey={apiKey} updateKeyList={updateKeyList}/>
             </div>
         })}
@@ -15,28 +15,29 @@ function ApiKeysView({keyList, updateKeyList}) {
 }
 
 function ApiKeyEntry({apiKey, updateKeyList}) {
-    const isActive = apiKey.status === 'Active'
-    const active = apiKey.status === 'Active' ? 'success' : ''
-    const statusTitle = isActive ? 'Disable' : 'Enable'
+    const remove = useCallback(() => {
+        if (confirm('Are you sure you want to remove this API key?')) {
+            performApiCall(`partner/api-key/${apiKey}`, {method: 'DELETE'})
+                .then(res => {
+                    if (res.error)
+                        return notify({type: 'error', message: 'Failed to remove API key'})
+                    updateKeyList(prev => {
+                        const newKeyList = [...prev]
+                        newKeyList.splice(newKeyList.indexOf(apiKey), 1)
+                        return newKeyList
+                    })
+                })
+        }
+    }, [apiKey, updateKeyList])
 
-    const toggleApiKey = useCallback(() => {
-        updateKeyList(prev => {
-            return prev.map(k => {
-                if (apiKey.key === k.key) {
-                    k.status = !isActive ? 'Active' : 'Disabled'
-                }
-                return k
-            })
-        })
-    }, [isActive, apiKey, updateKeyList])
-
-    return <div className="card outline space">
-        <div className="nano-space">
-            <b>API key: </b><span>{shortenString(apiKey.key, 16)}</span> <CopyToClipboard text={apiKey.key}/>
-        </div>
-        <div>
-            <b>Status: </b><span className={cn('badge', active)}>{apiKey.status}</span>&emsp;
-            <a href="#" onClick={toggleApiKey} className="text-tiny">{statusTitle}</a>
+    return <div className="nano-space">
+        <div className="dual-layout">
+            <div style={{maxWidth: '85%'}}>
+                <code className="word-break">{apiKey}</code> <CopyToClipboard text={apiKey}/>
+            </div>
+            <div className="text-right" style={{width: '2em'}}>
+                <a href="#" onClick={remove} className="icon icon-delete-circle" title="Delete API key"/>
+            </div>
         </div>
     </div>
 }

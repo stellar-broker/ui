@@ -7,7 +7,7 @@ function AdminPartnersPage() {
     const [partnerList, setPartnerList] = useState()
 
     useEffect(() => {
-        performApiCall('partner', {auth: true})
+        performApiCall('partner')
             .then((result) => {
                 if (result.error)
                     return notify({type: 'error', message: 'Failed to retrieve partners data. ' + result.error})
@@ -21,7 +21,7 @@ function AdminPartnersPage() {
         <div className="row nano-space">
             <div className="column column-75">
                 <h4>Partners</h4>
-                <p className="text-small dimmed nano-space">Managing all partners</p>
+                <p className="text-small dimmed nano-space">Manage all connected partners</p>
             </div>
             <div className="column column-25 text-right">
                 <div className="nano-space"/>

@@ -4,11 +4,11 @@ import {getJwt} from './auth'
  *
  * @param {string} endpointWithQuery
  * @param {'GET'|'POST'|'PUT'|'DELETE'} [method]
- * @param {boolean} auth
+ * @param {boolean} [auth]
  * @param {{}} [params]
  * @return {Promise<*|{error: string}>}
  */
-export async function performApiCall(endpointWithQuery, {method = 'GET', auth, params} = {}) {
+export async function performApiCall(endpointWithQuery, {method = 'GET', auth = true, params} = {}) {
     const url = `${managementApiOrigin}/${endpointWithQuery}`
     const headers = {
         'Accept': 'application/json',
