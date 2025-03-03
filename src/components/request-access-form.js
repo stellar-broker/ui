@@ -1,33 +1,28 @@
 import {useCallback, useState} from 'react'
+import validateEmail from '../utils/validate-email'
 import {Button} from './ui/button'
 
-function validation({name, email, messenger, fee}) {
-    const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/
-    return emailRegex.test(email) && !!name && !!messenger && !!fee
+function validate({name, email, website}) {
+    return validateEmail(email) && !!name && !!website
 }
 
 function RequestAccessForm({step, updateStep, stepAmount}) {
     const [info, setInfo] = useState({})
     const [isValid, setIsValid] = useState(false)
 
-    const changeName = useCallback(e => {
-        const val = e.target.value.trim()
-        setInfo(prev => ({...prev, ['name']: val}))
-        setIsValid(!!val)
+    const changeValue = useCallback((key, value) => {
+        setInfo(prev => {
+            const newInfo = {...prev, [key]: value}
+            setIsValid(validate(newInfo))
+            return newInfo
+        })
     }, [])
 
-    const changeEmail = useCallback(e => {
-        const val = e.target.value.trim()
-        const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/
-        setInfo(prev => ({...prev, ['email']: val}))
-        setIsValid(emailRegex.test(val))
-    }, [])
+    const changeName = useCallback(e => changeValue('name', e.target.value), [])
 
-    const changeWebsite = useCallback(e => {
-        const val = e.target.value.trim()
-        setInfo(prev => ({...prev, ['website']: val}))
-        setIsValid(!!val)
-    }, [])
+    const changeEmail = useCallback(e => changeValue('email', e.target.value.trim()), [])
+
+    const changeWebsite = useCallback(e => changeValue('website', e.target.value.trim()), [])
 
     const subject = 'Integration request from '+ info.name
     const body= `Company: ${info.name}
@@ -54,7 +49,7 @@ Website: ${info.website}`
             <input value={info?.website || ''} onChange={changeWebsite} className="styled-input"/>
         </div>
         <div className="space">
-            <Button block href={mailto}>Request Access</Button>
+            <Button block disabled={!isValid} href={mailto}>Request Access</Button>
         </div>
     </div>
 }

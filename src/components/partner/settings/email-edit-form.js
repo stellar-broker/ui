@@ -1,6 +1,7 @@
 
 import React, {useCallback, useState} from 'react'
 import {getAuth} from '../../../api/auth'
+import validateEmail from '../../../utils/validate-email'
 import {Button} from '../../ui/button'
 
 function EmailEditForm() {
@@ -10,10 +11,9 @@ function EmailEditForm() {
     const [isValid, setIsValid] = useState(false)
 
     const changeEmail = useCallback(e => {
-        const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/
         const val = e.target.value.trim()
         setEmail(val)
-        setIsValid(emailRegex.test(val))
+        setIsValid(validateEmail(val))
         setIsChanged(val !== userData.email)
     }, [])
 
