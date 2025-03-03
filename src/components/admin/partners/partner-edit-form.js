@@ -1,9 +1,9 @@
 import {useCallback, useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
-import {generatePassword} from '../utils/password-generator'
-import {performApiCall} from '../api/api-call'
-import {Button} from './ui/button'
-import PartnerPasswordRecoveryView from './ui/partner-password-recovery-view'
+import {generatePassword} from '../../../utils/password-generator'
+import {performApiCall} from '../../../api/api-call'
+import {Button} from '../../ui/button'
+import PartnerPasswordRecoveryView from './partner-password-recovery-view'
 
 const feeLimit = {
     partnerVarFee: 500,

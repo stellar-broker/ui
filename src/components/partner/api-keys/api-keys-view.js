@@ -1,8 +1,6 @@
 import {useCallback} from 'react'
-import cn from 'classnames'
-import {CopyToClipboard} from '../utils/copy-to-clipboard'
-import {shortenString} from '@stellar-expert/formatter'
-import {performApiCall} from '../api/api-call'
+import {CopyToClipboard} from '../../../utils/copy-to-clipboard'
+import {performApiCall} from '../../../api/api-call'
 
 function ApiKeysView({keyList, updateKeyList}) {
     return <div>

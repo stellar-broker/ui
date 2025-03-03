@@ -1,5 +1,5 @@
-import SidebarView, {LogoutView} from './sidebar-view'
-import NavSidebarView from './nav-sidebar-view'
+import SidebarView, {LogoutView} from '../sidebar-view'
+import NavSidebarView from '../nav-sidebar-view'
 
 const navLinks = {
     'dashboard': {title: 'Dashboard', link: '/admin', icon: 'chart'},

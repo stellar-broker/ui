@@ -1,9 +1,10 @@
 import {useEffect, useState} from 'react'
-import {swaps} from '../utils/swaps-demo'
-import {formatDate, formatStroopPrice} from '../utils/formatter'
-import {useAssetInfo} from '../utils/hooks/asset-info-hook'
-import {AssetIcon} from './ui/asset-link'
-import formatDateTime from '../utils/date-formater'
+import {swaps} from '../../../utils/swaps-demo'
+import {formatDate, formatStroopPrice} from '../../../utils/formatter'
+import {useAssetInfo} from '../../../utils/hooks/asset-info-hook'
+import formatDateTime from '../../../utils/date-formater'
+import {AssetIcon} from '../../ui/asset-link'
+import SearchView from '../../ui/search-view'
 
 function parseAsset(asset) {
     const [code, issuer] = asset.split('-')
@@ -85,13 +86,6 @@ function AssetPairView({pair}) {
             </span>}
        </span>
     </span>
-}
-
-function SearchView() {
-    return <div className="flex-middle">
-        <i className="icon-search"/>
-        <input placeholder="Search"/>
-    </div>
 }
 
 export default TransactionsView

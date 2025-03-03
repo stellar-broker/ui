@@ -1,8 +1,8 @@
 import React from 'react'
-import StatisticsView from '../../components/statistics-view'
-import VolumeChartView from '../../components/volume-chart-view'
-import AssetChartView from '../../components/asset-chart-view'
-import TransactionsView from '../../components/transactions-view'
+import StatisticsView from '../../components/partner/dashboard/statistics-view'
+import VolumeChartView from '../../components/partner/dashboard/volume-chart-view'
+import AssetChartView from '../../components/partner/dashboard/asset-chart-view'
+import TransactionsView from '../../components/partner/transactions/transactions-view'
 
 function PartnerDashboardPage() {
 

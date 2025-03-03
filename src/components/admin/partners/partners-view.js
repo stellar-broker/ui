@@ -1,7 +1,7 @@
 import {useEffect} from 'react'
-import {performApiCall} from '../api/api-call'
-import {stringifyQuery} from '../utils/query'
-import {Button} from './ui/button'
+import {performApiCall} from '../../../api/api-call'
+import {stringifyQuery} from '../../../utils/query'
+import {Button} from '../../ui/button'
 
 function PartnersView({partnerList}) {
     return <div>

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {swaps} from '../../utils/swaps-demo'
-import TransactionsView from '../../components/transactions-view'
+import TransactionsView from '../../components/partner/transactions/transactions-view'
 import ExportFileCreator from '../../components/export-file-creator'
 import {formatDate, formatStroopPrice} from '../../utils/formatter'
 
