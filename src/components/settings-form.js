@@ -32,7 +32,7 @@ function PasswordEditForm() {
 
     const updatePassword = useCallback(() => {
         const {confirm, ...params} = credentials
-        performApiCall('partner/password', {method: 'PUT', auth: true, params})
+        performApiCall('partner/password', {method: 'PUT', params})
             .then((result) => {
                 if (result.error)
                     return notify({type: 'error', message: 'Failed to update password. ' + result.error})

@@ -17,7 +17,7 @@ function SignInForm({login}) {
     }, [])
 
     const onAuth = () => {
-        performApiCall('login', {method: 'POST', params: credentials})
+        performApiCall('login', {method: 'POST', auth: false, params: credentials})
             .then((result) => {
                 if (result.error)
                     return notify({type: 'error', message: 'Sign in failed. ' + result.error})
