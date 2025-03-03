@@ -1,4 +1,6 @@
-import {useState} from 'react'
+import {useCallback, useState} from 'react'
+import {useNavigate} from 'react-router-dom'
+import {logout} from '../api/auth'
 import Logo from '../layout/logo'
 
 function SidebarView({children}) {
@@ -14,6 +16,18 @@ function SidebarView({children}) {
         <div className="double-space"/>
         {children}
     </div>
+}
+
+export function LogoutView() {
+    const navigate = useNavigate()
+    const onLogout = useCallback(() => {
+        logout()
+        navigate('/')
+    }, [])
+
+    return <a href="#" className="text-small" onClick={onLogout}>
+        <span><i className="icon-logout"/>Logout</span>
+    </a>
 }
 
 export default SidebarView

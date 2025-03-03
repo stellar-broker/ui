@@ -1,4 +1,4 @@
-import SidebarView from './sidebar-view'
+import SidebarView, {LogoutView} from './sidebar-view'
 import NavSidebarView from './nav-sidebar-view'
 
 const navLinks = {
@@ -9,6 +9,9 @@ const navLinks = {
 function AdminSidebarView() {
     return <SidebarView>
         <NavSidebarView navLinks={navLinks}/>
+        <ul className="links">
+            <li><LogoutView/></li>
+        </ul>
     </SidebarView>
 }
 

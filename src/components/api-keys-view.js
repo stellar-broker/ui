@@ -7,7 +7,7 @@ function ApiKeysView({keyList, updateKeyList}) {
 
     return <div className="row">
         {keyList?.map((apiKey) => {
-            return <div key={apiKey.key} className="column column-50 micro-space">
+            return <div key={apiKey.key} className="column column-25 micro-space">
                 <ApiKeyEntry apiKey={apiKey} updateKeyList={updateKeyList}/>
             </div>
         })}
@@ -32,7 +32,7 @@ function ApiKeyEntry({apiKey, updateKeyList}) {
 
     return <div className="card outline space">
         <div className="nano-space">
-            <b>API key: </b><span>{apiKey.key}</span> <CopyToClipboard text={apiKey.key}/>
+            <b>API key: </b><span>{shortenString(apiKey.key, 16)}</span> <CopyToClipboard text={apiKey.key}/>
         </div>
         <div>
             <b>Status: </b><span className={cn('badge', active)}>{apiKey.status}</span>&emsp;

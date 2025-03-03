@@ -1,18 +1,24 @@
+import {getJwt} from './auth'
+
 /**
  *
  * @param {string} endpointWithQuery
  * @param {'GET'|'POST'|'PUT'|'DELETE'} [method]
+ * @param {boolean} auth
  * @param {{}} [params]
  * @return {Promise<*|{error: string}>}
  */
-export async function performApiCall(endpointWithQuery, {method = 'GET', params} = {}) {
+export async function performApiCall(endpointWithQuery, {method = 'GET', auth, params} = {}) {
     const url = `${managementApiOrigin}/${endpointWithQuery}`
+    const headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+    if (auth)
+        headers['Authorization'] = 'Bearer ' + getJwt()
     try {
         const resp = await fetch(url, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
+            headers,
             method,
             body: params ? JSON.stringify(params) : undefined
         })

@@ -3,6 +3,7 @@ import PageLayout from '../layout/page-layout'
 import Logo from '../layout/logo'
 import {Button} from '../components/ui/button'
 import {SwapWidget} from '../widget/swap-widget'
+import {getAuth} from '../api/auth'
 
 export default function MainPage() {
     return <PageLayout>
@@ -16,7 +17,7 @@ export default function MainPage() {
                     on Stellar and earn fees on every transaction.</p>
                 <div>
                     <Button href="/request-access">Request Access</Button>
-                    <Button href="/sign-in" outline>Sign In</Button>
+                    <Button href="/account" outline>{getAuth() ? 'Account' : 'Sign In'}</Button>
                 </div>
                 <div className="mobile-only double-space"></div>
             </div>
