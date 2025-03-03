@@ -15,7 +15,7 @@ function AddApiKeyForm({updateKeyList}) {
                 if (result.error)
                     return notify({type: 'error', message: 'Failed to generate new API key. ' + result.error})
 
-                updateKeyList(prev => ([...prev, {key: result.key, status: 'Active'}]))
+                updateKeyList(prev => ([...prev, result.key]))
                 notify({type: 'success', message: 'New API key has been added'})
             })
     }, [updateKeyList, toggleDialog])

@@ -5,7 +5,7 @@ import {performApiCall} from '../../../api/api-call'
 function ApiKeysView({keyList, updateKeyList}) {
     return <div>
         {keyList?.map((apiKey) => {
-            return <div key={apiKey} className="card outline">
+            return <div key={apiKey} className="card outline micro-space">
                 <ApiKeyEntry apiKey={apiKey} updateKeyList={updateKeyList}/>
             </div>
         })}
