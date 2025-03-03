@@ -1,5 +1,5 @@
 import React from 'react'
-import SettingsForm from '../../components/settings-form'
+import SettingsForm from '../../components/partner/settings/settings-form'
 
 function PartnerDashboardPage() {
 

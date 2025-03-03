@@ -1,6 +1,6 @@
 import React from 'react'
 import {useParams} from 'react-router-dom'
-import PartnerEditForm from '../../components/partner-edit-form'
+import PartnerEditForm from '../../components/admin/partners/partner-edit-form'
 
 function AdminPartnerEditPage() {
     const {id} = useParams()

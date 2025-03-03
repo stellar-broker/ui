@@ -1,9 +1,12 @@
 import {useEffect, useState} from 'react'
-import {swaps} from '../utils/swaps-demo'
-import {formatDate, formatStroopPrice} from '../utils/formatter'
-import {useAssetInfo} from '../utils/hooks/asset-info-hook'
-import {AssetIcon} from './ui/asset-link'
-import formatDateTime from '../utils/date-formater'
+import {AssetDescriptor} from '@stellar-expert/asset-descriptor'
+import {formatDate, formatStroopPrice} from '../../../utils/formatter'
+import formatDateTime from '../../../utils/date-formater'
+import {performApiCall} from '../../../api/api-call'
+import {stringifyQuery} from '../../../utils/query'
+import {useAssetMeta} from '../../../utils/hooks/asset-meta-hook'
+import {AssetIcon} from '../../ui/asset-link'
+import SearchView from '../../ui/search-view'
 
 function parseAsset(asset) {
     const [code, issuer] = asset.split('-')
@@ -28,9 +31,17 @@ function TransactionsView({compact}) {
     const [transactions, setTransactions] = useState()
 
     useEffect(() => {
-        //TODO: get swaps from API
-        setTransactions(swaps?.map(tx => parseTx(tx)))
-    }, [swaps])
+        const params = {
+            limit: compact ? 10 : 20,
+            order: 'desc'
+        }
+        performApiCall(`partner/swaps${stringifyQuery(params)}`)
+            .then((result) => {
+                if (result.error)
+                    return notify({type: 'error', message: 'Failed to retrieve partner statistics. ' + result.error})
+                setTransactions(result?._embedded.records.map(tx => parseTx(tx)))
+            })
+    }, [])
 
     return <div className="table space">
         <div className="table-header">
@@ -69,8 +80,9 @@ function TransactionsView({compact}) {
 }
 
 function AssetPairView({pair}) {
-    const sellingAsset = useAssetInfo(pair[0].asset)
-    const buyingAsset = useAssetInfo(pair[1].asset)
+    const sellingAsset = useAssetMeta(pair[0].asset)
+    const buyingAsset = useAssetMeta(pair[1].asset)
+    const [assetA, assetB] = pair.map(a => AssetDescriptor.parse(a.asset))
 
     if (!sellingAsset || !buyingAsset)
         return null
@@ -79,19 +91,12 @@ function AssetPairView({pair}) {
        <AssetIcon asset={pair[0].asset}/>
        <AssetIcon asset={pair[1].asset}/>&nbsp;
     <span>
-            <span>{sellingAsset.code} <i className="icon-switch text-tiny"/> {buyingAsset.code}</span>
+            <span>{assetA.code} <i className="icon-switch text-tiny"/> {assetB.code}</span>
     {(sellingAsset.domain && buyingAsset.domain) && <span className="dimmed text-tiny block">
                 {sellingAsset.domain} / {buyingAsset.domain}
             </span>}
        </span>
     </span>
-}
-
-function SearchView() {
-    return <div className="flex-middle">
-        <i className="icon-search"/>
-        <input placeholder="Search"/>
-    </div>
 }
 
 export default TransactionsView

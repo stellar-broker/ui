@@ -1,14 +1,20 @@
 import {useCallback, useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
-import {CopyToClipboard} from '../utils/copy-to-clipboard'
-import {generatePassword} from '../utils/password-generator'
-import {performApiCall} from '../api/api-call'
-import {Button} from './ui/button'
+import {generatePassword} from '../../../utils/password-generator'
+import {performApiCall} from '../../../api/api-call'
+import {Button} from '../../ui/button'
+import PartnerPasswordRecoveryView from './partner-password-recovery-view'
+
+const feeLimit = {
+    partnerVarFee: 500,
+    partnerFixedFee: 50,
+    brokerVarFee: 500,
+    brokerFixedFee: 50
+}
 
 function PartnerEditForm({id}) {
     const navigate = useNavigate()
     const [settings, setSettings] = useState()
-    const recoveryPasswordLink = window.location.origin + '/password-recovery/' + id
 
     useEffect(() => {
         if (!id)
@@ -26,27 +32,23 @@ function PartnerEditForm({id}) {
     }, [id])
 
     const changeValue = useCallback((key, value) => {
-        setSettings(prev => {
-            const newSettings = {...prev, [key]: value}
-            return newSettings
-        })
+        const val = value.replace(/[^\d.]/g, '')
+        const fee = val > feeLimit[key] ? feeLimit[key] : val
+        setSettings(prev => ({...prev, [key]: fee}))
     }, [])
 
-    const changeEmail = useCallback(e => changeValue('email', e.target.value.trim()), [])
-
-    const changePartnerVarFee = useCallback(e => {
-        const val = e.target.value.replace(/[^\d.]/g, '')
-        changeValue('partnerVarFee', val > 50 ? 50 : val)
+    const changeEmail = useCallback(e => {
+        const email = e.target.value.trim()
+        setSettings(prev => ({...prev, email}))
     }, [])
 
-    const changeBrokerVarFee = useCallback(e => {
-        const val = e.target.value.replace(/[^\d.]/g, '')
-        changeValue('brokerVarFee', val > 2 ? 2 : val)
-    }, [])
+    const changePartnerVarFee = useCallback(e => changeValue('partnerVarFee', e.target.value), [])
 
-    const sendPassRecoveryLink = useCallback(() => {
-        notify({type: 'success', message: 'Password recovery form has been sent'})
-    }, [])
+    const changePartnerFixedFee = useCallback(e => changeValue('partnerFixedFee', e.target.value), [])
+
+    const changeBrokerVarFee = useCallback(e => changeValue('brokerVarFee', e.target.value), [])
+
+    const changeBrokerFixedFee = useCallback(e => changeValue('brokerFixedFee', e.target.value), [])
 
     const addPartner = useCallback(async (email) => {
         const params = {
@@ -95,20 +97,6 @@ function PartnerEditForm({id}) {
     }, [onSave])
 
     return <div>
-        {id && <>
-            <p className="label nano-space">Partner password recovery</p>
-            <div className="row micro-space">
-                <div className="column column-33">
-                    <Button block className="text-small" onClick={sendPassRecoveryLink}>Send Link</Button>
-                </div>
-                <div className="column column-33">
-                    <CopyToClipboard text={recoveryPasswordLink}>
-                        <Button block outline className="text-small">Copy Link</Button>
-                    </CopyToClipboard>
-                </div>
-            </div>
-            <div className="hr space"/>
-        </>}
         <div className="row">
             <div className="column column-50">
                 <div className="space">
@@ -121,7 +109,7 @@ function PartnerEditForm({id}) {
             <div className="column column-50">
                 <p className="label">Partner profit fee (‰)</p>
                 <input value={settings?.partnerVarFee || ''} onChange={changePartnerVarFee} onKeyDown={onKeyDown} className="styled-input"
-                       placeholder="0-500‰"/>
+                       placeholder={`0-${feeLimit['partnerVarFee']}‰`}/>
                 <div className="nano-space"/>
                 <div className="text-tiny">
                     Variable fee charged from the funds saved during the swap
@@ -130,7 +118,7 @@ function PartnerEditForm({id}) {
             <div className="column column-50">
                 <p className="label">Broker profit fee (‰)</p>
                 <input value={settings?.brokerVarFee || ''} onChange={changeBrokerVarFee} onKeyDown={onKeyDown} className="styled-input"
-                       placeholder="0-500‰"/>
+                       placeholder={`0-${feeLimit['brokerVarFee']}‰`}/>
                 <div className="nano-space"/>
                 <div className="text-tiny">
                     Variable service fee charged from the funds saved during the swap
@@ -138,8 +126,8 @@ function PartnerEditForm({id}) {
             </div>
             <div className="column column-50">
                 <p className="label">Partner fixed fee (‰)</p>
-                <input value={settings?.partnerFixedFee || ''} onChange={changePartnerVarFee} onKeyDown={onKeyDown} className="styled-input"
-                       placeholder="0-50‰"/>
+                <input value={settings?.partnerFixedFee || ''} onChange={changePartnerFixedFee} onKeyDown={onKeyDown} className="styled-input"
+                       placeholder={`0-${feeLimit['partnerFixedFee']}‰`}/>
                 <div className="nano-space"/>
                 <div className="text-tiny">
                     Fixed partner swap fee charged from the transaction amount
@@ -147,15 +135,15 @@ function PartnerEditForm({id}) {
             </div>
             <div className="column column-50">
                 <p className="label">Broker fixed fee (‰)</p>
-                <input value={settings?.brokerFixedFee || ''} onChange={changeBrokerVarFee} onKeyDown={onKeyDown} className="styled-input"
-                       placeholder="0-50‰"/>
+                <input value={settings?.brokerFixedFee || ''} onChange={changeBrokerFixedFee} onKeyDown={onKeyDown} className="styled-input"
+                       placeholder={`0-${feeLimit['brokerFixedFee']}‰`}/>
                 <div className="nano-space"/>
                 <div className="text-tiny">
                     Fixed service swap fee charged from the transaction
                 </div>
             </div>
         </div>
-        <div className="row">
+        <div className="row space">
             <div className="column column-33 column-offset-33">
                 <Button block onClick={onSave}>Save</Button>
             </div>
@@ -163,6 +151,7 @@ function PartnerEditForm({id}) {
                 <Button block outline href="/admin/partners">Cancel</Button>
             </div>
         </div>
+        <PartnerPasswordRecoveryView id={id}/>
     </div>
 }
 

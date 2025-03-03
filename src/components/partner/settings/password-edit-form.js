@@ -1,16 +1,6 @@
 import React, {useCallback, useState} from 'react'
-import {performApiCall} from '../api/api-call'
-import {getAuth} from '../api/auth'
-import {Button} from './ui/button'
-
-function SettingsForm() {
-
-    return <>
-        <EmailEditForm/>
-        <div className="hr space"/>
-        <PasswordEditForm/>
-    </>
-}
+import {performApiCall} from '../../../api/api-call'
+import {Button} from '../../ui/button'
 
 function validationPassword({password, newPassword, confirm}) {
     if (!password || !confirm || newPassword === password)
@@ -80,37 +70,4 @@ function PasswordEditForm() {
     </div>
 }
 
-function EmailEditForm() {
-    const userData = getAuth()
-    const [email, setEmail] = useState(userData.email)
-    const [isChanged, setIsChanged] = useState(false)
-    const [isValid, setIsValid] = useState(false)
-
-    const changeEmail = useCallback(e => {
-        const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/
-        const val = e.target.value.trim()
-        setEmail(val)
-        setIsValid(emailRegex.test(val))
-        setIsChanged(val !== userData.email)
-    }, [])
-
-    const updateEmail = useCallback(() => {
-        //TODO update email use API
-        notify({type: "success", message: "Email changed successfully"})
-    }, [email])
-
-    return <div className="row">
-        <div className="column column-33">
-            <div className="space">
-                <p className="label text-small">Email</p>
-                <input value={email || ''} onChange={changeEmail} className="styled-input"/>
-            </div>
-        </div>
-        <div className="column column-33">
-            <div className="label-space"/>
-            {isChanged && <Button disabled={!isValid} onClick={updateEmail}>Save</Button>}
-        </div>
-    </div>
-}
-
-export default SettingsForm
+export default PasswordEditForm

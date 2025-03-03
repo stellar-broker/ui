@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Button} from '../../components/ui/button'
-import PartnersView from '../../components/partners-view'
+import PartnersView from '../../components/admin/partners/partners-view'
 import {performApiCall} from '../../api/api-call'
 
 function AdminPartnersPage() {

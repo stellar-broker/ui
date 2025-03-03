@@ -1,4 +1,4 @@
-import Chart from './chart/chart'
+import Chart from '../../chart/chart'
 import cn from 'classnames'
 
 const defaultOptions = {
@@ -79,9 +79,6 @@ const defaultOptions = {
 }
 
 function StatisticsView() {
-    const monthTx = [
-        [78],[22],[9],[4]
-    ]
 
     return <div className="row">
         <div className="column column-25">

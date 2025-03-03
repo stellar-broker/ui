@@ -1,8 +1,8 @@
 import {useCallback, useState} from 'react'
 import {Link} from 'react-router-dom'
-import {Button} from './ui/button'
 import {authenticate} from '../api/auth'
 import {performApiCall} from '../api/api-call'
+import {Button} from './ui/button'
 
 function SignInForm({login}) {
     const [credentials, setCredentials] = useState()
@@ -16,14 +16,14 @@ function SignInForm({login}) {
         })
     }, [])
 
-    const onAuth = () => {
+    const onAuth = useCallback(() => {
         performApiCall('login', {method: 'POST', auth: false, params: credentials})
             .then((result) => {
                 if (result.error)
                     return notify({type: 'error', message: 'Sign in failed. ' + result.error})
                 login(authenticate(result.accessToken))
             })
-    }
+    }, [credentials])
 
     const changeEmail = useCallback(e => changeInfo('email', e.target.value), [changeInfo])
     const changePassword = useCallback(e => changeInfo('password', e.target.value), [changeInfo])
@@ -31,7 +31,7 @@ function SignInForm({login}) {
         if (e.keyCode === 13 && isValid) {
             onAuth()
         }
-    }, [isValid])
+    }, [onAuth, isValid])
 
     return <div className="w-100" style={{maxWidth: '25em'}}>
         <h3>Sign in</h3>
