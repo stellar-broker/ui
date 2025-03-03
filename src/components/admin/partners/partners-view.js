@@ -1,5 +1,6 @@
 import {useEffect} from 'react'
 import {performApiCall} from '../../../api/api-call'
+import {authenticate} from '../../../api/auth'
 import {stringifyQuery} from '../../../utils/query'
 import {Button} from '../../ui/button'
 
@@ -36,6 +37,7 @@ function logInAs(e) {
         .then(res => {
             if (res.error)
                 return notify({type: 'warning', message: res.error})
+            authenticate(res.accessToken)
             location.href = '/account'
         })
 }
