@@ -1,23 +1,15 @@
 import React from 'react'
-import AdminRouter from '../admin-router'
-import PartnerRouter from '../partner-router'
 import PartnerSidebarView from '../partner/partner-sidebar-view'
 import AdminSidebarView from '../admin/admin-sidebar-view'
-import AuthLayout from './auth-layout'
 import '../styles/dashboard.scss'
 
-function AdminLayout({role}) {
-    return <AuthLayout role={role}>
-        <div className="dual-layout mobile-flex-wrap">
-            {role === 'admin' ? <>
-                <AdminSidebarView/>
-                <div className="content w-100"><AdminRouter/></div>
-            </> : <>
-                <PartnerSidebarView/>
-                <div className="content w-100"><PartnerRouter/></div>
-            </>}
+function AdminLayout({role, children}) {
+    return <div className="dual-layout mobile-flex-wrap">
+        {role === 'admin' ? <AdminSidebarView/> : <PartnerSidebarView/>}
+        <div className="content w-100">
+            {children}
         </div>
-    </AuthLayout>
+    </div>
 }
 
 export default AdminLayout
