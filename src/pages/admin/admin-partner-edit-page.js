@@ -2,7 +2,7 @@ import React from 'react'
 import {useParams} from 'react-router-dom'
 import PartnerEditForm from '../../admin/partners/partner-edit-form'
 
-function AdminPartnerEditPage() {
+export default function AdminPartnerEditPage() {
     const {id} = useParams()
     const isEdit = !!id
 
@@ -17,5 +17,3 @@ function AdminPartnerEditPage() {
         <PartnerEditForm id={id}/>
     </div>
 }
-
-export default AdminPartnerEditPage

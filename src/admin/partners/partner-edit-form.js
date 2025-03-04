@@ -75,8 +75,11 @@ export default function PartnerEditForm({id}) {
             </PartnerSetting>
         </div>
         <div className="row space">
-            <div className="column column-33 column-offset-33">
+            <div className="column column-33">
                 <Button block onClick={onSave}>Save</Button>
+            </div>
+            <div className="column column-33">
+                <Button block href={`/admin/partners/edit/${id}/password`}>Change password</Button>
             </div>
             <div className="column column-33">
                 <Button block outline href="/admin/partners">Cancel</Button>
