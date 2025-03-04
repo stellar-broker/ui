@@ -6,7 +6,7 @@ import {Button} from '../../components/ui/button'
 
 export default function PartnerEditForm({id}) {
     const navigate = useNavigate()
-    const [settings, setSettings] = useState()
+    const [settings, setSettings] = useState({})
     useEffect(() => {
         if (!id)
             return null
@@ -49,8 +49,6 @@ export default function PartnerEditForm({id}) {
         }
     }, [onSave])
 
-    if (!settings)
-        return null
     return <div>
         <div className="row">
             <div className="column column-50">
@@ -74,13 +72,13 @@ export default function PartnerEditForm({id}) {
                 Fixed service swap fee charged from the transaction
             </PartnerSetting>
         </div>
-        <div className="row space">
+        <div className="row row-right space">
             <div className="column column-33">
                 <Button block onClick={onSave}>Save</Button>
             </div>
-            <div className="column column-33">
+            {id && <div className="column column-33">
                 <Button block href={`/admin/partners/edit/${id}/password`}>Change password</Button>
-            </div>
+            </div>}
             <div className="column column-33">
                 <Button block outline href="/admin/partners">Cancel</Button>
             </div>
