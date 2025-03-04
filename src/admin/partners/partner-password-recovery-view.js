@@ -1,6 +1,6 @@
 import {useCallback} from 'react'
-import {CopyToClipboard} from '../../../utils/copy-to-clipboard'
-import {Button} from '../../ui/button'
+import {CopyToClipboard} from '../../utils/copy-to-clipboard'
+import {Button} from '../../components/ui/button'
 
 function PartnerPasswordRecoveryView({id}) {
     const recoveryPasswordLink = window.location.origin + '/password-recovery/' + id

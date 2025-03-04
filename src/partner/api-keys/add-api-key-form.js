@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react'
-import {performApiCall} from '../../../api/api-call'
-import {Button} from '../../ui/button'
-import {Dialog} from '../../ui/dialog'
+import {performApiCall} from '../../api/api-call'
+import {Button} from '../../components/ui/button'
+import {Dialog} from '../../components/ui/dialog'
 
 function AddApiKeyForm({updateKeyList}) {
     const [isOpen, setIsOpen] = useState(false)

@@ -1,8 +1,8 @@
 import React from 'react'
 import AdminRouter from '../admin-router'
 import PartnerRouter from '../partner-router'
-import PartnerSidebarView from '../components/partner/partner-sidebar-view'
-import AdminSidebarView from '../components/admin/admin-sidebar-view'
+import PartnerSidebarView from '../partner/partner-sidebar-view'
+import AdminSidebarView from '../admin/admin-sidebar-view'
 import AuthLayout from './auth-layout'
 import '../styles/dashboard.scss'
 

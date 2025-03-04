@@ -1,8 +1,8 @@
 import {useCallback, useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
-import {generatePassword} from '../../../utils/password-generator'
-import {performApiCall} from '../../../api/api-call'
-import {Button} from '../../ui/button'
+import {generatePassword} from '../../utils/password-generator'
+import {performApiCall} from '../../api/api-call'
+import {Button} from '../../components/ui/button'
 
 export default function PartnerEditForm({id}) {
     const navigate = useNavigate()

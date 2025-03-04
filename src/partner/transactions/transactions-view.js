@@ -1,12 +1,12 @@
 import {useEffect, useState} from 'react'
 import {AssetDescriptor} from '@stellar-expert/asset-descriptor'
-import {formatDate, formatStroopPrice} from '../../../utils/formatter'
-import formatDateTime from '../../../utils/date-formater'
-import {performApiCall} from '../../../api/api-call'
-import {stringifyQuery} from '../../../utils/query'
-import {useAssetMeta} from '../../../utils/hooks/asset-meta-hook'
-import {AssetIcon} from '../../ui/asset-link'
-import SearchView from '../../ui/search-view'
+import {formatDate, formatStroopPrice} from '../../utils/formatter'
+import formatDateTime from '../../utils/date-formater'
+import {performApiCall} from '../../api/api-call'
+import {stringifyQuery} from '../../utils/query'
+import {useAssetMeta} from '../../utils/hooks/asset-meta-hook'
+import {AssetIcon} from '../../components/ui/asset-link'
+import SearchView from '../../components/ui/search-view'
 
 function parseAsset(asset) {
     const [code, issuer] = asset.split('-')

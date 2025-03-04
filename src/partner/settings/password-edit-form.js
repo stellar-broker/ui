@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react'
-import {performApiCall} from '../../../api/api-call'
-import {Button} from '../../ui/button'
+import {performApiCall} from '../../api/api-call'
+import {Button} from '../../components/ui/button'
 
 function validationPassword({password, newPassword, confirm}) {
     if (!password || !confirm || newPassword === password)

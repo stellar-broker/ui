@@ -1,4 +1,4 @@
-import Chart from '../../chart/chart'
+import Chart from '../../components/chart/chart'
 import cn from 'classnames'
 
 const defaultOptions = {

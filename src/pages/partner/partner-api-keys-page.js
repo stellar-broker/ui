@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {performApiCall} from '../../api/api-call'
-import ApiKeysView from '../../components/partner/api-keys/api-keys-view'
-import AddApiKeyForm from '../../components/partner/api-keys/add-api-key-form'
+import ApiKeysView from '../../partner/api-keys/api-keys-view'
+import AddApiKeyForm from '../../partner/api-keys/add-api-key-form'
 
 function PartnerApiKeysPage() {
     const [keyList, setKeyList] = useState()

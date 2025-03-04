@@ -1,6 +1,6 @@
 import {useCallback} from 'react'
-import {CopyToClipboard} from '../../../utils/copy-to-clipboard'
-import {performApiCall} from '../../../api/api-call'
+import {CopyToClipboard} from '../../utils/copy-to-clipboard'
+import {performApiCall} from '../../api/api-call'
 
 function ApiKeysView({keyList, updateKeyList}) {
     return <div>

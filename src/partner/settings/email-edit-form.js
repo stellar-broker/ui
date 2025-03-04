@@ -1,8 +1,8 @@
 
 import React, {useCallback, useState} from 'react'
-import {getAuth} from '../../../api/auth'
-import validateEmail from '../../../utils/validate-email'
-import {Button} from '../../ui/button'
+import {getAuth} from '../../api/auth'
+import validateEmail from '../../utils/validate-email'
+import {Button} from '../../components/ui/button'
 
 function EmailEditForm() {
     const userData = getAuth()
