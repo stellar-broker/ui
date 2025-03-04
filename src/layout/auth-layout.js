@@ -16,5 +16,5 @@ export default function AuthLayout({role, children}) {
 function checkAccess(role, auth) {
     if (!auth)
         return null
-    return auth.roles.includes(role)
+    return auth.roles?.includes(role)
 }
