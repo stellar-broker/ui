@@ -1,32 +1,76 @@
+import {memo} from 'react'
 import Chart from '../../components/chart/chart'
 
-function VolumeChartView() {
+export default memo(function VolumeChartView({stats}) {
+    if (!stats)
+        return null
 
-    const title = 'Monthly volume'
+    const title = 'Performance'
+    const successSwaps = []
+    const successTx = []
+    const failedTx = []
+    const fees = []
+    for (const stat of stats) {
+        const date = stat.ts * 1000
+        const success = stat.stats.find(s => s.status === 'success')
+        if (success) {
+            successSwaps.push([date, success.swaps])
+            successTx.push([date, success.tx])
+            fees.push([date, success.fee || 0])
+        }
+        const failed = stat.stats.find(s => s.status === 'failed')
+        if (failed) {
+            failedTx.push([date, failed.tx])
+        }
+        //TODO: analyzed dropped tx stats
+    }
     const options = {
-        yAxis: {
-            title: false
-        },
-        series: [{
-            data: [
-                [new Date('2024-08-10T18:16:45.700Z').getTime(),36],
-                [new Date('2024-09-12T18:16:45.700Z').getTime(), 68],
-                [new Date('2024-10-13T18:16:45.700Z').getTime(),42],
-                [new Date('2024-11-14T18:16:45.700Z').getTime(),80],
-                [new Date('2024-12-15T18:16:45.700Z').getTime(),66]
-            ],
-            name: 'Value',
-            type: 'spline',
-            showInLegend: false,
-            dataLabels: {
-                enabled: false
+        plotOptions: {
+            column: {
+                stacking: 'normal'
+            },
+            area: {
+                opacity: 0.8
             }
-        }]
+        },
+        yAxis: [
+            {
+                title: {
+                    text: 'Processed transactions'
+                }
+            },
+            {
+                title: {
+                    text: 'Earnings'
+                },
+                opposite: true
+            }
+        ],
+
+        series: [
+            {
+                data: successTx,
+                name: 'Successful transactions',
+                type: 'column'
+            },
+            {
+                data: failedTx,
+                name: 'Failed transactions',
+                type: 'column'
+            },
+            {
+                data: fees,
+                name: 'Charged fees',
+                type: 'spline',
+                yAxis: 1,
+                tooltip: {
+                    valueSuffix: '$'
+                }
+            }
+        ]
     }
 
     return <div className="info-block micro-space">
         <Chart {...{title, options}}/>
     </div>
-}
-
-export default VolumeChartView
+})
