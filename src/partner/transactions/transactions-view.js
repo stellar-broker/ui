@@ -1,11 +1,13 @@
-import {useEffect, useState} from 'react'
+import {useCallback} from 'react'
 import {AssetDescriptor} from '@stellar-expert/asset-descriptor'
+import {useAssetMeta} from '../../utils/hooks/asset-meta-hook'
+import {useExplorerPaginatedApi} from '../../utils/hooks/paginated-list-hooks'
+import {navigation} from '../../utils/navigation'
 import {formatDate, formatStroopPrice} from '../../utils/formatter'
 import formatDateTime from '../../utils/date-formater'
-import {performApiCall} from '../../api/api-call'
-import {stringifyQuery} from '../../utils/query'
-import {useAssetMeta} from '../../utils/hooks/asset-meta-hook'
 import {AssetIcon} from '../../components/ui/asset-link'
+import {Button} from '../../components/ui/button'
+import {Loader} from '../../components/ui/loader'
 import SearchView from '../../components/ui/search-view'
 
 function parseAsset(asset) {
@@ -28,27 +30,36 @@ function parseTx(tx) {
 }
 
 function TransactionsView({compact}) {
-    const [transactions, setTransactions] = useState()
+    const transactions = useExplorerPaginatedApi(
+        {
+            path: 'partner/swaps',
+            query: {
+                cursor: navigation.query.cursor,
+                search: navigation.query.search
+            }
+        }, {
+            autoReverseRecordsOrder: true,
+            limit: compact ? 10 :20,
+            defaultQueryParams: {order: 'desc'},
+            dataProcessingCallback: records => records.map(tx => parseTx(tx))
+        })
 
-    useEffect(() => {
-        const params = {
-            limit: compact ? 10 : 20,
-            order: 'desc'
-        }
-        performApiCall(`partner/swaps${stringifyQuery(params)}`)
-            .then((result) => {
-                if (result.error)
-                    return notify({type: 'error', message: 'Failed to retrieve partner statistics. ' + result.error})
-                setTransactions(result?._embedded.records.map(tx => parseTx(tx)))
+    const navigate = useCallback((page) => {
+        transactions.load(page)
+            .then((res) => {
+                console.log(res.data)
             })
     }, [])
 
-    return <div className="table space">
-        <div className="table-header">
-            {compact ? <h5>Transactions</h5> : <SearchView/>}
-        </div>
-        <table>
-            <thead className="text-tiny dimmed">
+    if (!transactions.loaded) return <Loader/>
+
+    return <div>
+        <div className="table space">
+            <div className="table-header">
+                {compact ? <h5>Transactions</h5> : <SearchView/>}
+            </div>
+            <table>
+                <thead className="text-tiny dimmed">
                 <tr>
                     <th>Pair</th>
                     <th>Sell</th>
@@ -56,9 +67,9 @@ function TransactionsView({compact}) {
                     <th>Date</th>
                     <th className="collapsing text-right">&nbsp;</th>
                 </tr>
-            </thead>
-            <tbody className="condensed">
-                {transactions?.map(({pair, sell, get, date, ledger}) => {
+                </thead>
+                <tbody className="condensed">
+                {transactions.data?.map(({pair, sell, get, date, ledger}) => {
                     return <tr key={date + pair[0].code + pair[1].code}>
                         <td className="text-small" data-header="Pair: ">
                             <AssetPairView pair={pair}/>
@@ -74,8 +85,13 @@ function TransactionsView({compact}) {
                             <i className="icon-open-new-window"/></a></td>
                     </tr>
                 })}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
+        {!compact && <div className="button-group space text-center">
+            <Button small disabled={transactions.loading || !transactions.canLoadPrevPage} onClick={() => navigate(-1)}>Prev Page</Button>
+            <Button small disabled={transactions.loading || !transactions.canLoadNextPage} onClick={() => navigate(1)}>Next Page</Button>
+        </div>}
     </div>
 }
 
