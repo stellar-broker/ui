@@ -81,7 +81,7 @@ input {
     }
 
     tr {
-      &:hover {
+      &:hover,&.details {
         background: $light;
       }
 
@@ -99,17 +99,6 @@ input {
 
         &:last-child {
           padding-right: $space-standard;
-        }
-
-        .asset-icon {
-          width: 1.6em;
-          height: 1.6em;
-          margin-right: 0.6em;
-
-          &:before {
-            font-size: 1.6em;
-            padding-top: 5px;
-          }
         }
       }
     }
