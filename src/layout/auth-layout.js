@@ -5,7 +5,11 @@ import SignInPage from '../pages/sign-in-page'
 export default function AuthLayout({role, children}) {
     const [authorized, setAuthorized] = useState(checkAccess(role, getAuth()))
     const onLogin = useCallback(() => {
-        setAuthorized(checkAccess(role, getAuth()))
+        const isAllowed = checkAccess(role, getAuth())
+        setAuthorized(isAllowed)
+        if (!isAllowed)
+            notify({type: 'warning', message: 'Access denied'})
+
     }, [role])
     if (!authorized)
         return <SignInPage onLogin={onLogin}/>

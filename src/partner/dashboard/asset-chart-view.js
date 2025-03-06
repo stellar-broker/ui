@@ -1,11 +1,14 @@
 import {useEffect, useState} from 'react'
 import Chart from '../../components/chart/chart'
 import {performApiCall} from '../../api/api-call'
+import {getAuth} from '../../api/auth'
 
 function AssetChartView() {
+    const userData = getAuth()
+    const endPoint = userData?.roles.includes('admin') ? `asset-stats` : `partner/asset-stats`
     const [stats, setStats] = useState()
     useEffect(() => {
-        performApiCall(`partner/asset-stats`)
+        performApiCall(endPoint)
             .then(result => {
                 if (result.error) {
                     console.error(result.error)
