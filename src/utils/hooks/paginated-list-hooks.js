@@ -145,13 +145,12 @@ class PaginatedListViewModel {
     /**
      * Load portion of data from the server
      * @param {1|-1} page
-     * @return {Promise<ExplorerApiListResponse>}
+     * @return {Promise<ApiListResponse>}
      */
     load(page) {
         const paginationParams = {skip: undefined},
             navCursor = page < 0 ? this.prevCursor : this.nextCursor
 
-        console.log(navCursor)
         if (navCursor) {
             parseQuery(navCursor.split('?')[1] || '', paginationParams)
         } else {
@@ -168,7 +167,7 @@ class PaginatedListViewModel {
     /**
      * Reverse order and load the page
      * @param queryParams
-     * @return {Promise<ExplorerApiListResponse>}
+     * @return {Promise<ApiListResponse>}
      * @private
      */
     async loadLastPage(queryParams) {
@@ -296,7 +295,6 @@ class PaginatedListViewModel {
         if (typeof updateLocation === 'function') {
             paramsToSet = updateLocation(paramsToSet)
         }
-        console.log(paramsToSet)
         navigation.updateQuery(paramsToSet)
     }
 
@@ -334,7 +332,7 @@ class PaginatedListViewModel {
 
 
 /**
- * @typedef {Object} ExplorerApiListResponse
+ * @typedef {Object} ApiListResponse
  * @property {Object[]} data - Data retrieved from the server
  * @property {Boolean} loaded - Response result loaded flag
  * @property {Function} load - Load pgae function
@@ -354,9 +352,9 @@ class PaginatedListViewModel {
  * @param {Boolean} [autoLoad] - Default query values - query params not set if default.
  * @param {Boolean} [updateLocation] - Automatically update browser query string on navigation.
  * @param {Array} [dependencies] - Additional dependencies to track for state updates.
- * @return {ExplorerApiListResponse}
+ * @return {ApiListResponse}
  */
-export function useExplorerPaginatedApi(apiEndpoint,
+export function usePaginatedApi(apiEndpoint,
                                         {
                                             limit = 20,
                                             autoReverseRecordsOrder = false,

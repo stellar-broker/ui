@@ -1,4 +1,6 @@
 import {getJwt} from './auth'
+import {parseQuery} from '../utils/query'
+import delay from '../utils/delay'
 
 /**
  *
@@ -49,4 +51,26 @@ export async function performApiCall(endpointWithQuery, {method = 'GET', auth = 
         }
         return e
     }
+}
+
+export async function fetchAllData(url) {
+    let cursor = undefined, limit = 200
+    let data = []
+    while (true) {//fetch all
+        let apiEndpoint = `${url}?order=asc&limit=${limit}`
+        if (cursor) {
+            apiEndpoint += `&cursor=${cursor}`
+        }
+        const result = await performApiCall(apiEndpoint)
+        const records = result?._embedded.records || []
+        if (!records.length)
+            break
+        const query = parseQuery(result?._links.next.href.split('?')[1])
+        cursor = query.cursor
+        data = [...data, ...records]
+        await delay(200)
+        //TODO: fix infinite loading
+        break
+    }
+    return data
 }

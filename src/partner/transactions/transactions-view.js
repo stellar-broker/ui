@@ -1,14 +1,14 @@
-import {useCallback, useEffect, useState} from 'react'
+import {useCallback, useState} from 'react'
 import {AssetDescriptor} from '@stellar-expert/asset-descriptor'
 import {fromStroops, formatDateUTC} from '@stellar-expert/formatter'
-import {performApiCall} from '../../api/api-call'
-import {stringifyQuery} from '../../utils/query'
+import {usePaginatedApi} from '../../utils/hooks/paginated-list-hooks'
+import {navigation} from '../../utils/navigation'
 import {useAssetMeta} from '../../utils/hooks/asset-meta-hook'
 import {AssetIcon} from '../../components/ui/asset-link'
 import {Button} from '../../components/ui/button'
 import {Loader} from '../../components/ui/loader'
-import SearchView from '../../components/ui/search-view'
 import {Amount} from '../../components/ui/amount'
+import SearchView from '../../components/ui/search-view'
 import './transactions-view.scss'
 
 function parseAsset(asset) {
@@ -21,40 +21,53 @@ function parseAsset(asset) {
 }
 
 export default function TransactionsView({compact}) {
-    const [transactions, setTransactions] = useState()
-
-    useEffect(() => {
-        const params = {
+    const transactions = usePaginatedApi(
+        {
+            path: 'partner/swaps',
+            query: {
+                cursor: navigation.query.cursor,
+                search: navigation.query.search
+            }
+        }, {
+            autoReverseRecordsOrder: true,
             limit: compact ? 10 : 20,
-            order: 'desc'
-        }
-        performApiCall(`partner/swaps${stringifyQuery(params)}`)
-            .then((result) => {
-                if (result.error)
-                    return notify({type: 'error', message: 'Failed to retrieve partner statistics. ' + result.error})
-                setTransactions(result?._embedded.records)
+            defaultQueryParams: {order: 'desc'}
+        })
+
+    const navigate = useCallback((page) => {
+        transactions.load(page)
+            .then((res) => {
+                console.log(res.data)
             })
     }, [])
 
-    return <div className="table space swaps-history">
-        <div className="table-header">
-            {compact ? <h5>Swaps history</h5> : <SearchView/>}
+    if (!transactions.loaded) return <Loader/>
+
+    return <div>
+        <div className="table space swaps-history">
+            <div className="table-header">
+                {compact ? <h5>Swaps history</h5> : <SearchView/>}
+            </div>
+            <table>
+                <thead className="text-tiny dimmed">
+                <tr>
+                    <th>Pair</th>
+                    <th>Sell</th>
+                    <th>Fees</th>
+                    <th className="desktop-center">Status</th>
+                    <th className="desktop-right">Date</th>
+                    <th className="collapsing text-right">&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                {transactions.data?.map(swap => <SwapRecord swap={swap} key={swap.paging_token}/>)}
+                </tbody>
+            </table>
         </div>
-        <table>
-            <thead className="text-tiny dimmed">
-            <tr>
-                <th>Pair</th>
-                <th>Sell</th>
-                <th>Fees</th>
-                <th className="desktop-center">Status</th>
-                <th className="desktop-right">Date</th>
-                <th className="collapsing text-right">&nbsp;</th>
-            </tr>
-            </thead>
-            <tbody>
-            {transactions?.map(swap => <SwapRecord swap={swap} key={swap.paging_token}/>)}
-            </tbody>
-        </table>
+        {!compact && <div className="button-group space text-center">
+            <Button small disabled={transactions.loading || !transactions.canLoadPrevPage} onClick={() => navigate(-1)}>Prev Page</Button>
+            <Button small disabled={transactions.loading || !transactions.canLoadNextPage} onClick={() => navigate(1)}>Next Page</Button>
+        </div>}
     </div>
 }
 
