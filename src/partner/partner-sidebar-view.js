@@ -31,8 +31,8 @@ function PartnerSidebarView() {
                 </Link>
             </li>
             <li>
-                <Link to="mailto:example@site.com" className="text-small">
-                    <span><i className="icon-document"/>Contact Support</span>
+                <Link to="mailto:broker@stellar.expert" className="text-small">
+                    <span><i className="icon-document"/>Contact support</span>
                 </Link>
             </li>
             <li><LogoutView/></li>
