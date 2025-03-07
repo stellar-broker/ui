@@ -356,8 +356,8 @@ class PaginatedListViewModel {
  * @param {Array} [dependencies] - Additional dependencies to track for state updates.
  * @return {ExplorerApiListResponse}
  */
-export function useExplorerPaginatedApi(apiEndpoint,
-                                        {
+export function usePaginatedApi(apiEndpoint,
+                                {
                                             limit = 20,
                                             autoReverseRecordsOrder = false,
                                             defaultSortOrder = 'desc',
@@ -367,7 +367,7 @@ export function useExplorerPaginatedApi(apiEndpoint,
                                             autoLoad = true,
                                             updateLocation = true
                                         } = {},
-                                        dependencies = []) {
+                                dependencies = []) {
     if (!apiEndpoint)
         throw new Error(`Invalid API endpoint: ${apiEndpoint}`)
     const pinRef = useRef(null)
