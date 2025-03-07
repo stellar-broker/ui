@@ -118,13 +118,15 @@ input {
         padding: $space-nano 0;
         border-top: 1px solid $gray;
         td, th {
+          display: flex;
+          align-items: center;
           padding: $space-nano $space-micro!important;
 
           &:before {
             box-sizing: border-box;
             font-weight: 700;
             content: attr(data-header);
-            padding-right: 0.1em;
+            padding-right: 0.5em;
           }
         }
       }

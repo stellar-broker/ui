@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import {AssetDescriptor} from '@stellar-expert/asset-descriptor'
 import {stringifyQuery} from '../query'
-import {fetchExplorerApi} from '../fetch-explorer-api'
+import {fetchExplorerApi} from '../../api/fetch-explorer-api'
 import {ExplorerBatchInfoLoader} from '../explorer-batch-info-loader'
 
 /**

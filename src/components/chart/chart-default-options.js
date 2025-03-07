@@ -120,7 +120,85 @@ const theme = Highcharts.theme = {
     }
 }
 
+
+
+const splineOptions = {
+    chart: {
+        backgroundColor: null,
+        borderWidth: 0,
+        type: 'spline',
+        margin: [10, 10, 10, 10],
+        width: 100,
+        height: 50,
+        style: {
+            overflow: 'visible'
+        },
+        // small optimization, saves 1-2 ms each sparkline
+        skipClone: true
+    },
+    credits: {
+        enabled: false
+    },
+    xAxis: {
+        labels: {
+            enabled: false
+        },
+        title: {
+            text: null
+        },
+        crosshair: false,
+        startOnTick: false,
+        endOnTick: false,
+        lineWidth: 0,
+        tickPositions: []
+    },
+    yAxis: {
+        endOnTick: false,
+        startOnTick: false,
+        gridLineColor: 'transparent',
+        labels: {
+            enabled: false
+        },
+        title: {
+            text: null
+        },
+        tickPositions: []
+    },
+    tooltip: {
+        outside: true,
+        borderWidth: 0,
+        hideDelay: 0,
+        shared: true,
+        padding: 4,
+        formatter () {
+            return `<span style="font-size: 10px;white-space: nowrap">${this.y}$ ${this.x}</span>`
+        }
+    },
+    plotOptions: {
+        series: {
+            animation: false,
+            lineWidth: 2,
+            shadow: false,
+            connectNulls: true,
+            states: {
+                hover: {
+                    lineWidth: 2.4
+                }
+            },
+            marker: {
+                radius: 0,
+                states: {
+                    hover: {
+                        radius: 2
+                    }
+                }
+            },
+            fillOpacity: 0.25
+        }
+    }
+}
+
 //apply the theme
 Highcharts.setOptions(theme)
 
-export {Highcharts}
+export {Highcharts, splineOptions}
