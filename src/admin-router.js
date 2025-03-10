@@ -6,8 +6,11 @@ import AdminDashboardPage from './pages/admin/admin-dashboard-page'
 import AdminPartnersPage from './pages/admin/admin-partners-page'
 import AdminPartnerEditPage from './pages/admin/admin-partner-edit-page'
 import AdminSetPasswordView from './admin/partners/admin-set-password-view'
+import {setPageNoIndex} from './utils/meta-tags-generator'
 
 function AdminRouter() {
+    setPageNoIndex(true)
+
     return <AuthLayout role="admin">
         <AdminLayout role="admin">
             <Routes>

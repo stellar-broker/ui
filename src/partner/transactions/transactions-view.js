@@ -36,9 +36,6 @@ export default function TransactionsView({compact}) {
 
     const navigate = useCallback((page) => {
         transactions.load(page)
-            .then((res) => {
-                console.log(res.data)
-            })
     }, [])
 
     if (!transactions.loaded) return <Loader/>

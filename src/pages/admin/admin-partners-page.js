@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import {Button} from '../../components/ui/button'
-import PartnersView from '../../admin/partners/partners-view'
+import {setPageMetadata} from '../../utils/meta-tags-generator'
 import {performApiCall} from '../../api/api-call'
+import PartnersView from '../../admin/partners/partners-view'
 
 function AdminPartnersPage() {
     const [partnerList, setPartnerList] = useState()
@@ -16,6 +17,11 @@ function AdminPartnersPage() {
                 setPartnerList(list)
             })
     }, [])
+
+    setPageMetadata({
+        title: 'Partners',
+        description: 'Manage all connected partners.'
+    })
 
     return <div>
         <div className="row nano-space">

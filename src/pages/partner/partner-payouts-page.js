@@ -1,7 +1,12 @@
 import React from 'react'
 import {Button} from '../../components/ui/button'
+import {setPageMetadata} from '../../utils/meta-tags-generator'
 
 function PartnerPayoutsPage() {
+    setPageMetadata({
+        title: 'Payouts',
+        description: 'All payments executed with your partner key.'
+    })
 
     return <div>
         <div className="row nano-space">

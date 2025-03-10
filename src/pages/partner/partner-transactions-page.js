@@ -1,8 +1,13 @@
 import React from 'react'
+import {setPageMetadata} from '../../utils/meta-tags-generator'
 import TransactionsView from '../../partner/transactions/transactions-view'
 import ExportFileCreator from '../../components/export-file-creator'
 
 function PartnerTransactionsPage() {
+    setPageMetadata({
+        title: 'Transactions',
+        description: 'All swaps executed with partner key.'
+    })
 
     return <div>
         <div className="row nano-space">

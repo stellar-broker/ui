@@ -1,5 +1,6 @@
 import React, {useCallback} from 'react'
 import {useNavigate} from 'react-router-dom'
+import {setPageMetadata} from '../utils/meta-tags-generator'
 import SignInForm from '../components/sign-in-form'
 import Logo from '../layout/logo'
 import Footer from '../layout/footer'
@@ -11,6 +12,12 @@ export default function SignInPage({onLogin}) {
             onLogin ? onLogin() : navigate('/')
         }
     }, [onLogin])
+
+    setPageMetadata({
+        title: 'Sign in',
+        description: 'Account authorization form.'
+    })
+
     return <div className="row row-no-padding dual-screen">
         <div className="column column-50">
             <div className="middle-layout">

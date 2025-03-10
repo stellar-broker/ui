@@ -1,12 +1,17 @@
 import React from 'react'
-import SignInForm from '../components/sign-in-form'
+import {useParams} from 'react-router-dom'
+import {setPageMetadata} from '../utils/meta-tags-generator'
+import PasswordRecoveryForm from '../components/password-recovery-form'
 import Logo from '../layout/logo'
 import Footer from '../layout/footer'
-import PasswordRecoveryForm from '../components/password-recovery-form'
-import {useParams} from 'react-router-dom'
 
-function SignInPage() {
+export default function PasswordRecoveryPage() {
     const {id} = useParams()
+
+    setPageMetadata({
+        title: 'Password recovery',
+        description: 'Password recovery form.'
+    })
 
     return <div className="row row-no-padding dual-screen">
         <div className="column column-50">
@@ -25,5 +30,3 @@ function SignInPage() {
         </div>
     </div>
 }
-
-export default SignInPage
