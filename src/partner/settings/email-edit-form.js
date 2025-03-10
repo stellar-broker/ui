@@ -1,8 +1,8 @@
-
 import React, {useCallback, useState} from 'react'
 import {getAuth} from '../../api/auth'
-import validateEmail from '../../utils/validate-email'
+import {useAutoFocusRef} from '../../utils/hooks/auto-focus-ref'
 import {Button} from '../../components/ui/button'
+import validateEmail from '../../utils/validate-email'
 
 function EmailEditForm() {
     const userData = getAuth()
@@ -26,7 +26,7 @@ function EmailEditForm() {
         <div className="column column-33">
             <div className="space">
                 <p className="label text-small">Email</p>
-                <input value={email || ''} onChange={changeEmail} className="styled-input"/>
+                <input value={email || ''} onChange={changeEmail} ref={useAutoFocusRef} className="styled-input"/>
             </div>
         </div>
         <div className="column column-33">

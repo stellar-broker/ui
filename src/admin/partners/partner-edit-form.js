@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom'
 import {generatePassword} from '../../utils/password-generator'
 import {performApiCall} from '../../api/api-call'
 import {Button} from '../../components/ui/button'
+import {useAutoFocusRef} from '../../utils/hooks/auto-focus-ref'
 
 export default function PartnerEditForm({id}) {
     const navigate = useNavigate()
@@ -54,7 +55,7 @@ export default function PartnerEditForm({id}) {
             <div className="column column-50">
                 <div className="space">
                     <p className="label text-small">Partner email</p>
-                    <input value={settings.email || ''} onChange={changeEmail} onKeyDown={onKeyDown} className="styled-input"/>
+                    <input value={settings.email || ''} onChange={changeEmail} onKeyDown={onKeyDown} ref={useAutoFocusRef} className="styled-input"/>
                 </div>
             </div>
         </div>
