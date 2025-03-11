@@ -6,10 +6,10 @@ import {Button} from '../../components/ui/button'
 export default function ApiKeyListView({keyList, updateKeyList}) {
     return <div>
         <div className="dimmed text-small space">
-            Currently active API keys:
+            Active API keys:
         </div>
         {keyList?.map((apiKey) => {
-            return <div key={apiKey} className="card outline micro-space">
+            return <div key={apiKey} className="card outline micro-space"  style={{maxWidth:'43em'}}>
                 <ApiKeyEntry apiKey={apiKey} updateKeyList={updateKeyList}/>
             </div>
         })}

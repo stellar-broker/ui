@@ -8,7 +8,7 @@ import PartnerSettingsPage from './pages/partner/partner-settings-page'
 import PartnerApiKeysPage from './pages/partner/partner-api-keys-page'
 import PartnerPayoutsPage from './pages/partner/partner-payouts-page'
 
-function PartnerRouter() {
+export default function PartnerRouter() {
     return <AuthLayout role="partner">
         <AdminLayout>
             <Routes>
@@ -21,5 +21,3 @@ function PartnerRouter() {
         </AdminLayout>
     </AuthLayout>
 }
-
-export default PartnerRouter
