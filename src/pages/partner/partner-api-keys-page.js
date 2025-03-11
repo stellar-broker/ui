@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import {performApiCall} from '../../api/api-call'
-import ApiKeysView from '../../partner/api-keys/api-keys-view'
+import ApiKeyListView from '../../partner/api-keys/api-key-list-view'
 import AddApiKeyForm from '../../partner/api-keys/add-api-key-form'
 
-function PartnerApiKeysPage() {
+export default function PartnerApiKeysPage() {
     const [keyList, setKeyList] = useState()
 
     useEffect(() => {
@@ -21,14 +21,17 @@ function PartnerApiKeysPage() {
                 <h4>API keys</h4>
                 <p className="text-small dimmed nano-space">Managing your API keys</p>
             </div>
-            <div className="column column-33 text-right">
+            <div className="column column-33 text-right desktop-only">
                 <div className="nano-space"/>
                 <AddApiKeyForm updateKeyList={setKeyList}/>
             </div>
         </div>
         <div className="hr space"/>
-        <ApiKeysView keyList={keyList} updateKeyList={setKeyList}/>
+        <ApiKeyListView keyList={keyList} updateKeyList={setKeyList}/>
+        <div className="space"/>
+        <div className="mobile-only">
+            <div className="hr space"/>
+            <AddApiKeyForm updateKeyList={setKeyList}/>
+        </div>
     </div>
 }
-
-export default PartnerApiKeysPage

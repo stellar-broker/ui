@@ -1,9 +1,13 @@
 import {useCallback} from 'react'
 import {CopyToClipboard} from '../../utils/copy-to-clipboard'
 import {performApiCall} from '../../api/api-call'
+import {Button} from '../../components/ui/button'
 
-function ApiKeysView({keyList, updateKeyList}) {
+export default function ApiKeyListView({keyList, updateKeyList}) {
     return <div>
+        <div className="dimmed text-small space">
+            Currently active API keys:
+        </div>
         {keyList?.map((apiKey) => {
             return <div key={apiKey} className="card outline micro-space">
                 <ApiKeyEntry apiKey={apiKey} updateKeyList={updateKeyList}/>
@@ -30,14 +34,16 @@ function ApiKeyEntry({apiKey, updateKeyList}) {
 
     return <div className="nano-space">
         <div className="dual-layout">
-            <div style={{maxWidth: '85%'}}>
+            <div>
                 <code className="word-break">{apiKey}</code> <CopyToClipboard text={apiKey}/>
             </div>
             <div className="text-right" style={{width: '2em'}}>
-                <a href="#" onClick={remove} className="icon icon-delete-circle" title="Delete API key"/>
+                <a href="#" onClick={remove} className="icon icon-delete-circle desktop-only" title="Delete API key"/>
             </div>
+        </div>
+        <div className="mobile-only">
+            <div className="micro-space"/>
+            <Button outline block onClick={remove}><i className="icon-delete-circle"/>Delete this key</Button>
         </div>
     </div>
 }
-
-export default ApiKeysView
