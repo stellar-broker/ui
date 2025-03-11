@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {performApiCall} from '../../api/api-call'
 import {setPageMetadata} from '../../utils/meta-tags-generator'
-import ApiKeysView from '../../partner/api-keys/api-keys-view'
 import ApiKeyListView from '../../partner/api-keys/api-key-list-view'
 import AddApiKeyForm from '../../partner/api-keys/add-api-key-form'
 
