@@ -1,7 +1,6 @@
 import React from 'react'
 import {setPageMetadata} from '../../utils/meta-tags-generator'
 import TransactionsView from '../../partner/transactions/transactions-view'
-import ExportFileCreator from '../../components/export-file-creator'
 
 function PartnerTransactionsPage() {
     setPageMetadata({
@@ -16,10 +15,6 @@ function PartnerTransactionsPage() {
                     <h4>Transactions</h4>
                 </div>
                 <p className="text-small dimmed nano-space">All swaps executed with your partner key</p>
-            </div>
-            <div className="column column-25 text-right">
-                <div className="nano-space"/>
-                <ExportFileCreator type="tx"/>
             </div>
         </div>
         <div className="hr space"/>
