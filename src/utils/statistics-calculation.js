@@ -3,10 +3,11 @@ function getStatValues(stats, period) {
     const periodStats = stats.slice(0, period)
     const valueA = periodStats[0][1]
     const valueB = periodStats[1][1]
+    const changedValue = valueB > valueA ? -100 : 0
 
     return {
         value: valueA,
-        changes: valueA ? ((valueA - valueB) / valueA * 100).toFixed(2) : -100,
+        changes: valueA ? ((valueA - valueB) / valueA * 100).toFixed(2) : changedValue,
         data: periodStats.reverse()
     }
 }

@@ -60,6 +60,7 @@ export default function TransactionsView({compact}) {
                 {transactions.data?.map(swap => <SwapRecord swap={swap} key={swap.paging_token}/>)}
                 </tbody>
             </table>
+            {!transactions.data.length && <p className="empty-data">You have not made any transactions yet</p>}
         </div>
         {!compact && <div className="button-group space text-center">
             <Button small disabled={transactions.loading || !transactions.canLoadPrevPage} onClick={() => navigate(-1)}>Prev Page</Button>
