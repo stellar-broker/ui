@@ -4,9 +4,11 @@ import VolumeChartView from '../../partner/dashboard/volume-chart-view'
 import AssetChartView from '../../partner/dashboard/asset-chart-view'
 import TransactionsView from '../../partner/transactions/transactions-view'
 import {performApiCall} from '../../api/api-call'
+import {setPageMetadata} from '../../utils/meta-tags-generator'
 
 function PartnerDashboardPage() {
     const [stats, setStats] = useState()
+
     useEffect(() => {
         performApiCall(`partner/stats`)
             .then(result => {
@@ -17,8 +19,15 @@ function PartnerDashboardPage() {
                 setStats(result)
             })
     }, [])
+
+    setPageMetadata({
+        title: 'Dashboard',
+        description: 'Daily overview of partner integration status'
+    })
+
     if (!stats)
         return null
+
     return <div>
         <h4>Dashboard</h4>
         <p className="text-small dimmed mini-space">Daily overview of your integration status</p>

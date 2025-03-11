@@ -1,14 +1,14 @@
 import {useCallback, useState} from 'react'
 import {AssetDescriptor} from '@stellar-expert/asset-descriptor'
 import {fromStroops, formatDateUTC} from '@stellar-expert/formatter'
-import {useAssetMeta} from '../../utils/hooks/asset-meta-hook'
 import {usePaginatedApi} from '../../utils/hooks/paginated-list-hooks'
 import {navigation} from '../../utils/navigation'
+import {useAssetMeta} from '../../utils/hooks/asset-meta-hook'
 import {AssetIcon} from '../../components/ui/asset-link'
 import {Button} from '../../components/ui/button'
 import {Loader} from '../../components/ui/loader'
-import SearchView from '../../components/ui/search-view'
 import {Amount} from '../../components/ui/amount'
+import SearchView from '../../components/ui/search-view'
 import './transactions-view.scss'
 
 function parseAsset(asset) {
@@ -36,32 +36,32 @@ export default function TransactionsView({compact}) {
 
     const navigate = useCallback((page) => {
         transactions.load(page)
-            .then((res) => {
-                console.log(res.data)
-            })
     }, [])
 
-    if (!transactions.loaded)
-        return <Loader/>
-    return <div className="table space swaps-history text-small">
-        <div className="table-header">
-            {compact ? <h5>Swaps history</h5> : <SearchView/>}
+    if (!transactions.loaded) return <Loader/>
+
+    return <div>
+        <div className="table space swaps-history">
+            <div className="table-header">
+                {compact ? <h5>Swaps history</h5> : <SearchView/>}
+            </div>
+            <table>
+                <thead className="text-tiny dimmed">
+                <tr>
+                    <th>Pair</th>
+                    <th>Sell</th>
+                    <th>Fees</th>
+                    <th className="desktop-center">Status</th>
+                    <th className="desktop-right">Date</th>
+                    <th className="collapsing text-right">&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                {transactions.data?.map(swap => <SwapRecord swap={swap} key={swap.paging_token}/>)}
+                </tbody>
+            </table>
+            {!transactions.data.length && <p className="empty-data">You have not made any transactions yet</p>}
         </div>
-        <table>
-            <thead className="dimmed">
-            <tr>
-                <th>Pair</th>
-                <th>Sell</th>
-                <th>Fees</th>
-                <th className="desktop-center">Status</th>
-                <th className="desktop-right">Date</th>
-                <th className="collapsing text-right">&nbsp;</th>
-            </tr>
-            </thead>
-            <tbody>
-            {transactions.data.map(swap => <SwapRecord swap={swap} key={swap.paging_token}/>)}
-            </tbody>
-        </table>
         {!compact && <div className="button-group space text-center">
             <Button small disabled={transactions.loading || !transactions.canLoadPrevPage} onClick={() => navigate(-1)}>Prev Page</Button>
             <Button small disabled={transactions.loading || !transactions.canLoadNextPage} onClick={() => navigate(1)}>Next Page</Button>
@@ -94,38 +94,36 @@ function SwapRecord({swap}) {
             <td className="desktop-center" data-header="Status: ">
                 <span title={swapStatusInfo[status].info}>{status}</span>
             </td>
-            <td className="desktop-right condensed" data-header="Date: ">{formatDateUTC(date)}</td>
-            <td className="mobile-right">
+            <td className="desktop-right" data-header="Date: ">{formatDateUTC(date)}</td>
+            <td>
                 <a href="#" className={expanded ? 'icon-less' : 'icon-more'} title="Show details" onClick={toggleExpanded}/>
             </td>
         </tr>
         {expanded && <tr className="details text-small">
-            <td colSpan="6">
-                <div style={{paddingLeft: '2em'}}>
-                    <div>
-                        Quote estimated amount:{' '}
-                        {swap.quote.estimatedBuyingAmount ?
-                            <Amount amount={swap.quote.estimatedBuyingAmount} asset={swap.buyingAsset} adjust issuer={false}/> :
-                            'N/A'
-                        }, slippage tolerance: {swap.quote.slippageTolerance * 100}%
-                    </div>
-                    <div className="nano-space"/>
-                    {swap.trades.map(trade => <div key={trade.id}>
-                        <i className="icon-angle-double-right"/>
-                        <Amount amount={trade.sold || trade.estimatedSold} asset={swap.sellingAsset} adjust issuer={false}/>
-                        {' '}<i className="icon-swap"/>{' '}
-                        <Amount amount={trade.bought || trade.estimatedBought} asset={swap.buyingAsset} adjust issuer={false}/>
-                        {!!trade.fee && <> (fee
-                            ${fromStroops(trade.fee)})</>} - <span className="dimmed">{decodeTradeStatus(trade.status)}</span>
-                        &emsp;
-                        {trade.status === 'success' || trade.status === 'failed' ?
-                            <a href={`https://stellar.expert/explorer/public/tx/${trade.tx}`} target="_blank"
-                               title="View transaction details">
-                                {formatDateUTC(trade.created)} <i className="icon-open-new-window"/></a> :
-                            <span className="dimmed">{formatDateUTC(trade.created)}</span>
-                        }
-                    </div>)}
+            <td colSpan="6" style={{paddingLeft: '4em'}}>
+                <div>
+                    Quote estimated amount:{' '}
+                    {swap.quote.estimatedBuyingAmount ?
+                        <Amount amount={swap.quote.estimatedBuyingAmount} asset={swap.buyingAsset} adjust issuer={false}/> :
+                        'N/A'
+                    }, slippage tolerance: {swap.quote.slippageTolerance * 100}%
                 </div>
+                <div className="nano-space"/>
+                {swap.trades.map(trade => <div key={trade.id}>
+                    <i className="icon-angle-double-right"/>
+                    <Amount amount={trade.sold || trade.estimatedSold} asset={swap.sellingAsset} adjust issuer={false}/>
+                    {' '}<i className="icon-swap"/>{' '}
+                    <Amount amount={trade.bought || trade.estimatedBought} asset={swap.buyingAsset} adjust issuer={false}/>
+                    {!!trade.fee && <> (fee
+                        ${fromStroops(trade.fee)})</>} - <span className="dimmed">{decodeTradeStatus(trade.status)}</span>
+                    &emsp;
+                    {trade.status === 'success' || trade.status === 'failed' ?
+                        <a href={`https://stellar.expert/explorer/public/tx/${trade.tx}`} target="_blank"
+                           title="View transaction details">
+                            {formatDateUTC(trade.created)} <i className="icon-open-new-window"/></a> :
+                        <span className="dimmed">{formatDateUTC(trade.created)}</span>
+                    }
+                </div>)}
             </td>
         </tr>}
     </>

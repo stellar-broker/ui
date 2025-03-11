@@ -22,22 +22,20 @@ function AddApiKeyForm({updateKeyList}) {
 
     return <>
         <Button stackable outline onClick={toggleDialog}><i className="icon-key-add"/>Add new API key</Button>
-        <div className="text-left">
-            <Dialog dialogOpen={isOpen}>
-                <div className="micro-space"><h5>Add new API key</h5></div>
-                <div className="space">
-                    Generate new API key? Each partner account can contain up to 10 unique keys.
+        <Dialog dialogOpen={isOpen} className="text-left">
+            <div className="micro-space"><h5>Add new API key</h5></div>
+            <div className="space">
+                Generate new API key? Each partner account can contain up to 10 unique keys.
+            </div>
+            <div className="row">
+                <div className="column column-33 column-offset-33">
+                    <Button outline block onClick={toggleDialog}>Cancel</Button>
                 </div>
-                <div className="row">
-                    <div className="column column-33 column-offset-33">
-                        <Button outline block onClick={toggleDialog}>Cancel</Button>
-                    </div>
-                    <div className="column column-33">
-                        <Button block onClick={generateApiKey}>Generate</Button>
-                    </div>
+                <div className="column column-33">
+                    <Button block onClick={generateApiKey}>Generate</Button>
                 </div>
-            </Dialog>
-        </div>
+            </div>
+        </Dialog>
     </>
 }
 

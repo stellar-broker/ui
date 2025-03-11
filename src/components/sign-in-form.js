@@ -2,6 +2,7 @@ import {useCallback, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {authenticate} from '../api/auth'
 import {performApiCall} from '../api/api-call'
+import {useAutoFocusRef} from '../utils/hooks/auto-focus-ref'
 import {Button} from './ui/button'
 
 function SignInForm({login}) {
@@ -38,7 +39,7 @@ function SignInForm({login}) {
         <p className="text-small dimmed space">Access your partner account</p>
         <div className="micro-space">
             <p className="label text-small">Email</p>
-            <input value={credentials?.email || ''} onChange={changeEmail} onKeyDown={onKeyDown}
+            <input value={credentials?.email || ''} onChange={changeEmail} onKeyDown={onKeyDown} ref={useAutoFocusRef}
                    className="styled-input"/>
         </div>
         <div className="space">

@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
+import {setPageMetadata} from '../utils/meta-tags-generator'
 import RequestAccessForm from '../components/request-access-form'
 import Logo from '../layout/logo'
 import Footer from '../layout/footer'
@@ -8,6 +9,11 @@ const totalSteps = 3
 
 function RequestAccessPage() {
     const [step, setStep] = useState(1)
+
+    setPageMetadata({
+        title: 'Request access',
+        description: 'To start using the StellarBroker API, please fill out the form and tell us more about yourself.'
+    })
 
     return <div className="row row-no-padding dual-screen">
         <div className="column column-33">
@@ -18,7 +24,7 @@ function RequestAccessPage() {
                 <div>
                     <h4>Request Access</h4>
                     <p className="text-small dimmed space">
-                        To get started, please fill out form and tell us more about yourself
+                        To get started use StellarBroker API, please fill out form and tell us more about yourself
                         <br/><br/>
                         Already have an account?&nbsp;
                         <Link to="/sign-in">Sign In</Link>

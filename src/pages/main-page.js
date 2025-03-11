@@ -1,11 +1,17 @@
 import React from 'react'
-import PageLayout from '../layout/page-layout'
-import Logo from '../layout/logo'
 import {Button} from '../components/ui/button'
 import {SwapWidget} from '../widget/swap-widget'
 import {getAuth} from '../api/auth'
+import {setPageMetadata} from '../utils/meta-tags-generator'
+import PageLayout from '../layout/page-layout'
+import Logo from '../layout/logo'
 
 export default function MainPage() {
+    setPageMetadata({
+        title: 'StellarBroker - Multi-source liquidity swap router for Stellar, providing access to AMMs and Stellar DEX',
+        description: 'StellarBroker'
+    })
+
     return <PageLayout>
         <div className="header">
             <Logo/>

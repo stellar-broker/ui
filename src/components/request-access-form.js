@@ -1,4 +1,5 @@
 import {useCallback, useState} from 'react'
+import {useAutoFocusRef} from '../utils/hooks/auto-focus-ref'
 import validateEmail from '../utils/validate-email'
 import {Button} from './ui/button'
 
@@ -38,7 +39,7 @@ Website: ${info.website}`
         <div className="space"/>
         <div className="micro-space">
             <p className="label text-small">Company name</p>
-            <input value={info?.name || ''} onChange={changeName} className="styled-input"/>
+            <input value={info?.name || ''} onChange={changeName} ref={useAutoFocusRef} className="styled-input"/>
         </div>
         <div className="micro-space">
             <p className="label text-small">Contact email address</p>

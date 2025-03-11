@@ -2,6 +2,7 @@ import React, {useCallback, useState} from 'react'
 import {useNavigate, useParams} from 'react-router-dom'
 import {Button} from '../../components/ui/button'
 import {performApiCall} from '../../api/api-call'
+import {useAutoFocusRef} from '../../utils/hooks/auto-focus-ref'
 
 export default function AdminSetPasswordView() {
     const {id} = useParams()
@@ -51,7 +52,7 @@ export default function AdminSetPasswordView() {
             <div className="column column-50">
                 <label>
                     Password
-                    <input type="password" value={password} onChange={updatePassword} className="styled-input"/>
+                    <input type="password" value={password} onChange={updatePassword} ref={useAutoFocusRef} className="styled-input"/>
                 </label>
             </div>
             <div className="nano-space mobile-only"/>
