@@ -80,6 +80,18 @@ button {
         color: $primary;
       }
     }
+
+    &.alert {
+      color: $red;
+      border-color: $red;
+
+      &.focus,
+      &:hover {
+        color: #fff;
+        background: $red;
+        outline-color: rgba(220,53,69, .25);
+      }
+    }
   }
 
   [class^="icon-"], [class*=" icon-"] {
