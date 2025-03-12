@@ -10,7 +10,7 @@ function PartnerDashboardPage() {
 
     return <div>
         <h4>Settings</h4>
-        <p className="text-small dimmed mini-space">Change your settings</p>
+        <p className="text-small dimmed mini-space">Update partner account settings</p>
         <div className="hr space"/>
         <SettingsForm/>
     </div>

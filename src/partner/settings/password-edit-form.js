@@ -54,7 +54,7 @@ function PasswordEditForm() {
         </div>
         <Dialog dialogOpen={isOpen} className="text-left">
             <div className="micro-space"><h5>Change password</h5></div>
-            <PasswordSetting title="Password" name="password" credentials={credentials}
+            <PasswordSetting title="Current password" name="password" credentials={credentials}
                              onChange={changeInfo} onKeyDown={onKeyDown}/>
             <PasswordSetting title="New password" name="newPassword" credentials={credentials}
                              onChange={changeInfo} onKeyDown={onKeyDown}/>
