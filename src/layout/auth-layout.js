@@ -1,16 +1,17 @@
 import React, {useCallback, useState} from 'react'
+import {useNavigate} from 'react-router-dom'
 import {getAuth} from '../api/auth'
 import SignInPage from '../pages/sign-in-page'
-import {navigation} from '../utils/navigation'
 
 export default function AuthLayout({role, children}) {
+    const navigate = useNavigate()
     const [authorized, setAuthorized] = useState(checkAccess(role, getAuth()))
     const onLogin = useCallback(() => {
         const auth = getAuth()
         if (checkAccess('admin', auth) && !location.pathname.includes('admin'))
-            return navigation.navigate('/admin/')
+            return navigate('/admin/')
         if (checkAccess('partner', auth) && !location.pathname.includes('account'))
-            return navigation.navigate('/account/')
+            return navigate('/account/')
         const isAllowed = checkAccess(role, auth)
         setAuthorized(isAllowed)
         if (!isAllowed)
