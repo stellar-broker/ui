@@ -36,7 +36,8 @@ function RequestAccessPage() {
             </div>
         </div>
         <div className="column column-66 bg-color-gray">
-            <div className="middle-layout">
+            <iframe style={{width:'100%',height:'100%'}} src="https://docs.google.com/forms/d/e/1FAIpQLSfRfpcKK09FCms_QYyiuEVNMVke8isvxlfBDlq85__5zFZ7qw/viewform?embedded=true" frameBorder="0" marginHeight="0" marginWidth="0">Loading…</iframe>
+            {/*<div className="middle-layout">
                 <div className="top-block">
                     {step !== totalSteps && <div className="progress-bar" data-step={`${step}/${totalSteps}`}>
                         <div style={{'width': step / totalSteps * 100 + '%'}}/>
@@ -44,7 +45,7 @@ function RequestAccessPage() {
                 </div>
                 <RequestAccessForm step={step} updateStep={setStep} stepAmount={totalSteps}/>
                 <div className="bottom-block"/>
-            </div>
+            </div>*/}
         </div>
     </div>
 }
