@@ -5,7 +5,7 @@ import {performApiCall} from '../api/api-call'
 import {useAutoFocusRef} from '../utils/hooks/auto-focus-ref'
 import {Button} from './ui/button'
 
-function SignInForm({login}) {
+export default function SignInForm({login}) {
     const [credentials, setCredentials] = useState()
     const [isValid, setIsValid] = useState(false)
 
@@ -53,5 +53,3 @@ function SignInForm({login}) {
         </p>
     </div>
 }
-
-export default SignInForm
