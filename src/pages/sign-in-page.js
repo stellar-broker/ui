@@ -1,15 +1,14 @@
 import React, {useCallback} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {navigation} from '../utils/navigation'
 import {setPageMetadata} from '../utils/meta-tags-generator'
 import SignInForm from '../components/sign-in-form'
 import Logo from '../layout/logo'
 import Footer from '../layout/footer'
 
 export default function SignInPage({onLogin}) {
-    const navigate = useNavigate()
     const login = useCallback((authenticated) => {
         if (authenticated) {
-            onLogin ? onLogin() : navigate('/')
+            onLogin ? onLogin() : navigation.navigate('/')
         }
     }, [onLogin])
 
