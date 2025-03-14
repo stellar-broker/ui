@@ -1,7 +1,7 @@
 import React from 'react'
 import {setPageMetadata} from '../../utils/meta-tags-generator'
 import TransactionsView from '../../partner/transactions/transactions-view'
-import ExportFileCreator from '../../components/export-file-creator'
+import ExportFileCreator from '../../components/export-file/export-file-creator'
 
 function PartnerTransactionsPage() {
     setPageMetadata({
