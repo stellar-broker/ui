@@ -237,7 +237,7 @@ class PaginatedListViewModel {
     }
 
     /**
-     * Update naviagtion links retrieved from the response
+     * Update navigation links retrieved from the response
      * @param {String} self
      * @param {String} next
      * @param {String} prev

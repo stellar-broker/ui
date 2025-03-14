@@ -7,6 +7,7 @@ import AdminPartnersPage from './pages/admin/admin-partners-page'
 import AdminPartnerEditPage from './pages/admin/admin-partner-edit-page'
 import AdminSetPasswordView from './admin/partners/admin-set-password-view'
 import {setPageNoIndex} from './utils/meta-tags-generator'
+import AdminLogsPage from './pages/admin/admin-logs-page'
 
 function AdminRouter() {
     setPageNoIndex(true)
@@ -18,6 +19,7 @@ function AdminRouter() {
                 <Route path="/partners/edit/:id/password" element={<AdminSetPasswordView/>}/>
                 <Route path="/partners/edit/:id" element={<AdminPartnerEditPage/>}/>
                 <Route path="/partners" element={<AdminPartnersPage/>}/>
+                <Route path="/logs" element={<AdminLogsPage/>}/>
                 <Route path="" element={<AdminDashboardPage/>}/>
             </Routes>
         </AdminLayout>

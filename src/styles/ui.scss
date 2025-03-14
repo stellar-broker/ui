@@ -41,6 +41,7 @@ input {
   padding: 0.3em 0.6em;
   line-height: 1.2em;
   font-size: 0.75*$font-size-base;
+  color: $color-text;
   background: $gray;
   border-radius: $border-radius-badge;
 
@@ -57,6 +58,11 @@ input {
   &.down {
     color: $red;
     background: rgba(220,53,69,.25);
+  }
+
+  &.selected {
+    color: $primary;
+    background: rgba(1, 83,255,.25);
   }
 }
 

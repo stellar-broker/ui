@@ -4,6 +4,7 @@ import NavSidebarView from '../components/nav-sidebar-view'
 const navLinks = {
     'dashboard': {title: 'Dashboard', link: '/admin', icon: 'chart'},
     'partners': {title: 'Partners', link: '/admin/partners', icon: 'user-group'},
+    'logs': {title: 'Logs', link: '/admin/logs', icon: 'warning-circle'},
 }
 
 function AdminSidebarView() {
