@@ -25,8 +25,8 @@ export default function LogsView() {
     const navigate = useCallback((page) => logs.load(page), [])
 
     const onChangeTopic = useCallback(e => {
-        debugger
-        setTopicFilter(e.target.dataset.topic)
+        const {topic} = e.target.dataset
+        setTopicFilter(prev => topic === prev ? '' : topic)
     }, [setTopicFilter])
 
     if (!logs.loaded)
