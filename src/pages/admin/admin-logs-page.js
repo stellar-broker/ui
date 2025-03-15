@@ -2,22 +2,20 @@ import React from 'react'
 import {setPageMetadata} from '../../utils/meta-tags-generator'
 import LogsView from '../../admin/logs/logs-view'
 
-function AdminLogsPage() {
+export default function AdminLogsPage() {
     setPageMetadata({
         title: 'Admin logs',
-        description: 'Report logs.'
+        description: 'System errors and warnings'
     })
 
     return <div>
         <div className="row nano-space">
             <div className="column column-75">
                 <h4>Admin logs</h4>
-                <p className="text-small dimmed nano-space">Report logs</p>
+                <p className="text-small dimmed nano-space">System errors and warnings</p>
             </div>
         </div>
         <div className="hr space"/>
         <LogsView/>
     </div>
 }
-
-export default AdminLogsPage

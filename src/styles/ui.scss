@@ -36,14 +36,21 @@ input {
   border-radius: $border-radius-input;
 }
 
+.error {
+  color: $red;
+}
+
 .badge {
   display: inline-block;
   padding: 0.3em 0.6em;
   line-height: 1.2em;
-  font-size: 0.75*$font-size-base;
   color: $color-text;
   background: $gray;
   border-radius: $border-radius-badge;
+
+  + .badge {
+    margin-left: $space-nano;
+  }
 
   &.badge-pill {
     padding: 0.3em 0.6em;
@@ -52,17 +59,17 @@ input {
 
   &.up, &.success {
     color: $green;
-    background: rgba(40,167,69,.25);
+    background: rgba(40, 167, 69, .25);
   }
 
   &.down {
     color: $red;
-    background: rgba(220,53,69,.25);
+    background: rgba(220, 53, 69, .25);
   }
 
   &.selected {
     color: $primary;
-    background: rgba(1, 83,255,.25);
+    background: rgba(1, 83, 255, .25);
   }
 }
 
@@ -87,25 +94,25 @@ input {
     }
 
     tr {
-      &:hover,&.details {
+      &:hover, &.details {
         background: $light;
       }
+    }
 
-      td, th {
-        vertical-align: middle;
-        padding: $space-micro;
+    td, th {
+      vertical-align: middle;
+      padding: $space-micro;
 
-        &.collapsing {
-          width: 1px;
-        }
+      &.collapsing {
+        width: 1px;
+      }
 
-        &:first-child {
-          padding-left: $space-standard;
-        }
+      &:first-child {
+        padding-left: $space-standard;
+      }
 
-        &:last-child {
-          padding-right: $space-standard;
-        }
+      &:last-child {
+        padding-right: $space-standard;
       }
     }
 
@@ -123,11 +130,12 @@ input {
       & tr {
         padding: $space-nano 0;
         border-top: 1px solid $gray;
+
         td, th {
           display: flex;
           flex-wrap: wrap;
           align-items: center;
-          padding: $space-nano $space-micro!important;
+          padding: $space-nano $space-micro !important;
 
           &:before {
             box-sizing: border-box;
@@ -142,10 +150,19 @@ input {
 
   .table-controls {
     display: inline-flex;
+
     & > * {
       display: inline-block;
       text-decoration: none;
       margin: 0 0 0 $space-nano;
+    }
+  }
+
+  &.compact {
+    line-height: 1.2;
+
+    td, th {
+      padding: $space-nano;
     }
   }
 }

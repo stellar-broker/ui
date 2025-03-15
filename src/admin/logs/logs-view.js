@@ -1,18 +1,19 @@
 import {useCallback, useState} from 'react'
 import {formatDateUTC} from '@stellar-expert/formatter'
+import cn from 'classnames'
 import {usePaginatedApi} from '../../utils/hooks/paginated-list-hooks'
 import {navigation} from '../../utils/navigation'
 import {Loader} from '../../components/ui/loader'
 import {Button} from '../../components/ui/button'
-import FilterTagsView from './filter-tags-view'
+import LogTopicsView from './log-topics-view'
 
 export default function LogsView() {
-    const [filters, setFilters] = useState({topic: navigation.query.topic})
+    const [topicFilter, setTopicFilter] = useState(navigation.query.topic)
     const logs = usePaginatedApi(
         {
             path: 'admin/logs',
             query: {
-                ...filters,
+                topic: topicFilter,
                 cursor: navigation.query.cursor
             }
         }, {
@@ -21,27 +22,30 @@ export default function LogsView() {
             defaultQueryParams: {order: 'desc'}
         })
 
-    const navigate = useCallback((page) => {
-        logs.load(page)
-    }, [])
+    const navigate = useCallback((page) => logs.load(page), [])
 
-    if (!logs.loaded) return <Loader/>
+    const onChangeTopic = useCallback(e => {
+        debugger
+        setTopicFilter(e.target.dataset.topic)
+    }, [setTopicFilter])
+
+    if (!logs.loaded)
+        return <Loader/>
 
     return <div>
-        <div className="table space swaps-history">
+        <div className="table compact space swaps-history text-small">
             <div className="table-header">
-                <FilterTagsView selectTag={setFilters}/>
+                <LogTopicsView onChangeTopic={onChangeTopic}/>
             </div>
             <table>
                 <thead className="text-tiny dimmed">
                 <tr>
-                    <th>Message</th>
-                    <th className="desktop-center" >Topic</th>
-                    <th className="desktop-right">Date</th>
+                    <th>Log</th>
+                    <th className="desktop-right">Timestamp</th>
                 </tr>
                 </thead>
-                <tbody>
-                {logs.data?.map(log => <LogRecord log={log} key={log.paging_token}/>)}
+                <tbody className="font-mono">
+                {logs.data?.map(log => <LogRecord key={log.paging_token} log={log} onChangeTopic={onChangeTopic}/>)}
                 </tbody>
             </table>
             {!logs.data.length && <p className="empty-data">No matching entries found</p>}
@@ -53,12 +57,18 @@ export default function LogsView() {
     </div>
 }
 
-function LogRecord({log}) {
+function LogRecord({log, onChangeTopic}) {
     return <tr>
-        <td data-header="Message: ">{log.message}</td>
-        <td className="desktop-center" data-header="Topic: ">
-            <span className="badge">{log.topic}</span>
+        <td data-header="Log: ">
+            <div className={cn({error: log.topics.includes('error')})}>
+                {log.message}
+                <span className="mobile-only">&emsp;</span>
+            </div>
+            <div>
+                {log.topics.map(topic =>
+                    <a key={topic} href="#" className="badge text-tiny" data-topic={topic} onClick={onChangeTopic}>{topic}</a>)}
+            </div>
         </td>
-        <td className="desktop-right" data-header="Date: ">{formatDateUTC(log.date)}</td>
+        <td className="desktop-right nowrap" data-header="Timestamp: ">{formatDateUTC(log.ts)}</td>
     </tr>
 }
