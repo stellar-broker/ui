@@ -1,12 +1,11 @@
 import {useCallback, useEffect, useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {navigation} from '../../utils/navigation'
 import {generatePassword} from '../../utils/password-generator'
 import {performApiCall} from '../../api/api-call'
 import {Button} from '../../components/ui/button'
 import {useAutoFocusRef} from '../../utils/hooks/auto-focus-ref'
 
 export default function PartnerEditForm({id}) {
-    const navigate = useNavigate()
     const [settings, setSettings] = useState({})
     useEffect(() => {
         if (!id)
@@ -38,11 +37,11 @@ export default function PartnerEditForm({id}) {
 
     const onSave = useCallback(() => {
         if (id) {
-            updatePartner(id, settings, navigate)
+            updatePartner(id, settings)
         } else {
-            addPartner(settings.email, navigate)
+            addPartner(settings.email)
         }
-    }, [settings, navigate])
+    }, [settings])
 
     const onKeyDown = useCallback(e => {
         if (e.keyCode === 13) {
@@ -98,7 +97,7 @@ function PartnerSetting({settings, field, title, children, onChange, onKeyDown})
     </div>
 }
 
-async function addPartner(email, navigate) {
+async function addPartner(email) {
     const params = {
         email,
         password: generatePassword()
@@ -110,11 +109,11 @@ async function addPartner(email, navigate) {
 
             console.log(params)
             notify({type: 'success', message: 'New partner has been added'})
-            navigate('/admin/partners')
+            navigation.navigate('/admin/partners')
         })
 }
 
-async function updatePartner(id, newSettings, navigate) {
+async function updatePartner(id, newSettings) {
     const params = {
         ...newSettings,
         partnerVarFee: parseInt(newSettings.partnerVarFee, 10),
@@ -126,7 +125,7 @@ async function updatePartner(id, newSettings, navigate) {
                 return notify({type: 'error', message: 'Failed to change partner settings. ' + result.error})
 
             notify({type: 'success', message: 'Partner settings successfully changed'})
-            navigate('/admin/partners')
+            navigation.navigate('/admin/partners')
         })
 }
 

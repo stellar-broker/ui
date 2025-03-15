@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
 import {setPageMetadata} from '../utils/meta-tags-generator'
 import RequestAccessForm from '../components/request-access-form'
 import Logo from '../layout/logo'
@@ -27,7 +26,7 @@ function RequestAccessPage() {
                         To get started use StellarBroker API, please fill out form and tell us more about yourself
                         <br/><br/>
                         Already have an account?&nbsp;
-                        <Link to="/sign-in">Sign In</Link>
+                        <a href="/sign-in">Sign In</a>
                     </p>
                 </div>
                 <div className="bottom-block">
@@ -36,7 +35,9 @@ function RequestAccessPage() {
             </div>
         </div>
         <div className="column column-66 bg-color-gray">
-            <iframe style={{width:'100%',height:'100%'}} src="https://docs.google.com/forms/d/e/1FAIpQLSfRfpcKK09FCms_QYyiuEVNMVke8isvxlfBDlq85__5zFZ7qw/viewform?embedded=true" frameBorder="0" marginHeight="0" marginWidth="0">Loading…</iframe>
+            <div className="flex-center flex-grow h-100">
+                <iframe style={{width:'100%',height:'100%',minHeight: '75vh'}} src="https://docs.google.com/forms/d/e/1FAIpQLSfRfpcKK09FCms_QYyiuEVNMVke8isvxlfBDlq85__5zFZ7qw/viewform?embedded=true" frameBorder="0" marginHeight="0" marginWidth="0">Loading…</iframe>
+            </div>
             {/*<div className="middle-layout">
                 <div className="top-block">
                     {step !== totalSteps && <div className="progress-bar" data-step={`${step}/${totalSteps}`}>

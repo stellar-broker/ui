@@ -1,5 +1,5 @@
 import React from 'react'
-import {useParams} from 'react-router-dom'
+import {useParams} from 'react-router'
 import {setPageMetadata} from '../utils/meta-tags-generator'
 import PasswordRecoveryForm from '../components/password-recovery-form'
 import Logo from '../layout/logo'

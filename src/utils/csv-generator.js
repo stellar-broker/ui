@@ -43,6 +43,7 @@ class CsvGenerator {
     }
 
     buildFile(data, header) {
+        this.contents = ''
         this.writeHeader(header)
         this.writeData(data)
     }

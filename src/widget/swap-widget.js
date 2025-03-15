@@ -33,11 +33,11 @@ export const SwapWidget = function SmartSwapWidget({className}) {
                 <i className="icon-warning"/> {settings.message}
             </div> : <div className="dual-layout middle">
                 <div className="dimmed text-small">
-                    {change > 0 && <>
+                    {change > 0 && <div style={{margin: '0.5em 0'}}>
                         Savings: <span className="color-primary text-small">
                         {diff} (+{change} {settings.asset[1].split('-')[0]})
                         </span>
-                    </>}
+                    </div>}
                 </div>
                 <div>
                     <Button small style={{margin: '0 0 0 1em'}} onClick={initSwap}>SWAP</Button>

@@ -1,12 +1,12 @@
 import React, {useCallback, useState} from 'react'
-import {useNavigate, useParams} from 'react-router-dom'
+import {useParams} from 'react-router'
+import {navigation} from '../../utils/navigation'
 import {Button} from '../../components/ui/button'
 import {performApiCall} from '../../api/api-call'
 import {useAutoFocusRef} from '../../utils/hooks/auto-focus-ref'
 
 export default function AdminSetPasswordView() {
     const {id} = useParams()
-    const navigate = useNavigate()
     const [password, setPassword] = useState('')
     const [confirmation, setConfirmation] = useState('')
 
@@ -27,7 +27,7 @@ export default function AdminSetPasswordView() {
                     if (result.error)
                         return notify({type: 'error', message: 'Failed to update password. ' + result.error})
                     notify({type: 'success', message: 'Password updated'})
-                    navigate('/admin/partners')
+                    navigation.navigate('/admin/partners')
                 })
         }
     }

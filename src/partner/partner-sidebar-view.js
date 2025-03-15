@@ -1,4 +1,3 @@
-import {Link} from 'react-router-dom'
 import SidebarView, {LogoutView} from '../components/sidebar-view'
 import NavSidebarView from '../components/nav-sidebar-view'
 
@@ -26,14 +25,14 @@ function PartnerSidebarView() {
         <div className="hr micro-space"/>
         <ul className="links">
             <li>
-                <Link to="settings" className="text-small">
+                <a href="settings" className="text-small">
                     <span><i className="icon-cog"/>Settings</span>
-                </Link>
+                </a>
             </li>
             <li>
-                <Link to="mailto:broker@stellar.expert" className="text-small">
+                <a href="mailto:broker@stellar.expert" className="text-small">
                     <span><i className="icon-document"/>Contact support</span>
-                </Link>
+                </a>
             </li>
             <li><LogoutView/></li>
         </ul>

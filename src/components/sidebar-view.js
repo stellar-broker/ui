@@ -1,5 +1,5 @@
 import {useCallback, useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {navigation} from '../utils/navigation'
 import {logout} from '../api/auth'
 import Logo from '../layout/logo'
 
@@ -19,10 +19,9 @@ function SidebarView({children}) {
 }
 
 export function LogoutView() {
-    const navigate = useNavigate()
     const onLogout = useCallback(() => {
         logout()
-        navigate('/')
+        navigation.navigate('/')
     }, [])
 
     return <a href="#" className="text-small" onClick={onLogout}>

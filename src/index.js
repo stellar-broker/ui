@@ -1,5 +1,6 @@
 import React from 'react'
 import {render} from 'react-dom'
+import {navigation} from './utils/navigation'
 import {createToastNotificationsContainer} from './components/toast/toast-notifications-block'
 import Router from './router'
 import './styles/styles.scss'
@@ -10,7 +11,7 @@ bindClickNavHandler(appContainer)
 
 createToastNotificationsContainer()
 
-render(<Router/>, appContainer)
+render(<Router history={navigation.history}/>, appContainer)
 
 function bindClickNavHandler(container) {
     container.addEventListener('click', e => {

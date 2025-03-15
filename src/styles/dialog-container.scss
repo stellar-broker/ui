@@ -27,7 +27,7 @@
     height: 100%;
 
     > .container {
-      width: 100%;
+      width: calc(100% - #{$space-standard});
       max-width: 35em;
       background: #fff;
       border: 1px solid $gray;

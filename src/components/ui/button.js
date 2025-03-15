@@ -1,7 +1,6 @@
 import React from 'react'
 import cn from 'classnames'
 import './button.scss'
-import {Link} from 'react-router-dom'
 
 export const Button = React.memo(function Button({href, onClick, block, outline, clear, stackable, small, disabled, className, children, ...op}) {
     const c = cn('button', {
@@ -18,7 +17,7 @@ export const Button = React.memo(function Button({href, onClick, block, outline,
         //     e.preventDefault()
         //     return false
         // }
-        return <Link to={href} {...props}>{children}</Link>
+        return <a href={href} {...props}>{children}</a>
     }
     if (disabled) {
         props.disabled = true
