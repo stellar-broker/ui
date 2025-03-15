@@ -28,6 +28,10 @@
   width: 100%;
 }
 
+.h-100 {
+  height: 100%;
+}
+
 .row {
   display: flex;
   flex-direction: row;
@@ -248,16 +252,16 @@
   flex-direction: row;
   justify-content: space-between;
 
+  > div:last-child {
+    margin-left: auto;
+  }
+
   &.vertical {
     flex-direction: column;
   }
 
   &.middle {
     align-items: center;
-
-    > * {
-      margin: 0;
-    }
   }
 
   @media (min-width: $responsive-mobile-browser-width) {
