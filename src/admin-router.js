@@ -7,6 +7,8 @@ import AdminDashboardPage from './pages/admin/admin-dashboard-page'
 import AdminPartnersPage from './pages/admin/admin-partners-page'
 import AdminPartnerEditPage from './pages/admin/admin-partner-edit-page'
 import AdminSetPasswordView from './admin/partners/admin-set-password-view'
+import {setPageNoIndex} from './utils/meta-tags-generator'
+import AdminLogsPage from './pages/admin/admin-logs-page'
 import NotFoundPage from './pages/not-found-page'
 
 function AdminRouter({match}) {
@@ -20,6 +22,7 @@ function AdminRouter({match}) {
                 <Route path={`${path}/partners/edit/:id/password`} component={AdminSetPasswordView}/>
                 <Route path={`${path}/partners/edit/:id`} component={AdminPartnerEditPage}/>
                 <Route path={`${path}/partners`} component={AdminPartnersPage}/>
+                <Route path={`${path}/logs`} element={<AdminLogsPage/>}/>
                 <Route path={`${path}/`} exact component={AdminDashboardPage}/>
                 <Route component={NotFoundPage}/>
             </Switch>
