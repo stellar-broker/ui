@@ -36,7 +36,7 @@ function EmailEditForm() {
             <p className="label text-small">Email</p>
             <div>
                 <strong>{email}</strong>&emsp;
-                <a href="#" onClick={toggleDialog}>change</a>
+                <a href="#" className="text-tiny" onClick={toggleDialog}>change</a>
             </div>
         </div>
         <Dialog dialogOpen={isOpen} className="text-left">

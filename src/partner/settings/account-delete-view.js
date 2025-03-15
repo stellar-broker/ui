@@ -24,13 +24,14 @@ function AccountDeleteView() {
 
     return <div>
         <div>
-            <p className="label text-small nano-space">Delete your account</p>
-            <Button outline small onClick={toggleDialog} className="alert">Delete</Button>
+            <h5>Destructive actions</h5>
+            <div className="micro-space"></div>
+            <Button outline small onClick={toggleDialog} className="alert">Delete account</Button>
         </div>
         <Dialog dialogOpen={isOpen} className="text-left">
             <div className="micro-space"><h5>Delete account</h5></div>
             <div className="space">
-                Do you want to delete your account?
+                Do you wish to delete this account?
             </div>
             <div className="row">
                 <div className="column column-33 column-offset-33">

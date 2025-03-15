@@ -3,7 +3,7 @@ import NavSidebarView from '../components/nav-sidebar-view'
 
 const navLinks = {
     'dashboard': {title: 'Dashboard', link: '/account', icon: 'chart'},
-    'transactions': {title: 'Transactions', link: '/account/transactions', icon: 'clock'},
+    'transactions': {title: 'Swap history', link: '/account/transactions', icon: 'clock'},
     'payouts': {title: 'Payouts', link: '/account/payouts', icon: 'send-circle'},
     'api-keys': {title: 'API keys', link: '/account/api-keys', icon: 'key'},
     'documentation': {title: 'Documentation', link: '/account/documentation', icon: 'document'},
@@ -25,7 +25,7 @@ function PartnerSidebarView() {
         <div className="hr micro-space"/>
         <ul className="links">
             <li>
-                <a href="settings" className="text-small">
+                <a href="/account/settings" className="text-small">
                     <span><i className="icon-cog"/>Settings</span>
                 </a>
             </li>

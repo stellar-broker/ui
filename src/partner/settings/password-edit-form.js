@@ -49,7 +49,7 @@ function PasswordEditForm() {
             <p className="label text-small">Password</p>
             <div>
                 <strong>********</strong>&emsp;
-                <a href="#" onClick={toggleDialog}>change</a>
+                <a href="#" className="text-tiny" onClick={toggleDialog}>change</a>
             </div>
         </div>
         <Dialog dialogOpen={isOpen} className="text-left">
