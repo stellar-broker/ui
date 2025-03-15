@@ -5,7 +5,7 @@ import ExportFileCreator from '../../components/export-file/export-file-creator'
 
 function PartnerTransactionsPage() {
     setPageMetadata({
-        title: 'Transactions',
+        title: 'Swap history',
         description: 'All swaps executed with partner key.'
     })
 
@@ -13,7 +13,7 @@ function PartnerTransactionsPage() {
         <div className="row nano-space">
             <div className="column column-75">
                 <div className="flex-middle">
-                    <h4>Transactions</h4>
+                    <h4>Swap history</h4>
                 </div>
                 <p className="text-small dimmed nano-space">All swaps executed with your partner key</p>
             </div>

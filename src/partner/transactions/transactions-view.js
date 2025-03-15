@@ -38,13 +38,14 @@ export default function TransactionsView({compact}) {
         transactions.load(page)
     }, [])
 
-    if (!transactions.loaded) return <Loader/>
+    if (!transactions.loaded)
+        return <Loader/>
 
     return <div>
         <div className="table space swaps-history">
-            <div className="table-header">
-                {compact ? <h5>Swaps history</h5> : <SearchView/>}
-            </div>
+            {!!compact && <div className="table-header">
+                <h5>Swap history</h5>
+            </div>}
             <table>
                 <thead className="text-tiny dimmed">
                 <tr>
