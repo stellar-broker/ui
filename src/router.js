@@ -1,5 +1,5 @@
 import React from 'react'
-import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import {Route, Router, Switch} from 'react-router'
 import AdminRouter from './admin-router'
 import PartnerRouter from './partner-router'
 import RequestAccessPage from './pages/request-access-page'
@@ -8,18 +8,18 @@ import NotFoundPage from './pages/not-found-page'
 import SignInPage from './pages/sign-in-page'
 import PasswordRecoveryPage from './pages/password-recovery-page'
 
-function AppRouter() {
-    return <BrowserRouter>
-        <Routes>
-            <Route path="/admin/*" element={<AdminRouter/>}/>
-            <Route path="/account/*" element={<PartnerRouter/>}/>
-            <Route path="/request-access" exact element={<RequestAccessPage/>}/>
-            <Route path="/sign-in" exact element={<SignInPage/>}/>
-            <Route path="/password-recovery/:id" exact element={<PasswordRecoveryPage/>}/>
-            <Route path="/" exact element={<MainPage/>}/>
-            <Route path="*" element={<NotFoundPage/>}/>
-        </Routes>
-    </BrowserRouter>
+function AppRouter({history}) {
+    return <Router history={history}>
+        <Switch>
+            <Route path="/admin" component={AdminRouter}/>
+            <Route path="/account" component={PartnerRouter}/>
+            <Route path="/request-access" exact component={RequestAccessPage}/>
+            <Route path="/sign-in" exact component={SignInPage}/>
+            <Route path="/password-recovery/:id" exact component={PasswordRecoveryPage}/>
+            <Route path="/" exact component={MainPage}/>
+            <Route path="*" component={NotFoundPage}/>
+        </Switch>
+    </Router>
 }
 
 export default AppRouter

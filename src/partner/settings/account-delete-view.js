@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {navigation} from '../../utils/navigation'
 import {performApiCall} from '../../api/api-call'
 import {logout} from '../../api/auth'
 import {Button} from '../../components/ui/button'
@@ -7,7 +7,6 @@ import {Dialog} from '../../components/ui/dialog'
 
 function AccountDeleteView() {
     const [isOpen, setIsOpen] = useState(false)
-    const navigate = useNavigate()
 
     const toggleDialog = useCallback(() => setIsOpen(prev => !prev), [])
 
@@ -17,7 +16,7 @@ function AccountDeleteView() {
                 if (result.error)
                     return notify({type: 'error', message: 'Failed to delete account. ' + result.error})
 
-                navigate('/')
+                navigation.navigate('/')
                 logout()
                 notify({type: "success", message: "Account deleted successfully"})
             })

@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
 import {setPageMetadata} from '../utils/meta-tags-generator'
 import RequestAccessForm from '../components/request-access-form'
 import Logo from '../layout/logo'
@@ -27,7 +26,7 @@ function RequestAccessPage() {
                         To get started use StellarBroker API, please fill out form and tell us more about yourself
                         <br/><br/>
                         Already have an account?&nbsp;
-                        <Link to="/sign-in">Sign In</Link>
+                        <a href="/sign-in">Sign In</a>
                     </p>
                 </div>
                 <div className="bottom-block">

@@ -1,5 +1,5 @@
 import {useCallback, useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {navigation} from '../utils/navigation'
 import {Button} from './ui/button'
 
 function validation({password, confirm}) {
@@ -11,7 +11,6 @@ function validation({password, confirm}) {
 function PasswordRecoveryForm({id}) {
     const [credentials, setCredentials] = useState()
     const [isValid, setIsValid] = useState(false)
-    const navigate = useNavigate()
 
     const changeInfo = useCallback((key, val) => {
         setCredentials(prev => {
@@ -22,7 +21,7 @@ function PasswordRecoveryForm({id}) {
     }, [])
 
     const onSave = useCallback(() => {
-        navigate('/sign-in')
+        navigation.navigate('/sign-in')
     }, [id])
 
     const changePassword = useCallback(e => changeInfo('password', e.target.value), [changeInfo])

@@ -1,5 +1,4 @@
 import {useCallback, useState} from 'react'
-import {Link} from 'react-router-dom'
 import {authenticate} from '../api/auth'
 import {performApiCall} from '../api/api-call'
 import {useAutoFocusRef} from '../utils/hooks/auto-focus-ref'
@@ -49,7 +48,7 @@ export default function SignInForm({login}) {
         </div>
         <Button block disabled={!isValid} className="space" onClick={onAuth}>Sign In</Button>
         <p className="text-center dimmed text-small">Don't have an account?&nbsp;
-            <Link to="/request-access">Request access</Link>
+            <a href="/request-access">Request access</a>
         </p>
     </div>
 }
