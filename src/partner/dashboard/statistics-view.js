@@ -11,19 +11,19 @@ export default function StatisticsView({stats}) {
 
     return <div className="row">
         <div className="column column-25">
-            <EntryStatisticView title="Daily volume fee" value={`$${dailyValueFee.value}`} sign="$"
+            <EntryStatisticView title="Daily fees volume" value={`$${dailyValueFee.value}`} sign="$"
                                 changes={dailyValueFee.changes} data={dailyValueFee.data}/>
         </div>
         <div className="column column-25">
-            <EntryStatisticView title="Monthly volume fee" value={`$${monthlyValueFee.value}`} sign="$" onlyMonth
+            <EntryStatisticView title="Monthly fees volume" value={`$${monthlyValueFee.value}`} sign="$" onlyMonth
                                 changes={monthlyValueFee.changes} data={monthlyValueFee.data}/>
         </div>
         <div className="column column-25">
-            <EntryStatisticView title="Daily transactions" value={`${dailyTx.value}`}
+            <EntryStatisticView title="Daily swaps" value={`${dailyTx.value}`}
                                 changes={dailyTx.changes} data={dailyTx.data}/>
         </div>
         <div className="column column-25">
-            <EntryStatisticView title="Monthly transactions" value={`$${monthlyTx.value}`} onlyMonth
+            <EntryStatisticView title="Monthly swaps" value={`$${monthlyTx.value}`} onlyMonth
                                 changes={monthlyTx.changes} data={monthlyTx.data}/>
         </div>
     </div>
@@ -41,19 +41,7 @@ function EntryStatisticView({title, value, sign = '', changes, data = [], onlyMo
                 enabled: false
             }
         }],
-        tooltip: {
-            formatter () {
-                const type = {}
-                try {
-                    const date = new Date(this.x)
-                    const month = date.toLocaleString('en-US', { month: 'short' })
-                    type.x = onlyMonth ? month : `${date.getUTCDate()}. ${month}`
-                } catch (e) {
-                    type.x = this.x
-                }
-                return `<span style="font-size: 10px; white-space: nowrap"><b>${this.y}${sign}</b> - ${type.x}</span>`
-            }
-        },
+        tooltip: false
     }
 
     return <div className="info-block micro-space">
