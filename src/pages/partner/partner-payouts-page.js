@@ -2,7 +2,7 @@ import React from 'react'
 import {setPageMetadata} from '../../utils/meta-tags-generator'
 import WithdrawForm from '../../partner/payouts/withdraw-form'
 
-function PartnerPayoutsPage() {
+export default function PartnerPayoutsPage() {
     setPageMetadata({
         title: 'Payouts',
         description: 'Withdrawal partner earnings and payments history.'
@@ -19,5 +19,3 @@ function PartnerPayoutsPage() {
         <WithdrawForm/>
     </div>
 }
-
-export default PartnerPayoutsPage

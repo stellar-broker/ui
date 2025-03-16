@@ -1,9 +1,21 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
+import {fromStroops} from '@stellar-expert/formatter'
 import {useAutoFocusRef} from '../../utils/hooks/auto-focus-ref'
+import {performApiCall} from '../../api/api-call'
 import {Button} from '../../components/ui/button'
+import {Loader} from '../../components/ui/loader'
 
 export default function WithdrawForm() {
     const [payout, setPayout] = useState({})
+    const [partnerInfo, setPartnerInfo] = useState()
+    useEffect(() => {
+        performApiCall('partner/info')
+            .then((result) => {
+                if (result.error)
+                    return notify({type: 'error', message: 'Failed to retrieve partners settings. ' + result.error})
+                setPartnerInfo(result)
+            })
+    }, [])
 
     const changeAmount = useCallback(e => {
         setPayout(prev => ({...prev, amount: e.target.value}))
@@ -17,8 +29,10 @@ export default function WithdrawForm() {
 
     }, [])
 
+    if (!partnerInfo)
+        return <Loader/>
     return <div>
-        <div className="micro-space">Available for withdrawal: <b className="font-mono">0</b> USDC</div>
+        <div className="micro-space">Available for withdrawal: <b className="font-mono">{fromStroops(partnerInfo.fees)}</b> USDC</div>
         <div className="row">
             <div className="column column-66">
                 <div className="space">

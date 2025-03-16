@@ -1,3 +1,4 @@
+import {fromStroops} from '@stellar-expert/formatter'
 import {performApiCall} from '../../api/api-call'
 import {authenticate} from '../../api/auth'
 import {Button} from '../../components/ui/button'
@@ -21,7 +22,12 @@ export default function PartnersView({partnerList}) {
                     <PartnerStatView partner={partner}/>
                     <div className="micro-space"/>
                     <div className="row">
-                        <div className="column column-25 column-offset-25">
+                        <div className="column column-25 text-small">
+                            <div className="nano-space"/>
+                            <span className="dimmed">Balance: </span>{fromStroops(partner.fees)}$
+                            <div className="nano-space"/>
+                        </div>
+                        <div className="column column-25">
                             <Button block outline onClick={toggleAccount} data-id={partner.id}>
                                 {partner.inactive ?
                                     <><i className="icon-undo-circle"/>Restore</> :
@@ -94,7 +100,7 @@ function PartnerStatView({partner}) {
     }
     for (let record of partner.stats) {
         aggregatedStats.swaps += record.swaps || 0
-        aggregatedStats.fee += record.fee || 0
+        aggregatedStats.fee += parseFloat(record.fee) || 0
         aggregatedStats.txCount += record.txCount || 0
         aggregatedStats.txDropped += record.txDropped || 0
         aggregatedStats.txFailed += record.txFailed || 0
