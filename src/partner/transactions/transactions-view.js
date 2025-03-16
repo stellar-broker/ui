@@ -20,10 +20,10 @@ function parseAsset(asset) {
     }
 }
 
-export default function TransactionsView({compact}) {
+export default function TransactionsView({compact, endpoint = 'partner/swaps'}) {
     const transactions = usePaginatedApi(
         {
-            path: 'partner/swaps',
+            path: endpoint,
             query: {
                 cursor: navigation.query.cursor,
                 search: navigation.query.search
