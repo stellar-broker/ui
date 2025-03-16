@@ -11,7 +11,8 @@ function PartnersView({partnerList}) {
                 <div className="card outline">
                     <div className="row">
                         <div className="nano-space column column-50">
-                            <b>{partner.email}</b>
+                            <b>{partner.email}</b>&nbsp;
+                            {!!partner.inactive && <span className="badge down text-tiny">inactive</span>}
                         </div>
                         <div className="nano-space column column-50 desktop-right">
                             <PartnerFees settings={partner.settings}/>
@@ -21,9 +22,10 @@ function PartnersView({partnerList}) {
                     <PartnerStatView id={partner.id}/>
                     <div className="micro-space"/>
                     <div className="desktop-right">
+                        <Button outline onClick={toggleAccount} data-id={partner.id}>{partner.inactive ? 'Restore' : 'Delete'}</Button>
                         <Button outline onClick={logInAs} data-id={partner.id}>Log in as</Button>
                         <Button href={`edit/${partner.id}`} style={{marginBottom: 0}}>
-                            <i className="icon-cog"/> Change settings</Button>
+                            <i className="icon-cog"/> Settings</Button>
                     </div>
                 </div>
             </div>
@@ -39,6 +41,18 @@ function logInAs(e) {
                 return notify({type: 'warning', message: res.error})
             authenticate(res.accessToken)
             location.href = '/account'
+        })
+}
+
+function toggleAccount(e) {
+    const {id} = e.target.dataset
+    if (!confirm(e.target.innerText + ' this account?'))
+        return
+    performApiCall('partner/' + id, {method: 'DELETE'})
+        .then(res => {
+            if (res.error)
+                return notify({type: 'warning', message: res.error})
+            location.reload()
         })
 }
 
