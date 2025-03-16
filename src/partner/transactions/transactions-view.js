@@ -97,7 +97,9 @@ function SwapRecord({swap}) {
             </td>
             <td className="desktop-right" data-header="Date: ">{formatDateUTC(date)}</td>
             <td>
-                <a href="#" className={expanded ? 'icon-less' : 'icon-more'} title="Show details" onClick={toggleExpanded}/>
+                <a href="#" className={expanded ? 'icon-less' : 'icon-more'} title="Show details" onClick={toggleExpanded}>
+                    <span className="mobile-only">Show details</span>
+                </a>
             </td>
         </tr>
         {expanded && <tr className="details text-small">

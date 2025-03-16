@@ -9,26 +9,7 @@
   border-right: 1px solid $gray;
 
   .partner {
-    display: flex;
-    align-items: center;
     padding-left: 1em;
-
-    .logo-partner {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 2em;
-      height: 2em;
-
-      > img {
-        max-width: 100%;
-        max-height: 100%;
-      }
-    }
-
-    .info-partner {
-      padding: 0 $space-nano;
-    }
   }
 
   .nav-sidebar {
@@ -47,11 +28,13 @@
       &.disabled {
         pointer-events: none;
         cursor: default;
+
         a {
           padding: 0 0 0 1em;
           justify-content: space-between;
           color: #bdbdbd;
         }
+
         .badge {
           color: $primary;
         }
