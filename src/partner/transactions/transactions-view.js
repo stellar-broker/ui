@@ -8,7 +8,6 @@ import {AssetIcon} from '../../components/ui/asset-link'
 import {Button} from '../../components/ui/button'
 import {Loader} from '../../components/ui/loader'
 import {Amount} from '../../components/ui/amount'
-import SearchView from '../../components/ui/search-view'
 import './transactions-view.scss'
 
 function parseAsset(asset) {

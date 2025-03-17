@@ -34,7 +34,7 @@ function PartnerFees({settings}) {
     return <>
         <div className="hr space"/>
         <h5 className="nano-space">Fees</h5>
-        <div className="text-small">
+        <div className="text-small space">
             <PartnerSetting settings={settings} field="partnerVarFee" title="Partner profit fee">
                 Variable fee charged from the funds saved during the swap
             </PartnerSetting>

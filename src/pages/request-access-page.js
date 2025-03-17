@@ -6,7 +6,7 @@ import Footer from '../layout/footer'
 
 const totalSteps = 3
 
-function RequestAccessPage() {
+export default function RequestAccessPage() {
     const [step, setStep] = useState(1)
 
     setPageMetadata({
@@ -50,5 +50,3 @@ function RequestAccessPage() {
         </div>
     </div>
 }
-
-export default RequestAccessPage

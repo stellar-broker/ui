@@ -10,7 +10,7 @@ import AdminSetPasswordView from './admin/partners/admin-set-password-view'
 import AdminLogsPage from './pages/admin/admin-logs-page'
 import NotFoundPage from './pages/not-found-page'
 
-function AdminRouter({match}) {
+export default function AdminRouter({match}) {
     const {path} = match
     setPageNoIndex(true)
 
@@ -28,5 +28,3 @@ function AdminRouter({match}) {
         </AdminLayout>
     </AuthLayout>
 }
-
-export default AdminRouter

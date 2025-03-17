@@ -6,7 +6,7 @@ import TransactionsView from '../../partner/transactions/transactions-view'
 import {performApiCall} from '../../api/api-call'
 import {setPageMetadata} from '../../utils/meta-tags-generator'
 
-function PartnerDashboardPage() {
+export default function PartnerDashboardPage() {
     const [stats, setStats] = useState()
 
     useEffect(() => {
@@ -46,5 +46,3 @@ function PartnerDashboardPage() {
         <TransactionsView compact/>
     </div>
 }
-
-export default PartnerDashboardPage

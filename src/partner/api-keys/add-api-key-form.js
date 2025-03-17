@@ -3,7 +3,7 @@ import {performApiCall} from '../../api/api-call'
 import {Button} from '../../components/ui/button'
 import {Dialog} from '../../components/ui/dialog'
 
-function AddApiKeyForm({updateKeyList}) {
+export default function AddApiKeyForm({updateKeyList}) {
     const [isOpen, setIsOpen] = useState(false)
 
     const toggleDialog = useCallback(() => setIsOpen(prev => !prev), [])
@@ -38,5 +38,3 @@ function AddApiKeyForm({updateKeyList}) {
         </Dialog>
     </>
 }
-
-export default AddApiKeyForm

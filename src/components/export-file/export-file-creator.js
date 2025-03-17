@@ -9,7 +9,7 @@ import {Dialog} from '../ui/dialog'
 import {Dropdown} from '../ui/dropdown'
 import './export-selector.scss'
 
-function ExportFileCreator() {
+export default function ExportFileCreator() {
     const [type, setType] = useState()
     const [isOpen, setIsOpen] = useState(false)
     const [isProcessing, setIsProcessing] = useState(false)
@@ -119,5 +119,3 @@ function prepareSwapTrades(trades = []) {
 
     return inline.slice(0, -1)
 }
-
-export default ExportFileCreator

@@ -3,7 +3,7 @@ import {navigation} from '../utils/navigation'
 import {logout} from '../api/auth'
 import Logo from '../layout/logo'
 
-function SidebarView({children}) {
+export default function SidebarView({children}) {
     const [menuVisible, setMenuVisible] = useState(false)
 
     return <div className={`sidebar ${menuVisible && 'active'}`}>
@@ -28,5 +28,3 @@ export function LogoutView() {
         <span><i className="icon-logout"/>Logout</span>
     </a>
 }
-
-export default SidebarView

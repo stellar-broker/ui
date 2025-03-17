@@ -8,7 +8,7 @@ import NotFoundPage from './pages/not-found-page'
 import SignInPage from './pages/sign-in-page'
 import PasswordRecoveryPage from './pages/password-recovery-page'
 
-function AppRouter({history}) {
+export default function AppRouter({history}) {
     return <Router history={history}>
         <Switch>
             <Route path="/admin" component={AdminRouter}/>
@@ -21,5 +21,3 @@ function AppRouter({history}) {
         </Switch>
     </Router>
 }
-
-export default AppRouter

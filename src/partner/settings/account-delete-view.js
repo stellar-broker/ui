@@ -5,7 +5,7 @@ import {logout} from '../../api/auth'
 import {Button} from '../../components/ui/button'
 import {Dialog} from '../../components/ui/dialog'
 
-function AccountDeleteView() {
+export default function AccountDeleteView() {
     const [isOpen, setIsOpen] = useState(false)
 
     const toggleDialog = useCallback(() => setIsOpen(prev => !prev), [])
@@ -44,5 +44,3 @@ function AccountDeleteView() {
         </Dialog>
     </div>
 }
-
-export default AccountDeleteView
