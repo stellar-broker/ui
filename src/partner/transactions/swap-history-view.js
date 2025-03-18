@@ -9,7 +9,8 @@ import {Button} from '../../components/ui/button'
 import {Loader} from '../../components/ui/loader'
 import {Amount} from '../../components/ui/amount'
 import SearchView from '../../components/ui/search-view'
-import './transactions-view.scss'
+import './swap-history.scss'
+import {AccountAddress} from '../../components/ui/account-address'
 
 function parseAsset(asset) {
     const [code, issuer] = asset.split('-')
@@ -20,7 +21,7 @@ function parseAsset(asset) {
     }
 }
 
-export default function TransactionsView({compact, endpoint = 'partner/swaps'}) {
+export default function SwapHistoryView({compact, endpoint = 'partner/swaps'}) {
     const transactions = usePaginatedApi(
         {
             path: endpoint,
@@ -50,6 +51,7 @@ export default function TransactionsView({compact, endpoint = 'partner/swaps'}) 
                 <thead className="text-tiny dimmed">
                 <tr>
                     <th>Pair</th>
+                    <th>Account</th>
                     <th>Sell</th>
                     <th>Fees</th>
                     <th className="desktop-center">Status</th>
@@ -81,6 +83,9 @@ function SwapRecord({swap}) {
         <tr>
             <td data-header="Pair: ">
                 <AssetPair pair={pair}/>
+            </td>
+            <td data-header="Account: ">
+                {!!swap.account && <AccountAddress address={swap.account} className="text-small font-mono"/>}
             </td>
             <td data-header="Sell: ">
                 <span className="font-mono">
@@ -188,7 +193,7 @@ function AssetPair({pair}) {
         <AssetIcon asset={pair[1].asset}/>&nbsp;
         <span>
             <span>{assetA.code} <i className="icon-swap text-small"/> {assetB.code}</span>
-            {(sellingAsset.domain && buyingAsset.domain) && <span className="dimmed text-tiny block">
+            {(sellingAsset.domain && buyingAsset.domain) && <span className="dimmed block domains">
                 {sellingAsset.domain} / {buyingAsset.domain}
             </span>}
        </span>

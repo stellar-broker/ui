@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import StatisticsView from '../../partner/dashboard/statistics-view'
 import VolumeChartView from '../../partner/dashboard/volume-chart-view'
 import AssetChartView from '../../partner/dashboard/asset-chart-view'
-import TransactionsView from '../../partner/transactions/transactions-view'
+import SwapHistoryView from '../../partner/transactions/swap-history-view'
 import {performApiCall} from '../../api/api-call'
 import {setPageMetadata} from '../../utils/meta-tags-generator'
 
@@ -43,7 +43,7 @@ function PartnerDashboardPage() {
             </div>
         </div>
         <div className="micro-space"/>
-        <TransactionsView compact/>
+        <SwapHistoryView compact/>
     </div>
 }
 

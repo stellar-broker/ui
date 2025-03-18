@@ -1,6 +1,6 @@
 import React from 'react'
 import {setPageMetadata} from '../../utils/meta-tags-generator'
-import TransactionsView from '../../partner/transactions/transactions-view'
+import SwapHistoryView from '../../partner/transactions/swap-history-view'
 import ExportFileCreator from '../../components/export-file/export-file-creator'
 
 function PartnerTransactionsPage() {
@@ -23,7 +23,7 @@ function PartnerTransactionsPage() {
             </div>
         </div>
         <div className="hr space"/>
-        <TransactionsView/>
+        <SwapHistoryView/>
     </div>
 }
 
