@@ -108,8 +108,8 @@ function SwapRecord({swap}) {
             </td>
         </tr>
         {expanded && <tr className="details text-small">
-            <td colSpan="6" style={{paddingLeft: '4em'}}>
-                <div>
+            <td colSpan="7" style={{paddingLeft: '4em'}}>
+                <div className="nano-space">
                     Quote estimated amount:{' '}
                     {swap.quote.estimatedBuyingAmount ?
                         <Amount amount={swap.quote.estimatedBuyingAmount} asset={swap.buyingAsset} adjust issuer={false}/> :
@@ -117,24 +117,40 @@ function SwapRecord({swap}) {
                     }, slippage tolerance: {swap.quote.slippageTolerance * 100}%
                 </div>
                 <div className="nano-space"/>
-                {swap.trades.map(trade => <div key={trade.id}>
-                    <i className="icon-angle-double-right"/>
-                    <Amount amount={trade.sold || trade.estimatedSold} asset={swap.sellingAsset} adjust issuer={false}/>
-                    {' '}<i className="icon-swap"/>{' '}
-                    <Amount amount={trade.bought || trade.estimatedBought} asset={swap.buyingAsset} adjust issuer={false}/>
-                    {!!trade.fee && <> (fee
-                        ${fromStroops(trade.fee)})</>} - <span className="dimmed">{decodeTradeStatus(trade.status)}</span>
-                    &emsp;
-                    {trade.status === 'success' || trade.status === 'failed' ?
-                        <a href={`https://stellar.expert/explorer/public/tx/${trade.tx}`} target="_blank"
-                           title="View transaction details">
-                            {formatDateUTC(trade.created)} <i className="icon-open-new-window"/></a> :
-                        <span className="dimmed">{formatDateUTC(trade.created)}</span>
-                    }
-                </div>)}
+                {swap.trades.map(trade => <SwapTx key={trade.id} trade={trade} swap={swap}/>)}
             </td>
         </tr>}
     </>
+}
+
+function SwapTx({trade, swap}) {
+    return <div className="nano-space">
+        <Amount amount={trade.sold || trade.estimatedSold} asset={swap.sellingAsset} adjust issuer={false}/>
+        {' '}<i className="icon-swap"/>{' '}
+        <Amount amount={trade.bought || trade.estimatedBought} asset={swap.buyingAsset} adjust issuer={false}/>
+        {!!trade.fee && <> (fee
+            ${fromStroops(trade.fee)})</>} - <span className="dimmed">{decodeTradeStatus(trade.status)}</span>
+        &emsp;
+        {trade.status === 'success' || trade.status === 'failed' ?
+            <a href={`https://stellar.expert/explorer/public/tx/${trade.tx}`} target="_blank"
+               title="View transaction details">
+                {formatDateUTC(trade.created)} <i className="icon-open-new-window"/></a> :
+            <span className="dimmed">{formatDateUTC(trade.created)}</span>
+        }
+        {!!trade.venues && <div className="dimmed text-tiny">{trade.venues.split('→').map((step, i) => {
+            let [venue, asset] = step.split(':')
+            let renderAs
+            if (!asset) {
+                asset = venue
+            } else if (venue.indexOf('-') > 0) {
+                const [protocol, contract] = venue.split('-')
+                renderAs = <>{protocol}:<AccountAddress address={contract} icon={false}/></>
+            } else {
+                renderAs = venue
+            }
+            return <span key={i}>{i > 0 && ' → '}{renderAs} {asset.split('-')[0]}</span>
+        })}</div>}
+    </div>
 }
 
 function getSwapStatus(swap) {
