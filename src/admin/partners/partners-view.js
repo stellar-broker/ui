@@ -35,12 +35,12 @@ export default function PartnersView({partnerList}) {
                             </Button>
                         </div>
                         <div className="column column-25">
-                            <Button block outline onClick={logInAs} data-id={partner.id}>
+                            <Button block outline disabled={!!partner.inactive} onClick={logInAs} data-id={partner.id}>
                                 <i className="icon-user-verified"/>
                                 Log in as</Button>
                         </div>
                         <div className="column column-25">
-                            <Button block href={`edit/${partner.id}`} style={{marginBottom: 0}}>
+                            <Button block href={`edit/${partner.id}`} disabled={!!partner.inactive} style={{marginBottom: 0}}>
                                 <i className="icon-cog"/>Settings</Button>
                         </div>
                     </div>
