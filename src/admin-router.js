@@ -17,7 +17,7 @@ function AdminRouter({match}) {
     return <AuthLayout role="admin">
         <AdminLayout role="admin">
             <Switch>
-                <Route path={`${path}partner/add`} component={AdminPartnerEditPage}/>
+                <Route path={`${path}/partner/add`} component={AdminPartnerEditPage}/>
                 <Route path={`${path}/partner/:id/password`} component={AdminSetPasswordView}/>
                 <Route path={`${path}/partner/:id`} component={AdminPartnerEditPage}/>
                 <Route path={`${path}/partner`} component={AdminPartnersPage}/>

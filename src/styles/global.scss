@@ -72,6 +72,10 @@ label {
   background-color: $gray;
 }
 
+.bg-color-white {
+  background-color: #fff;
+}
+
 .hr {
   width: 100%;
   border-bottom: 1px solid $gray;
@@ -82,4 +86,8 @@ label {
   width: 100%;
   text-align: center;
   padding: 1em;
+}
+
+.overflow-hidden {
+  overflow: hidden;
 }
