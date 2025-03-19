@@ -27,7 +27,7 @@ export default function AdminSetPasswordView() {
                     if (result.error)
                         return notify({type: 'error', message: 'Failed to update password. ' + result.error})
                     notify({type: 'success', message: 'Password updated'})
-                    navigation.navigate('/admin/partners')
+                    navigation.navigate('/admin/partner')
                 })
         }
     }
@@ -69,7 +69,7 @@ export default function AdminSetPasswordView() {
                 <Button block onClick={save}>Set password</Button>
             </div>
             <div className="column column-50">
-                <Button outline block href="/admin/partners">Cancel</Button>
+                <Button outline block href="/admin/partner">Cancel</Button>
             </div>
         </div>
     </div>

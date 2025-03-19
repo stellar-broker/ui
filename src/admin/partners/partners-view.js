@@ -40,7 +40,7 @@ export default function PartnersView({partnerList}) {
                                 Log in as</Button>
                         </div>
                         <div className="column column-25">
-                            <Button block href={`edit/${partner.id}`} style={{marginBottom: 0}}>
+                            <Button block href={`/admin/partner/${partner.id}`} style={{marginBottom: 0}}>
                                 <i className="icon-cog"/>Settings</Button>
                         </div>
                     </div>
