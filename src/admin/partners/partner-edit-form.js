@@ -107,7 +107,6 @@ async function addPartner(email) {
             if (result.error)
                 return notify({type: 'error', message: 'Failed to add partner. ' + result.error})
 
-            console.log(params)
             notify({type: 'success', message: 'New partner has been added'})
             navigation.navigate('/admin/partner')
         })

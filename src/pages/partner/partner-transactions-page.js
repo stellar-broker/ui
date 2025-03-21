@@ -3,7 +3,7 @@ import {setPageMetadata} from '../../utils/meta-tags-generator'
 import SwapHistoryView from '../../partner/transactions/swap-history-view'
 import ExportFileCreator from '../../components/export-file/export-file-creator'
 
-function PartnerTransactionsPage() {
+export default function PartnerTransactionsPage() {
     setPageMetadata({
         title: 'Swap history',
         description: 'All swaps executed with partner key.'
@@ -26,5 +26,3 @@ function PartnerTransactionsPage() {
         <SwapHistoryView/>
     </div>
 }
-
-export default PartnerTransactionsPage

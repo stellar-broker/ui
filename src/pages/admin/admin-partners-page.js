@@ -4,7 +4,7 @@ import {setPageMetadata} from '../../utils/meta-tags-generator'
 import {performApiCall} from '../../api/api-call'
 import PartnersView from '../../admin/partners/partners-view'
 
-function AdminPartnersPage() {
+export default function AdminPartnersPage() {
     const [partnerList, setPartnerList] = useState()
 
     useEffect(() => {
@@ -38,5 +38,3 @@ function AdminPartnersPage() {
         <PartnersView partnerList={partnerList}/>
     </div>
 }
-
-export default AdminPartnersPage

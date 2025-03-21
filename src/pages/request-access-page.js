@@ -7,7 +7,7 @@ import PageLayout from '../layout/page-layout'
 
 const totalSteps = 3
 
-function RequestAccessPage() {
+export default function RequestAccessPage() {
     const [step, setStep] = useState(1)
 
     setPageMetadata({
@@ -56,5 +56,3 @@ function RequestAccessPage() {
         </div>
     </PageLayout>
 }
-
-export default RequestAccessPage

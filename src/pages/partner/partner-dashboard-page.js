@@ -6,7 +6,7 @@ import SwapHistoryView from '../../partner/transactions/swap-history-view'
 import {performApiCall} from '../../api/api-call'
 import {setPageMetadata} from '../../utils/meta-tags-generator'
 
-function PartnerDashboardPage() {
+export default function PartnerDashboardPage() {
     const [stats, setStats] = useState()
 
     useEffect(() => {
@@ -46,5 +46,3 @@ function PartnerDashboardPage() {
         <SwapHistoryView compact/>
     </div>
 }
-
-export default PartnerDashboardPage

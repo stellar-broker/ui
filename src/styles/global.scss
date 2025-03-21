@@ -13,7 +13,7 @@
 
 @include scrollbars(6px, $color-dimmed, $gray);
 
-input, textarea {
+input, textarea, button {
   font-family: $font-face-primary, sans-serif;
   font-size: $font-size-base;
 }

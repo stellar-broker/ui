@@ -2,7 +2,7 @@ import {useCallback} from 'react'
 import {CopyToClipboard} from '../../utils/copy-to-clipboard'
 import {Button} from '../../components/ui/button'
 
-function PartnerPasswordRecoveryView({id}) {
+export default function PartnerPasswordRecoveryView({id}) {
     const recoveryPasswordLink = window.location.origin + '/password-recovery/' + id
 
     const sendPassRecoveryLink = useCallback(() => {
@@ -28,5 +28,3 @@ function PartnerPasswordRecoveryView({id}) {
         </div>
     </div>
 }
-
-export default PartnerPasswordRecoveryView

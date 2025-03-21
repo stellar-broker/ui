@@ -4,7 +4,7 @@ import AdminSidebarView from '../admin/admin-sidebar-view'
 import PageLayout from './page-layout'
 import '../styles/dashboard.scss'
 
-function AdminLayout({role, children}) {
+export default function AdminLayout({role, children}) {
     return <PageLayout compact>
         <div className="dual-layout mobile-flex-wrap bg-color-white">
             {role === 'admin' ? <AdminSidebarView/> : <PartnerSidebarView/>}
@@ -14,5 +14,3 @@ function AdminLayout({role, children}) {
         </div>
     </PageLayout>
 }
-
-export default AdminLayout

@@ -8,7 +8,7 @@ function validation({password, confirm}) {
     return password === confirm && password.length >= 8
 }
 
-function PasswordRecoveryForm({id}) {
+export default function PasswordRecoveryForm({id}) {
     const [credentials, setCredentials] = useState()
     const [isValid, setIsValid] = useState(false)
 
@@ -42,5 +42,3 @@ function PasswordRecoveryForm({id}) {
         <Button block disabled={!isValid} className="space" onClick={onSave}>Save</Button>
     </div>
 }
-
-export default PasswordRecoveryForm

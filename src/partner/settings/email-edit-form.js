@@ -5,7 +5,7 @@ import {Button} from '../../components/ui/button'
 import {Dialog} from '../../components/ui/dialog'
 import validateEmail from '../../utils/validate-email'
 
-function EmailEditForm() {
+export default function EmailEditForm() {
     const userData = getAuth()
     const [email, setEmail] = useState(userData.email)
     const [isOpen, setIsOpen] = useState(false)
@@ -56,5 +56,3 @@ function EmailEditForm() {
         </Dialog>
     </div>
 }
-
-export default EmailEditForm

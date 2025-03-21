@@ -10,7 +10,7 @@ function validationPassword({password, newPassword, confirm}) {
     return newPassword === confirm && newPassword.length >= 8
 }
 
-function PasswordEditForm() {
+export default function PasswordEditForm() {
     const [credentials, setCredentials] = useState()
     const [isValid, setIsValid] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
@@ -81,5 +81,3 @@ function PasswordSetting ({title, name, value, onChange, onKeyDown}) {
                ref={(name === 'password') ? useAutoFocusRef : null} className="styled-input"/>
     </div>
 }
-
-export default PasswordEditForm

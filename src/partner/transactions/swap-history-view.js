@@ -8,9 +8,8 @@ import {AssetIcon} from '../../components/ui/asset-link'
 import {Button} from '../../components/ui/button'
 import {Loader} from '../../components/ui/loader'
 import {Amount} from '../../components/ui/amount'
-import SearchView from '../../components/ui/search-view'
-import './swap-history.scss'
 import {AccountAddress} from '../../components/ui/account-address'
+import './swap-history.scss'
 
 function parseAsset(asset) {
     const [code, issuer] = asset.split('-')

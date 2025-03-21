@@ -59,7 +59,7 @@ export default function LogsView() {
 
 function LogRecord({log, onChangeTopic}) {
     return <tr>
-        <td data-header="Log: ">
+        <td data-header="Log: " className="word-break">
             <div className={cn({error: log.topics.includes('error')})}>
                 {log.message}
                 <span className="mobile-only">&emsp;</span>

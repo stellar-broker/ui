@@ -7,7 +7,7 @@ const navLinks = {
     logs: {title: 'Logs', link: '/admin/logs', icon: 'warning-circle'},
 }
 
-function AdminSidebarView() {
+export default function AdminSidebarView() {
     return <SidebarView>
         <NavSidebarView navLinks={navLinks}/>
         <ul className="links">
@@ -15,5 +15,3 @@ function AdminSidebarView() {
         </ul>
     </SidebarView>
 }
-
-export default AdminSidebarView

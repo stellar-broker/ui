@@ -5,7 +5,7 @@ function parseUrl() {
     return path[2] || 'dashboard'
 }
 
-function NavSidebarView({navLinks}) {
+export default function NavSidebarView({navLinks}) {
     const activeLink = parseUrl()
 
     return <ul className="nav-sidebar">
@@ -18,5 +18,3 @@ function NavSidebarView({navLinks}) {
         })}
     </ul>
 }
-
-export default NavSidebarView

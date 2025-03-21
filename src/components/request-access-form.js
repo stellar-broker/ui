@@ -7,7 +7,7 @@ function validate({name, email, website}) {
     return validateEmail(email) && !!name && !!website
 }
 
-function RequestAccessForm({step, updateStep, stepAmount}) {
+export default function RequestAccessForm({step, updateStep, stepAmount}) {
     const [info, setInfo] = useState({})
     const [isValid, setIsValid] = useState(false)
 
@@ -54,5 +54,3 @@ Website: ${info.website}`
         </div>
     </div>
 }
-
-export default RequestAccessForm

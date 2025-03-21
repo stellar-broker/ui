@@ -3,7 +3,7 @@ import Chart from '../../components/chart/chart'
 import {performApiCall} from '../../api/api-call'
 import {getAuth} from '../../api/auth'
 
-function AssetChartView() {
+export default function AssetChartView() {
     const userData = getAuth()
     const endPoint = userData?.roles.includes('admin') ? `asset-stats` : `partner/asset-stats`
     const [stats, setStats] = useState()
@@ -55,5 +55,3 @@ function AssetChartView() {
         <Chart {...{title, options}}/>
     </div>
 }
-
-export default AssetChartView
