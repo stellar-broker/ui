@@ -4,7 +4,7 @@ import {setPageMetadata} from '../../utils/meta-tags-generator'
 import StatisticsView from '../../partner/dashboard/statistics-view'
 import VolumeChartView from '../../partner/dashboard/volume-chart-view'
 import AssetChartView from '../../partner/dashboard/asset-chart-view'
-import TransactionsView from '../../partner/transactions/transactions-view'
+import SwapHistoryView from '../../partner/transactions/swap-history-view'
 
 export default function AdminDashboardPage() {
     const [stats, setStats] = useState()
@@ -43,7 +43,7 @@ export default function AdminDashboardPage() {
             </div>
         </div>
         <div>
-            <TransactionsView compact endpoint="swaps"/>
+            <SwapHistoryView compact endpoint="swaps"/>
         </div>
     </div>
 }

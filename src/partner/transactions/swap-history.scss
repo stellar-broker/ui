@@ -1,0 +1,18 @@
+.swaps-history {
+  .asset-pair {
+    .asset-icon {
+      width: 1.6rem;
+      height: 1.6rem;
+      margin-right: 0.2rem;
+
+      &:before {
+        font-size: 1.6rem;
+        padding-top: 5px;
+      }
+    }
+
+    .domains {
+      font-size: 10px;
+    }
+  }
+}

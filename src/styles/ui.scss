@@ -132,6 +132,10 @@ input {
         padding: $space-nano 0;
         border-top: 1px solid $gray;
 
+        &:first-child {
+          border: none;
+        }
+
         td, th {
           display: flex;
           flex-wrap: wrap;

@@ -36,6 +36,7 @@ html {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  font-size: $font-size-base;
 }
 
 body {
@@ -71,6 +72,10 @@ label {
   background-color: $gray;
 }
 
+.bg-color-white {
+  background-color: #fff;
+}
+
 .hr {
   width: 100%;
   border-bottom: 1px solid $gray;
@@ -81,4 +86,8 @@ label {
   width: 100%;
   text-align: center;
   padding: 1em;
+}
+
+.overflow-hidden {
+  overflow: hidden;
 }

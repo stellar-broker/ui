@@ -8,7 +8,8 @@ import {AssetIcon} from '../../components/ui/asset-link'
 import {Button} from '../../components/ui/button'
 import {Loader} from '../../components/ui/loader'
 import {Amount} from '../../components/ui/amount'
-import './transactions-view.scss'
+import './swap-history.scss'
+import {AccountAddress} from '../../components/ui/account-address'
 
 function parseAsset(asset) {
     const [code, issuer] = asset.split('-')
@@ -19,7 +20,7 @@ function parseAsset(asset) {
     }
 }
 
-export default function TransactionsView({compact, endpoint = 'partner/swaps'}) {
+export default function SwapHistoryView({compact, endpoint = 'partner/swaps'}) {
     const transactions = usePaginatedApi(
         {
             path: endpoint,
@@ -49,6 +50,7 @@ export default function TransactionsView({compact, endpoint = 'partner/swaps'}) 
                 <thead className="text-tiny dimmed">
                 <tr>
                     <th>Pair</th>
+                    <th>Account</th>
                     <th>Sell</th>
                     <th>Fees</th>
                     <th className="desktop-center">Status</th>
@@ -81,6 +83,9 @@ function SwapRecord({swap}) {
             <td data-header="Pair: ">
                 <AssetPair pair={pair}/>
             </td>
+            <td data-header="Account: ">
+                {!!swap.account && <AccountAddress address={swap.account} className="text-small font-mono"/>}
+            </td>
             <td data-header="Sell: ">
                 <span className="font-mono">
                     <Amount amount={swap.sellingAmount} asset={swap.sellingAsset} adjust issuer={false}/>
@@ -102,8 +107,8 @@ function SwapRecord({swap}) {
             </td>
         </tr>
         {expanded && <tr className="details text-small">
-            <td colSpan="6" style={{paddingLeft: '4em'}}>
-                <div>
+            <td colSpan="7" style={{paddingLeft: '4em'}}>
+                <div className="nano-space">
                     Quote estimated amount:{' '}
                     {swap.quote.estimatedBuyingAmount ?
                         <Amount amount={swap.quote.estimatedBuyingAmount} asset={swap.buyingAsset} adjust issuer={false}/> :
@@ -111,24 +116,40 @@ function SwapRecord({swap}) {
                     }, slippage tolerance: {swap.quote.slippageTolerance * 100}%
                 </div>
                 <div className="nano-space"/>
-                {swap.trades.map(trade => <div key={trade.id}>
-                    <i className="icon-angle-double-right"/>
-                    <Amount amount={trade.sold || trade.estimatedSold} asset={swap.sellingAsset} adjust issuer={false}/>
-                    {' '}<i className="icon-swap"/>{' '}
-                    <Amount amount={trade.bought || trade.estimatedBought} asset={swap.buyingAsset} adjust issuer={false}/>
-                    {!!trade.fee && <> (fee
-                        ${fromStroops(trade.fee)})</>} - <span className="dimmed">{decodeTradeStatus(trade.status)}</span>
-                    &emsp;
-                    {trade.status === 'success' || trade.status === 'failed' ?
-                        <a href={`https://stellar.expert/explorer/public/tx/${trade.tx}`} target="_blank"
-                           title="View transaction details">
-                            {formatDateUTC(trade.created)} <i className="icon-open-new-window"/></a> :
-                        <span className="dimmed">{formatDateUTC(trade.created)}</span>
-                    }
-                </div>)}
+                {swap.trades.map(trade => <SwapTx key={trade.id} trade={trade} swap={swap}/>)}
             </td>
         </tr>}
     </>
+}
+
+function SwapTx({trade, swap}) {
+    return <div className="nano-space">
+        <Amount amount={trade.sold || trade.estimatedSold} asset={swap.sellingAsset} adjust issuer={false}/>
+        {' '}<i className="icon-swap"/>{' '}
+        <Amount amount={trade.bought || trade.estimatedBought} asset={swap.buyingAsset} adjust issuer={false}/>
+        {!!trade.fee && <> (fee
+            ${fromStroops(trade.fee)})</>} - <span className="dimmed">{decodeTradeStatus(trade.status)}</span>
+        &emsp;
+        {trade.status === 'success' || trade.status === 'failed' ?
+            <a href={`https://stellar.expert/explorer/public/tx/${trade.tx}`} target="_blank"
+               title="View transaction details">
+                {formatDateUTC(trade.created)} <i className="icon-open-new-window"/></a> :
+            <span className="dimmed">{formatDateUTC(trade.created)}</span>
+        }
+        {!!trade.venues && <div className="dimmed text-tiny">{trade.venues.split('→').map((step, i) => {
+            let [venue, asset] = step.split(':')
+            let renderAs
+            if (!asset) {
+                asset = venue
+            } else if (venue.indexOf('-') > 0) {
+                const [protocol, contract] = venue.split('-')
+                renderAs = <>{protocol}:<AccountAddress address={contract} icon={false}/></>
+            } else {
+                renderAs = venue
+            }
+            return <span key={i}>{i > 0 && ' → '}{renderAs} {asset.split('-')[0]}</span>
+        })}</div>}
+    </div>
 }
 
 function getSwapStatus(swap) {
@@ -187,7 +208,7 @@ function AssetPair({pair}) {
         <AssetIcon asset={pair[1].asset}/>&nbsp;
         <span>
             <span>{assetA.code} <i className="icon-swap text-small"/> {assetB.code}</span>
-            {(sellingAsset.domain && buyingAsset.domain) && <span className="dimmed text-tiny block">
+            {(sellingAsset.domain && buyingAsset.domain) && <span className="dimmed block domains">
                 {sellingAsset.domain} / {buyingAsset.domain}
             </span>}
        </span>

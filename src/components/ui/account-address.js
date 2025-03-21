@@ -31,14 +31,15 @@ export const AccountAddress = React.memo(function AccountAddress({
         return null
     let innerStyle = !style ? undefined : style
 
+    let title = address
     if (chars && chars !== 'all') {
-        address = shortenString(address, chars)
+        title = shortenString(address, chars)
     }
 
     const children = <>
         {icon !== false && <AccountIdenticon key="identicon" address={address}/>}
         <AccountDisplayName name={name}/>
-        <span className="account-key">{address}</span>
+        <span className="account-key">{title}</span>
     </>
 
     const containerProps = {

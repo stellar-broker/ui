@@ -1,7 +1,7 @@
 {
   "name": "@stellar-broker/ui",
   "private": true,
-  "version": "0.6.4",
+  "version": "0.6.6",
   "description": "Website UI for StellarBroker service",
   "author": "team@stellar.broker",
   "homepage": "https://stellar.broker",
