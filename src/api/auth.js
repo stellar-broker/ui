@@ -12,6 +12,7 @@ export function getAuth() {
         return null
     }
     return {
+        inactive: parsed.inactive,
         id: parsed.id,
         roles: parsed.roles,
         email: parsed.email
