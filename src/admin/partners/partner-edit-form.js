@@ -77,10 +77,10 @@ export default function PartnerEditForm({id}) {
                 <Button block onClick={onSave}>Save</Button>
             </div>
             {id && <div className="column column-33">
-                <Button block href={`/admin/partners/edit/${id}/password`}>Change password</Button>
+                <Button block href={`/admin/partner/${id}/password`}>Change password</Button>
             </div>}
             <div className="column column-33">
-                <Button block outline href="/admin/partners">Cancel</Button>
+                <Button block outline href="/admin/partner">Cancel</Button>
             </div>
         </div>
         {/*<PartnerPasswordRecoveryView id={id}/>*/}
@@ -109,7 +109,7 @@ async function addPartner(email) {
 
             console.log(params)
             notify({type: 'success', message: 'New partner has been added'})
-            navigation.navigate('/admin/partners')
+            navigation.navigate('/admin/partner')
         })
 }
 
@@ -125,7 +125,7 @@ async function updatePartner(id, newSettings) {
                 return notify({type: 'error', message: 'Failed to change partner settings. ' + result.error})
 
             notify({type: 'success', message: 'Partner settings successfully changed'})
-            navigation.navigate('/admin/partners')
+            navigation.navigate('/admin/partner')
         })
 }
 
