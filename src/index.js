@@ -28,14 +28,16 @@ function bindClickNavHandler(container) {
                 window.top.location = /^(https?):\/\//.test(href) ? href : (window.origin + href)
                 return e.preventDefault()
             }
-            if (link.classList.contains('external-link')) return
-            if (/^(mailto:|tel:|(https?):\/\/)/.test(href)) return
+            if (link.classList.contains('external-link'))
+                return
+            if (/^(mailto:|tel:|(https?):\/\/)/.test(href))
+                return
 
             const [pathAndQuery] = href.split('#')
 
             if (!pathAndQuery || (location.pathname + location.search) === pathAndQuery)
                 return e.preventDefault()
-            if (link.classList.contains('static-link'))
+            if (link.classList.contains('static-link') || link.classList.contains('disabled'))
                 return e.preventDefault()
             //history.pushState({}, null, href)
             //e.preventDefault()

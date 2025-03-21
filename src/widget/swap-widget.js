@@ -32,7 +32,7 @@ export const SwapWidget = function SmartSwapWidget({className}) {
             {settings.message ? <div className="dimmed text-small">
                 <i className="icon-warning"/> {settings.message}
             </div> : <div className="dual-layout middle">
-                <div className="dimmed text-small">
+                <div className="dimmed text-tiny">
                     {change > 0 && <div style={{margin: '0.5em 0'}}>
                         Savings: <span className="color-primary text-small">
                         {diff} (+{change} {settings.asset[1].split('-')[0]})
@@ -40,7 +40,7 @@ export const SwapWidget = function SmartSwapWidget({className}) {
                     </div>}
                 </div>
                 <div>
-                    <Button small style={{margin: '0 0 0 1em'}} onClick={initSwap}>SWAP</Button>
+                    <Button style={{margin: '0 0 0 1em'}} onClick={initSwap}>SWAP</Button>
                 </div>
             </div>}
             {/*<div className="dimmed text-small micro-space">1 AQUA = 0,0079528 XLM</div>
@@ -57,7 +57,7 @@ export const SwapWidget = function SmartSwapWidget({className}) {
 }
 
 function initSwap() {
-    alert(`Swaps are currently disabled in demo mode.\nStay tuned, we are going live soon!`)
+    alert(`Use Albedo wallet or StellarTerm to swap assets with this quote.`)
 }
 
 function SwapAmount({amount, asset, onChange, onAssetChange, placeholder, className}) {
