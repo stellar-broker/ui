@@ -31,7 +31,7 @@ function AdminPartnersPage() {
             </div>
             <div className="column column-25 text-right">
                 <div className="nano-space"/>
-                <Button stackable outline href="add"><i className="icon-user-add"/> Add partner</Button>
+                <Button stackable outline href="/admin/partner/add"><i className="icon-user-add"/> Add partner</Button>
             </div>
         </div>
         <div className="hr space"/>

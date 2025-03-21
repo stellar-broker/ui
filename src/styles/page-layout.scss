@@ -12,6 +12,11 @@
     max-width: 86rem;
     padding: 0 2rem;
     width: 100%;
+
+    &.no-padding {
+      padding: 0!important;
+    }
+
     @media (max-width: $responsive-mobile-browser-width) {
       padding: 0 1rem;
     }
