@@ -1,57 +1,52 @@
+import {useEffect, useState} from 'react'
 import cn from 'classnames'
-import {getDailyValue, getMonthlyValue} from '../../utils/statistics-calculation'
-import {splineOptions} from '../../components/chart/chart-default-options'
-import Chart from '../../components/chart/chart'
+import {formatWithAutoPrecision} from '@stellar-expert/formatter'
+import {performApiCall} from '../../api/api-call'
 
-export default function StatisticsView({stats}) {
-    const dailyValueFee = getDailyValue(stats, 'fee')
-    const dailyTx = getDailyValue(stats, 'tx')
-    const monthlyValueFee = getMonthlyValue(stats, 'fee', 6) //display statistics for 3 months
-    const monthlyTx = getMonthlyValue(stats, 'tx', 6) //display statistics for 3 months
+export default function StatisticsView({isAdmin}) {
+    const [stats, setStats] = useState()
+    useEffect(() => {
+        performApiCall(!isAdmin ? 'partner/diff-stats' : 'diff-stats')
+            .then(data => setStats(data))
+    }, [])
+    if (!stats)
+        return <div style={{height: '6em'}}>
+            <div className="loader"/>
+        </div>
 
     return <div className="row">
         <div className="column column-25">
-            <EntryStatisticView title="Daily fees volume" value={`$${dailyValueFee.value}`} sign="$"
-                                changes={dailyValueFee.changes} data={dailyValueFee.data}/>
+            <EntryStatisticView title="24H fees volume" value={formatWithAutoPrecision(stats.daily.fees)}
+                                changes={formatWithAutoPrecision(stats.daily.feesChange)} prefix="$"/>
         </div>
         <div className="column column-25">
-            <EntryStatisticView title="Monthly fees volume" value={`$${monthlyValueFee.value}`} sign="$" onlyMonth
-                                changes={monthlyValueFee.changes} data={monthlyValueFee.data}/>
+            <EntryStatisticView title="Monthly fees volume" value={formatWithAutoPrecision(stats.monthly.fees)}
+                                changes={formatWithAutoPrecision(stats.monthly.feesChange)} prefix="$"/>
         </div>
         <div className="column column-25">
-            <EntryStatisticView title="Daily swaps" value={`${dailyTx.value}`}
-                                changes={dailyTx.changes} data={dailyTx.data}/>
+            <EntryStatisticView title="24H swaps" value={formatWithAutoPrecision(stats.daily.swaps)}
+                                changes={formatWithAutoPrecision(stats.daily.swapsChange)}/>
         </div>
         <div className="column column-25">
-            <EntryStatisticView title="Monthly swaps" value={`$${monthlyTx.value}`} onlyMonth
-                                changes={monthlyTx.changes} data={monthlyTx.data}/>
+            <EntryStatisticView title="Monthly swaps" value={formatWithAutoPrecision(stats.monthly.swaps)}
+                                changes={formatWithAutoPrecision(stats.monthly.swapsChange)}/>
         </div>
     </div>
 }
 
-function EntryStatisticView({title, value, sign = '', changes, data = [], onlyMonth}) {
-    const direction = changes ? parseFloat(changes) > 0 ? 'up' : 'down' : ''
-    const options = {
-        ...splineOptions,
-        series: [{
-            data,
-            type: 'spline',
-            showInLegend: false,
-            dataLabels: {
-                enabled: false
-            }
-        }],
-        tooltip: false
-    }
-
+function EntryStatisticView({title, value, prefix = '', changes = '0'}) {
+    const direction = changes ? parseFloat(changes) >= 0 ? 'up' : 'down' : ''
     return <div className="info-block micro-space">
         <p className="text-nano text-upper dimmed nano-space">{title}</p>
-        <div className="dual-layout">
-            <div>
-                <h5 className="nano-space">{value}</h5>
-                <div className={cn('badge', direction)}>{changes}%</div>
-            </div>
-            <Chart options={options}/>
-        </div>
+        <h4 className="nano-space">
+            {prefix}{value}
+            {value !== '0' && <>
+                {' '}
+                <span className={cn('badge text-tiny', direction)} style={{verticalAlign: 'top'}}>
+                    {parseFloat(changes) < 0 ? '-' : '+'}
+                    {changes}%
+                </span>
+            </>}
+        </h4>
     </div>
 }

@@ -32,7 +32,7 @@ export default function AdminDashboardPage() {
         <h4>Dashboard</h4>
         <p className="text-small dimmed mini-space">Statistics of connected partners</p>
         <div className="hr space"/>
-        <StatisticsView stats={stats}/>
+        <StatisticsView isAdmin/>
         <div className="micro-space"/>
         <div className="row">
             <div className="column column-67">
