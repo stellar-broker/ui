@@ -25,7 +25,7 @@ export default function PasswordRecoveryPage() {
                 </div>
             </div>
         </div>
-        <div className="column column-50 bg-color-primary flex-middle only-desktop">
+        <div className="column column-50 bg-color-primary flex-middle desktop-only">
             <img src="/img/dashboard.png" className="promo" style={{maxHeight: '80vh'}} alt=""/>
         </div>
     </div>

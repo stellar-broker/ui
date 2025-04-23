@@ -8,10 +8,10 @@
 }
 
 * {
-  @include scrollbars(6px, $color-dimmed, $gray);
+  @include scrollbars(6px, $color-dimmed-light, $gray);
 }
 
-@include scrollbars(6px, $color-dimmed, $gray);
+@include scrollbars(6px, $color-dimmed-light, $gray);
 
 input, textarea, button {
   font-family: $font-face-primary, sans-serif;
@@ -22,10 +22,26 @@ a {
   color: $primary;
   text-decoration: none;
   transition: .2s;
-  &.dimmed:hover {
-    color: initial;
-    text-decoration: initial;
+
+  &.dotted {
+    border-bottom: 1px dotted $primary;
   }
+
+  &.dimmed {
+    &.dotted {
+      border-bottom-color: $color-dimmed;
+    }
+
+    &:hover {
+      color: $primary;
+      text-decoration: initial;
+
+      &.dotted {
+        border-bottom-color: $primary;
+      }
+    }
+  }
+
   &:hover {
     text-decoration: none;
   }
@@ -57,11 +73,15 @@ body {
 
 .label,
 label {
-  padding: 0.25em 0;
+  padding: 0.2em 0 0.4em;
 }
 
 .color-primary {
   color: $primary;
+}
+
+.color-red {
+  color: $red;
 }
 
 .bg-color-primary {

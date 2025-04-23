@@ -22,14 +22,14 @@ Highcharts.Axis.prototype.lin2log = function (num) {
 
 const defaultTextStyle = {
     fontSize: '12px',
-    fontFamily: 'Roboto,sans-serif',
+    fontFamily: 'Inter,sans-serif',
     fontWeight: 400,
-    color: '#333'
+    color: '#151C25'
 }
 
 const theme = Highcharts.theme = {
-    colors: ['hsl(193,93%,46%)', 'hsl(27,93%,66%)', 'hsl(130,60%,46%)', 'hsl(290,40%,46%)',
-        'hsl(180,93%,46%)', 'hsl(13,40%,46%)', 'hsl(115,40%,46%)', 'hsl(270,40%,66%)',
+    colors: ['hsl(219, 100%, 50%)', 'hsl(31, 100%, 56%)', 'hsl(112, 67%, 61%)', 'hsl(324, 79%, 60%)',
+        'hsl(214, 100%, 60%)', 'hsl(174, 62%, 46%)', 'hsl(115,40%,46%)', 'hsl(270,40%,66%)',
         'hsl(155,60%,46%)', 'hsl(0,40%,66%)', 'hsl(100,43%,66%)', 'hsl(250,50%,66%)',
         'hsl(143,40%,66%)', 'hsl(340,40%,46%)', 'hsl(212,40%,46%)', 'hsl(235,40%,46%)',
         'hsl(135,60%,40%)', 'hsl(320,50%,66%)'

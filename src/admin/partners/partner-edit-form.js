@@ -1,29 +1,22 @@
-import {useCallback, useEffect, useState} from 'react'
+import {useCallback, useRef} from 'react'
 import {navigation} from '../../utils/navigation'
 import {generatePassword} from '../../utils/password-generator'
 import {performApiCall} from '../../api/api-call'
 import {Button} from '../../components/ui/button'
 import {useAutoFocusRef} from '../../utils/hooks/auto-focus-ref'
+import {usePartnerSettings} from '../../utils/hooks/partner-settings'
 
 export default function PartnerEditForm({id}) {
-    const [settings, setSettings] = useState({})
-    useEffect(() => {
-        if (!id)
-            return null
-        performApiCall('partner/' + id)
-            .then((result) => {
-                if (result.error)
-                    return notify({type: 'error', message: 'Failed to retrieve partners data. ' + result.error})
-                setSettings({
-                    email: result.email,
-                    ...result.settings
-                })
-            })
-    }, [id])
+    const [settings, setSettings] = usePartnerSettings(id)
 
     const changeEmail = useCallback(e => {
         const email = e.target.value.trim()
         setSettings(prev => ({...prev, email}))
+    }, [])
+
+    const changeName = useCallback(e => {
+        const name = e.target.value.trim()
+        setSettings(prev => ({...prev, name}))
     }, [])
 
     const onSettingsChange = useCallback(e => {
@@ -52,13 +45,24 @@ export default function PartnerEditForm({id}) {
     return <div>
         <div className="row">
             <div className="column column-50">
+                <PartnerImage settings={settings} onChange={setSettings}/>
+            </div>
+        </div>
+        <div className="row">
+            <div className="column column-50">
                 <div className="space">
                     <p className="label text-small">Partner email</p>
                     <input value={settings.email || ''} onChange={changeEmail} onKeyDown={onKeyDown} ref={useAutoFocusRef} className="styled-input"/>
                 </div>
             </div>
+            <div className="column column-50">
+                <div className="space">
+                    <p className="label text-small">Project name</p>
+                    <input value={settings.name || ''} onChange={changeName} onKeyDown={onKeyDown} className="styled-input"/>
+                </div>
+            </div>
         </div>
-        <div className="row space text-small dimmed">
+        <div className="row micro-space text-small dimmed">
             <PartnerSetting settings={settings} field="partnerVarFee" title="Partner profit fee" onChange={onSettingsChange} onKeyDown={onKeyDown}>
                 Variable fee charged from the funds saved during the swap
             </PartnerSetting>
@@ -73,14 +77,12 @@ export default function PartnerEditForm({id}) {
             </PartnerSetting>
         </div>
         <div className="row row-right space">
-            <div className="column column-33">
-                <Button block onClick={onSave}>Save</Button>
-            </div>
-            {id && <div className="column column-33">
-                <Button block href={`/admin/partner/${id}/password`}>Change password</Button>
+            {id && <div className="column column-50">
+                <Button stackable secondary href={`/admin/partner/${id}/password`}>Change password</Button>
             </div>}
-            <div className="column column-33">
-                <Button block outline href="/admin/partner">Cancel</Button>
+            <div className="column column-50 text-right">
+                <Button stackable onClick={onSave}>Save</Button>
+                <Button stackable outline href="/admin/partner">Cancel</Button>
             </div>
         </div>
         {/*<PartnerPasswordRecoveryView id={id}/>*/}
@@ -89,11 +91,45 @@ export default function PartnerEditForm({id}) {
 
 function PartnerSetting({settings, field, title, children, onChange, onKeyDown}) {
     return <div className="column column-50">
-        <p className="label">{title} (‰)</p>
-        <input value={settings[field] || ''} className="styled-input" placeholder={`0-${feeLimit[field]}‰`}
-               onChange={onChange} onKeyDown={onKeyDown} data-field={field}/>
-        <div className="nano-space"/>
-        <div className="text-tiny">{children}</div>
+        <div className="space">
+            <p className="label">{title} (‰)</p>
+            <input value={settings[field] || ''} className="styled-input" placeholder={`0-${feeLimit[field]}‰`}
+                   onChange={onChange} onKeyDown={onKeyDown} data-field={field}/>
+            <div className="nano-space"/>
+            <div className="text-tiny dimmed-light">{children}</div>
+        </div>
+    </div>
+}
+
+function PartnerImage({settings, onChange}) {
+    const inputRef = useRef()
+    const selectFile = useCallback(e => {
+        const [file] = e.target.files
+        if (file) {
+            const img = new Image()
+            img.src = URL.createObjectURL(file)
+
+            img.decode()
+                .then(() => {
+                    onChange(prev => ({...prev, image: img.src}))
+                })
+                .catch(() => {
+                    notify({type: 'error', message: 'Failed to load image'})
+                })
+        }
+    }, [])
+
+    return <div className="dual-layout middle space">
+        <div>
+            <p className="label">Account image</p>
+            <label className="upload-input-wrap">
+                <span className="button button-secondary small" style={{margin: 0}}>{settings.image ? 'Update' : 'Upload'}</span>
+                <input type="file" ref={inputRef} placeholder="Choose image" onChange={selectFile}/>
+            </label>
+        </div>
+        <div className="account-image-wrap">
+            {settings.image && <img src={settings.image} alt="Account image"/>}
+        </div>
     </div>
 }
 

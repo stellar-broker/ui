@@ -1,27 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 $responsive-mobile-browser-width: 992px;
 
-$primary: #0153ff;
+$primary: #0059FF;
 $primary-disabled: #0c74fa;
-$gray: #f2f3f7;
-$light: #fafbfc;
-$green: #28a745;
-$red: #dc3545;
-$info: #08b5e5;
-$warning: #b27100;
+$gray: #F2F3F7;
+$light: #F9FBFC;
+$green: #0CA53A;
+$red: #F05064;
+$info: #62B0FF;
+$warning: #F85926;
 
-$color-text: #333;
-$color-dimmed: #999;
+$green-fon: #E6FFF1;
+$info-fon: #E2F8FF;
+$red-fon: #FFF5FA;
+$warning-fon: #FEF9DA;
+
+$color-text: #151C25;
+$color-dark: #373436;
+$color-dimmed: #565F70;
+$color-dimmed-light: #8891A0;
 $color-label: $color-dimmed;
 
-$font-face-primary: 'Roboto';
-$font-size-base: 16px;
+$font-face-primary: 'Inter';
+$font-size-base: 14px;
 $font-weight-base: 400 !default;
-$font-line-height-base: 1.35 !default;
+$font-line-height-base: 1.55 !default;
 
 $border-radius-input: .5em;
-$border-radius-badge: .25em;
+$border-radius-badge: .325em;
 
 $space-standard: 2rem !default;
+$space-mini: 1.5rem !default;
 $space-micro: 1rem !default;
 $space-nano: 0.5rem !default;
 $space-double: 4rem !default;

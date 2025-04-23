@@ -1,0 +1,20 @@
+@import "../../styles/constants";
+
+.breadcrumbs {
+  .badge {
+    padding: 0.65em;
+  }
+
+  a, span {
+    color: $color-dimmed-light;
+  }
+
+  a:hover {
+    color: $primary;
+  }
+
+  [class^="icon-"] {
+    margin: 0 $space-nano;
+    font-size: 0.5*$font-size-base
+  }
+}

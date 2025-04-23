@@ -3,19 +3,19 @@
 .swap-widget {
   padding: $space-standard;
   background: #fff;
-  border-radius: $border-radius-input;
+  border-radius: 2*$border-radius-input;
 
   .asset-value {
     position: relative;
     padding: $space-micro;
     border: 1px solid $gray;
-    border-radius: $border-radius-input;
+    border-radius: 2*$border-radius-input;
 
     .asset-selector {
       position: absolute;
       top: $space-micro;
       right: 1em;
-      padding: $space-nano $space-micro;
+      padding: 0.75em $space-micro;
       border: 1px solid $gray;
       border-radius: $space-standard;
     }
@@ -34,5 +34,11 @@
     user-select: none;
     outline: 0;
     border: none;
+  }
+}
+
+@media (max-width: $responsive-mobile-browser-width) {
+  .swap-widget {
+    padding: $space-micro;
   }
 }

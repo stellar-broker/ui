@@ -25,23 +25,20 @@ export const SwapWidget = function SmartSwapWidget({className}) {
     return <div className={`swap-widget ${className}`}>
         <SwapAmount className="nano-space" placeholder="From" onChange={v => settings.setAmount(v)} amount={settings.amount[0]}
                     asset={settings.asset[0]} onAssetChange={v => settings.setSellingAsset(v)}/>
-        <div className="flex-center nano-space"><i className="icon-arrow-down dimmed"/></div>
+        <div className="flex-center nano-space"><i className="icon-arrow-down color-gray"/></div>
         <SwapAmount className="space" placeholder="To (estimated)" amount={settings.amount[1]}
                     asset={settings.asset[1]} onAssetChange={v => settings.setBuyingAsset(v)}/>
         <div style={{paddingLeft: '0.5em'}}>
             {settings.message ? <div className="dimmed text-small">
                 <i className="icon-warning"/> {settings.message}
-            </div> : <div className="dual-layout middle">
-                <div className="dimmed text-tiny">
-                    {change > 0 && <div style={{margin: '0.5em 0'}}>
-                        Savings: <span className="color-primary text-small">
+            </div> : <div>
+                {change > 0 && <div className="dual-layout middle dimmed text-tiny micro-space">
+                    <div>Savings:</div>
+                    <div className="color-primary text-small">
                         {diff} (+{change} {settings.asset[1].split('-')[0]})
-                        </span>
-                    </div>}
-                </div>
-                <div>
-                    <Button style={{margin: '0 0 0 1em'}} onClick={initSwap}>SWAP</Button>
-                </div>
+                    </div>
+                </div>}
+                <Button block secondary onClick={initSwap}>Swap</Button>
             </div>}
             {/*<div className="dimmed text-small micro-space">1 AQUA = 0,0079528 XLM</div>
             <div className="dual-layout middle micro-space text-small">
@@ -68,7 +65,7 @@ function SwapAmount({amount, asset, onChange, onAssetChange, placeholder, classN
 
     const props = onChange ? {onChange: changeAmount} : {readOnly: true}
     return <div className={`asset-value ${className}`}>
-        <div className="label text-tiny">{placeholder}</div>
+        <div className="dimmed-light text-tiny">{placeholder}</div>
         <input value={amount || ''} {...props}/>
         <AssetSelector value={asset} onChange={onAssetChange}/>
     </div>

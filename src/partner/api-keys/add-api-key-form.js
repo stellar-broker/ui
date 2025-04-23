@@ -21,7 +21,7 @@ export default function AddApiKeyForm({updateKeyList}) {
     }, [updateKeyList, toggleDialog])
 
     return <>
-        <Button stackable outline onClick={toggleDialog}><i className="icon-key-add"/>Add new API key</Button>
+        <Button stackable outline onClick={toggleDialog} className="button-micro" style={{margin: 0}}>Add new API key</Button>
         <Dialog dialogOpen={isOpen} className="text-left">
             <div className="micro-space"><h5>Add new API key</h5></div>
             <div className="space">

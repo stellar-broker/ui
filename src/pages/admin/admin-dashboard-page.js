@@ -29,8 +29,8 @@ export default function AdminDashboardPage() {
         return null
 
     return <div>
-        <h4>Dashboard</h4>
-        <p className="text-small dimmed mini-space">Statistics of connected partners</p>
+        <h3>Dashboard</h3>
+        <p className="dimmed space">Statistics of connected partners</p>
         <div className="hr space"/>
         <StatisticsView stats={stats}/>
         <div className="micro-space"/>
@@ -41,9 +41,10 @@ export default function AdminDashboardPage() {
             <div className="column column-33">
                 <AssetChartView/>
             </div>
-        </div>
-        <div>
-            <SwapHistoryView compact endpoint="swaps"/>
+            <div className="column">
+                <div className="micro-space"/>
+                <SwapHistoryView compact endpoint="swaps"/>
+            </div>
         </div>
     </div>
 }

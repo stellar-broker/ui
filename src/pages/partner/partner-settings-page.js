@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react'
 import {setPageMetadata} from '../../utils/meta-tags-generator'
-import SettingsForm from '../../partner/settings/settings-form'
 import {performApiCall} from '../../api/api-call'
 import {Loader} from '../../components/ui/loader'
+import EmailEditForm from '../../partner/settings/email-edit-form'
+import PasswordEditForm from '../../partner/settings/password-edit-form'
+import AccountDeleteView from '../../partner/settings/account-delete-view'
 
 export default function PartnerDashboardPage() {
     setPageMetadata({
@@ -20,43 +22,57 @@ export default function PartnerDashboardPage() {
     }, [])
 
     return <div>
-        <h4>Settings</h4>
-        <p className="text-small dimmed mini-space">Change account settings</p>
-        <PartnerFees settings={partnerInfo?.settings}/>
-        <div className="hr space"/>
-        <SettingsForm/>
+        <h3>Settings</h3>
+        <p className="dimmed space">Change account settings</p>
+        <div className="hr double-space"/>
+        <div className="row">
+            <div className="column column-50">
+                <EmailEditForm/>
+                <PasswordEditForm/>
+            </div>
+        </div>
+        <div className="row">
+            <div className="column column-50">
+                <div className="hr space"/>
+                <PartnerFees settings={partnerInfo?.settings}/>
+            </div>
+        </div>
+        <div className="row">
+            <div className="column column-50">
+                <div className="hr space"/>
+                <AccountDeleteView/>
+            </div>
+        </div>
     </div>
 }
 
 function PartnerFees({settings}) {
     if (!settings)
         return <Loader/>
-    return <>
-        <div className="hr space"/>
-        <h5 className="nano-space">Fees</h5>
-        <div className="text-small space">
-            <PartnerSetting settings={settings} field="partnerVarFee" title="Partner profit fee">
-                Variable fee charged from the funds saved during the swap
-            </PartnerSetting>
-            <PartnerSetting settings={settings} field="brokerVarFee" title="Broker profit fee">
-                Variable service fee charged from the funds saved during the swap
-            </PartnerSetting>
-            <PartnerSetting settings={settings} field="partnerFixedFee" title="Partner fixed fee">
-                Fixed partner swap fee charged from the transaction amount
-            </PartnerSetting>
-            <PartnerSetting settings={settings} field="brokerFixedFee" title="Broker fixed fee">
-                Fixed service swap fee charged from the transaction
-            </PartnerSetting>
-        </div>
-    </>
+    return <div className="row text-small micro-space">
+        <PartnerSetting settings={settings} field="partnerVarFee" title="Partner profit fee">
+            Variable fee charged from the funds saved during the swap
+        </PartnerSetting>
+        <PartnerSetting settings={settings} field="brokerVarFee" title="Broker profit fee">
+            Variable service fee charged from the funds saved during the swap
+        </PartnerSetting>
+        <PartnerSetting settings={settings} field="partnerFixedFee" title="Partner fixed fee">
+            Fixed partner swap fee charged from the transaction amount
+        </PartnerSetting>
+        <PartnerSetting settings={settings} field="brokerFixedFee" title="Broker fixed fee">
+            Fixed service swap fee charged from the transaction
+        </PartnerSetting>
+    </div>
 }
 
 function PartnerSetting({settings, field, title, children}) {
     let value = settings[field]
     if (!value)
         return null
-    return <div className="nano-space">
-        <span className="dimmed">{title}: </span>{value / 1000}%
-        <div className="dimmed text-tiny">{children}</div>
+    return <div className="column column-25">
+        <div className="micro-space">
+            <strong>{value / 1000}%</strong><br/>
+            <a href="#" className="dotted dimmed text-tiny" title={children}>{title}</a>
+        </div>
     </div>
 }

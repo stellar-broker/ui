@@ -27,6 +27,7 @@
     transition: transform 0.3s ease-out;
     line-height: 2rem;
     margin-bottom: 4px;
+    border-radius: $border-radius-input;
 
     @media (max-width: $responsive-mobile-browser-width) {
       padding: 0.5*$space-standard;
@@ -58,7 +59,8 @@
     }
 
     > div {
-      color: $color-text;
+      color: $color-dimmed;
+      font-weight: 500;
       font-size: 0.9em;
       padding-right: $space-micro;
       @media (max-width: $responsive-mobile-browser-width) {
@@ -66,12 +68,19 @@
       }
     }
 
-    .icon-cancel {
+    .icon-cross {
       cursor: pointer;
       position: absolute;
       text-decoration: none;
+      font-weight: 500;
+      font-size: 0.75em;
       top: $toast-space;
       right: 0;
+      color: $color-dimmed-light !important;
+
+      &:hover {
+        color: $color-dimmed !important;
+      }
 
       @media (max-width: $responsive-mobile-browser-width) {
         top: $space-micro;
@@ -79,6 +88,7 @@
     }
 
     .lifetime {
+      display: none;
       position: absolute;
       left: 0;
       bottom: 0;
@@ -91,7 +101,7 @@
     }
 
     &.info {
-      background-color: $light;
+      background-color: $info-fon;
 
       .toast-notification-icon {
         color: $info;
@@ -103,7 +113,7 @@
     }
 
     &.success {
-      background-color: #b6e3c0;
+      background-color: $green-fon;
 
       .toast-notification-icon {
         color: $green
@@ -115,7 +125,7 @@
     }
 
     &.warning {
-      background-color: #dbc194;
+      background-color: $warning-fon;
 
       .toast-notification-icon {
         color: $warning;
@@ -127,7 +137,7 @@
     }
 
     &.error {
-      background: #eb949c;
+      background: $red-fon;
 
       .toast-notification-icon {
         color: $red;

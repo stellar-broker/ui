@@ -20,7 +20,7 @@ export default function SignInPage({onLogin}) {
 
     return <PageLayout compact>
         <div className="row row-no-padding dual-screen bg-color-white">
-            <div className="column column-33">
+            <div className="column column-40">
                 <div className="middle-layout">
                     <div className="space">
                         <Logo/>
@@ -30,7 +30,7 @@ export default function SignInPage({onLogin}) {
                     <Footer/>
                 </div>
             </div>
-            <div className="column column-66 bg-color-primary flex-middle only-desktop overflow-hidden">
+            <div className="column column-60 bg-color-primary flex-middle desktop-only overflow-hidden">
                 <img src="/img/dashboard.png" className="promo" style={{maxHeight: '80vh'}} alt=""/>
             </div>
         </div>

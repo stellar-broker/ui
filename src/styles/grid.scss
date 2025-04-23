@@ -36,8 +36,8 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-left: -$space-micro;
-  width: calc(100% + #{$space-standard});
+  margin-left: -1rem;
+  width: calc(100% + 2rem);
 
   &.row-no-padding {
     padding: 0;
@@ -88,7 +88,6 @@
     margin-left: 0;
     max-width: 100%;
     width: 100%;
-    margin-bottom: inherit;
     padding: 0 $space-micro;
 
     &.v-top {
@@ -264,6 +263,10 @@
     align-items: center;
   }
 
+  &.flex-nowrap {
+    flex-wrap: nowrap;
+  }
+
   @media (min-width: $responsive-mobile-browser-width) {
     &.mobile-flex-wrap {
       flex-wrap: nowrap;
@@ -293,10 +296,4 @@
 
 .block {
   display: block;
-}
-
-@media (max-width: $responsive-mobile-browser-width) {
-  .only-desktop {
-    display: none!important;
-  }
 }

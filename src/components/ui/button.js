@@ -2,12 +2,13 @@ import React from 'react'
 import cn from 'classnames'
 import './button.scss'
 
-export const Button = React.memo(function Button({href, onClick, block, outline, clear, stackable, small, disabled, className, children, ...op}) {
+export const Button = React.memo(function Button({href, onClick, block, outline, secondary, clear, stackable, small, disabled, className, children, ...op}) {
     const c = cn('button', {
         small,
         disabled,
         'button-block': block,
         'button-outline': outline,
+        'button-secondary': secondary,
         'button-clear': clear,
         stackable
     }, className)

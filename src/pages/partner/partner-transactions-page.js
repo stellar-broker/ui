@@ -10,18 +10,19 @@ export default function PartnerTransactionsPage() {
     })
 
     return <div>
-        <div className="row nano-space">
+        <div className="row">
             <div className="column column-75">
                 <div className="flex-middle">
-                    <h4>Swap history</h4>
+                    <h3>Swap history</h3>
                 </div>
-                <p className="text-small dimmed nano-space">All swaps executed with your partner key</p>
+                <p className="dimmed space">All swaps executed with your partner key</p>
             </div>
             <div className="column column-25 text-right">
                 <div className="nano-space"/>
                 <ExportFileCreator/>
             </div>
         </div>
+        <div className="mobile-only space"/>
         <div className="hr space"/>
         <SwapHistoryView/>
     </div>

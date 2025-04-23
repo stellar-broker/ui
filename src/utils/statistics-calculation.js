@@ -1,3 +1,4 @@
+import {normalizePrice} from './normalize-price'
 
 function getStatValues(stats, period) {
     const periodStats = stats.slice(0, period)
@@ -6,8 +7,8 @@ function getStatValues(stats, period) {
     const changedValue = valueB > valueA ? -100 : 0
 
     return {
-        value: valueA,
-        changes: valueA ? ((valueA - valueB) / valueA * 100).toFixed(2) : changedValue,
+        value: normalizePrice(valueA),
+        changes: valueA ? normalizePrice((valueA - valueB) / valueA * 100) : changedValue,
         data: periodStats.reverse()
     }
 }

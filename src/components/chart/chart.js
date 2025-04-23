@@ -64,7 +64,7 @@ export default function Chart({
         return <div id={chartIdRef.current} style={containerStyle}/>
     }
     return <div className={cn('chart', container, className)} style={containerStyle}>
-        {!!title && <h5 className="micro-space">{title}</h5>}
+        {!!title && <h5 className="micro-space bold">{title}</h5>}
         {children}
         <div id={chartIdRef.current}/>
     </div>

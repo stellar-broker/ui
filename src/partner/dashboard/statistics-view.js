@@ -48,10 +48,10 @@ function EntryStatisticView({title, value, sign = '', changes, data = [], onlyMo
         <p className="text-nano text-upper dimmed nano-space">{title}</p>
         <div className="dual-layout">
             <div>
-                <h5 className="nano-space">{value}</h5>
+                <div><strong className="text-large nano-space">{value}</strong></div>
                 <div className={cn('badge', direction)}>{changes}%</div>
             </div>
-            <Chart options={options}/>
+            <div style={{width: '80px'}}><Chart options={options}/></div>
         </div>
     </div>
 }

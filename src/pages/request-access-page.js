@@ -17,14 +17,14 @@ export default function RequestAccessPage() {
 
     return <PageLayout compact>
         <div className="row row-no-padding dual-screen bg-color-white">
-            <div className="column column-33">
+            <div className="column column-40">
                 <div className="middle-layout">
                     <div className="space">
                         <Logo/>
                     </div>
                     <div>
-                        <h4>Request Access</h4>
-                        <p className="text-small dimmed space">
+                        <h3>Request Access</h3>
+                        <p className="dimmed space">
                             To get started use StellarBroker API, please fill out form and tell us more about yourself
                             <br/><br/>
                             Already have an account?&nbsp;
@@ -36,7 +36,7 @@ export default function RequestAccessPage() {
                     </div>
                 </div>
             </div>
-            <div className="column column-66 bg-color-gray">
+            <div className="column column-60 bg-color-gray">
                 <div className="flex-center flex-grow h-100">
                     <iframe style={{width: '100%', height: '100%', minHeight: '75vh'}}
                             src="https://docs.google.com/forms/d/e/1FAIpQLSfRfpcKK09FCms_QYyiuEVNMVke8isvxlfBDlq85__5zFZ7qw/viewform?embedded=true"
