@@ -19,7 +19,7 @@ export default function AssetChartView() {
     }, [])
     if (!stats)
         return null
-    const limit = 5
+    const limit = stats.length === 6 ? 6 : 5
     const data = stats.slice(0, limit).map(d => [d.asset.split('-')[0], d.swaps])
     if (stats.length > limit) {
         data.push(['Other ' + (stats.length - limit), stats.slice(limit).reduce((all, stat) => all + stat.swaps, 0)])
