@@ -32,11 +32,13 @@ export default function EmailEditForm() {
     }, [isValid])
 
     return <div>
-        <div className="micro-space">
-            <p className="label text-small">Email</p>
+        <div className="dual-layout middle double-space">
+            <div className="text-tiny">
+                <strong>Email</strong>
+                <div className="dimmed">{email}</div>
+            </div>
             <div>
-                <strong>{email}</strong>&emsp;
-                <a href="#" className="text-tiny" onClick={toggleDialog}>change</a>
+                <Button small secondary onClick={toggleDialog} style={{margin: 0}}>Change</Button>
             </div>
         </div>
         <Dialog dialogOpen={isOpen} className="text-left">

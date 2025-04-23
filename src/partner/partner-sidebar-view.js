@@ -1,33 +1,32 @@
+import {getAuth} from '../api/auth'
 import SidebarView, {LogoutView} from '../components/sidebar-view'
 import NavSidebarView from '../components/nav-sidebar-view'
-import {getAuth} from '../api/auth'
+import PartnerInfoView from '../components/partner-info-view'
 
 const navLinks = {
-    'dashboard': {title: 'Dashboard', link: '/account', icon: 'chart'},
+    'dashboard': {title: 'Dashboard', link: '/account', icon: 'dashboard'},
     'transactions': {title: 'Swap history', link: '/account/transactions', icon: 'clock'},
-    'payouts': {title: 'Payouts', link: '/account/payouts', icon: 'send-circle'},
-    'api-keys': {title: 'API keys', link: '/account/api-keys', icon: 'key'},
-    'documentation': {title: 'Documentation', link: 'https://github.com/stellar-broker/client', icon: 'document'}
+    'payouts': {title: 'Payouts', link: '/account/payouts', icon: 'coins'},
+    'api-keys': {title: 'API keys', link: '/account/api-keys', icon: 'console'},
+    'documentation': {title: 'Documentation', link: 'https://github.com/stellar-broker/client', icon: 'book'}
 }
 
 export default function PartnerSidebarView() {
     const userData = getAuth()
     return <SidebarView>
-        <b className="partner micro-space">
-            {userData.email}
-        </b>
-        <div className="hr micro-space"/>
+        <PartnerInfoView partner={userData}/>
+        <div className="mini-space"/>
+        <div className="hr mini-space"/>
         <NavSidebarView navLinks={navLinks}/>
-        <div className="hr micro-space"/>
         <ul className="links">
             <li>
                 <a href="/account/settings" className="text-small">
-                    <span><i className="icon-cog"/>Settings</span>
+                    <span><i className="icon-settings"/>Settings</span>
                 </a>
             </li>
             <li>
                 <a href="mailto:broker@stellar.expert" className="text-small">
-                    <span><i className="icon-document"/>Contact support</span>
+                    <span><i className="icon-help"/>Contact support</span>
                 </a>
             </li>
             <li><LogoutView/></li>

@@ -14,7 +14,8 @@ export default function SidebarView({children}) {
                     <i className="icon icon-menu" style={{fontSize: '1.4em'}}/>
                 </a>
             </div>
-            <div className="double-space"/>
+            <div className="space"/>
+            <div className="space mobile-only"/>
             {children}
         </div>
     </div>
@@ -27,6 +28,6 @@ export function LogoutView() {
     }, [])
 
     return <a href="#" className="text-small" onClick={onLogout}>
-        <span><i className="icon-logout"/>Logout</span>
+        <span><i className="icon-log-out"/>Logout</span>
     </a>
 }

@@ -16,9 +16,9 @@ input {
 
   &.styled-input {
     padding: 0 1em;
-    height: 2.4em;
+    height: 3em;
     min-width: 6em;
-    line-height: 2.4em;
+    line-height: 3em;
     background: #f8f9fd;
     border: 1px solid #f4f5f7;
     border-radius: $border-radius-input;
@@ -26,12 +26,13 @@ input {
   }
 
   &.styled-input:focus {
-    border-color: $primary;
+    border-color: $info;
   }
 }
 
 .info-block {
   padding: $space-micro;
+  background: #fff;
   border: 1px solid $gray;
   border-radius: $border-radius-input;
 }
@@ -45,6 +46,7 @@ input {
   padding: 0.3em 0.6em;
   line-height: 1.2em;
   color: $color-text;
+  font-size: 0.85*$font-size-base;
   background: $gray;
   border-radius: $border-radius-badge;
 
@@ -58,19 +60,54 @@ input {
     border-radius: 1.2em;
   }
 
+  &.badge-outline {
+    padding: 0.6em;
+    margin-right: $space-nano;
+    font-size: 0.85*$font-size-base;
+    background: initial;
+    border: 1px solid $gray;
+
+    &.error {
+      color: $red;
+      background: initial;
+      border-color: $red;
+    }
+
+    &.selected {
+      color: initial;
+      background: initial;
+      border-color: $info;
+    }
+
+    & + .badge {
+      margin: 0;
+      margin-right: $space-nano;
+      margin-bottom: $space-nano;
+    }
+  }
+
+  &.selected, &.info {
+    color: $info;
+    background: $info-fon;
+  }
+
   &.up, &.success {
     color: $green;
-    background: rgba(40, 167, 69, .25);
+    background: $green-fon;
   }
 
-  &.down {
+  &.down, &.error {
     color: $red;
-    background: rgba(220, 53, 69, .25);
+    background: $red-fon;
   }
 
-  &.selected {
-    color: $primary;
-    background: rgba(1, 83, 255, .25);
+  &.bordered {
+    border: 1px solid $gray;
+  }
+
+  &.warning {
+    color: $warning;
+    background: $warning-fon;
   }
 }
 
@@ -80,7 +117,7 @@ input {
   border-radius: $border-radius-input;
 
   .table-header {
-    padding: $space-micro;
+    padding:  $space-mini $space-micro;
   }
 
   table {
@@ -92,6 +129,10 @@ input {
       text-transform: uppercase;
       background: $light;
       border-bottom: 1px solid $gray;
+
+      th {
+        font-weight: 500;
+      }
     }
 
     tr {
@@ -101,6 +142,7 @@ input {
     }
 
     td, th {
+      font-size: 0.85*$font-size-base;
       vertical-align: middle;
       padding: $space-micro;
 
@@ -109,11 +151,11 @@ input {
       }
 
       &:first-child {
-        padding-left: $space-standard;
+        padding-left: 0.65*$space-standard;
       }
 
       &:last-child {
-        padding-right: $space-standard;
+        padding-right: 0.65*$space-standard;
       }
     }
 
@@ -166,7 +208,7 @@ input {
   &.compact {
     line-height: 1.2;
 
-    td, th {
+    td {
       padding: $space-nano;
     }
   }
@@ -204,5 +246,33 @@ input {
     height: 100%;
     background: $primary;
     border-radius: $border-radius-badge;
+  }
+}
+
+.filter-select {
+  padding: 0 1.25em 0 0.75em;
+  background: $light;
+  border: 1px solid $gray;
+  border-radius: $border-radius-input;
+
+  .value {
+    color: $color-dimmed;
+    min-width: 5.25em;
+    height: 2.85em;
+    display: inline-block;
+    padding: 0 0.75em 0 0;
+    line-height: 3em;
+    font-size: 0.925*$font-size-base;
+  }
+
+  .dd-toggle {
+    border-top-color: $color-dimmed;
+    border-right-color: $color-dimmed;
+  }
+
+  .dd-list {
+    margin-top: 0.35em;
+    min-width: 7.1em;
+    box-shadow: 0 2px 3px 0 #F2F3F7;
   }
 }

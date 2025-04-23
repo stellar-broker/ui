@@ -9,12 +9,8 @@ export default function AdminLogsPage() {
     })
 
     return <div>
-        <div className="row nano-space">
-            <div className="column column-75">
-                <h4>System logs</h4>
-                <p className="text-small dimmed nano-space">System errors and warnings</p>
-            </div>
-        </div>
+        <h3>System logs</h3>
+        <p className="text-small dimmed space">System errors and warnings</p>
         <div className="hr space"/>
         <LogsView/>
     </div>

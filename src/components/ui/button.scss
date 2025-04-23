@@ -8,11 +8,11 @@ button {
   cursor: pointer;
   display: inline-block;
   font-size: $font-size-base;
-  font-weight: 400;
-  height: 2.4em;
-  min-width: 6em;
-  line-height: 2.4em;
-  padding: 0 1.4em;
+  font-weight: 500;
+  height: 3.4em;
+  min-width: 7em;
+  line-height: 3.4em;
+  padding: 0 2em;
   text-align: center;
   text-decoration: none;
   white-space: nowrap;
@@ -36,11 +36,17 @@ button {
     margin-right: 0;
   }
 
+  &.button-micro {
+    padding: 0 1em;
+    height: 2.85em;
+    line-height: 2.85em;
+  }
+
   &.small {
     font-size: 0.85*$font-size-base;
     padding: 0 0.5em;
-    height: 2em;
-    line-height: 2em;
+    height: 2.4em;
+    line-height: 2.4em;
   }
 
   &:hover {
@@ -78,6 +84,43 @@ button {
       &:focus,
       &:hover {
         color: $primary;
+      }
+    }
+
+    &.alert {
+      color: $red;
+      border-color: $red;
+
+      &.focus,
+      &:hover {
+        color: #fff;
+        background: $red;
+        outline-color: rgba(220,53,69, .25);
+      }
+    }
+  }
+
+  &.button-secondary {
+    color: $primary;
+    background: $gray;
+    border-color: $gray;
+
+    &:hover {
+      color: #fff;
+      background: $primary;
+      border-color: $primary;
+    }
+
+    &[disabled],
+    &.disabled {
+      outline: 0;
+      color: $color-dimmed;
+
+      &:focus,
+      &:hover {
+        color: $color-dimmed;
+        background: $gray;
+        border-color: $gray;
       }
     }
 

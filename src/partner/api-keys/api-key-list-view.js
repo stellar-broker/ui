@@ -5,9 +5,6 @@ import {Button} from '../../components/ui/button'
 
 export default function ApiKeyListView({keyList, updateKeyList}) {
     return <div>
-        <div className="dimmed text-small space">
-            Active API keys:
-        </div>
         {keyList?.map((apiKey) => {
             return <div key={apiKey} className="card outline micro-space"  style={{maxWidth:'43em'}}>
                 <ApiKeyEntry apiKey={apiKey} updateKeyList={updateKeyList}/>
@@ -32,18 +29,21 @@ function ApiKeyEntry({apiKey, updateKeyList}) {
         }
     }, [apiKey, updateKeyList])
 
-    return <div className="nano-space">
-        <div className="dual-layout">
+    return <div>
+        <div className="dual-layout flex-nowrap middle">
             <div>
-                <code className="word-break">{apiKey}</code> <CopyToClipboard text={apiKey}/>
+                <code className="word-break">{apiKey}</code>
             </div>
-            <div className="text-right" style={{width: '2em'}}>
-                <a href="#" onClick={remove} className="icon icon-delete-circle desktop-only" title="Delete API key"/>
+            <div className="text-right" style={{width: '3em'}}>
+                <CopyToClipboard text={apiKey}/>
+                <span className="desktop-only">
+                    &emsp;<a href="#" onClick={remove} className="icon icon-cross-circle dimmed" title="Delete API key"/>
+                </span>
             </div>
         </div>
         <div className="mobile-only">
             <div className="micro-space"/>
-            <Button outline block onClick={remove}><i className="icon-delete-circle"/>Delete this key</Button>
+            <Button outline block onClick={remove}><i className="icon-cross-circle"/>Delete this key</Button>
         </div>
     </div>
 }

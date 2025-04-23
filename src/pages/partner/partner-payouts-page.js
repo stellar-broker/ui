@@ -9,10 +9,10 @@ export default function PartnerPayoutsPage() {
     })
 
     return <div>
-        <div className="row nano-space">
+        <div className="row">
             <div className="column column-75">
-                <h4>Payouts</h4>
-                <p className="text-small dimmed nano-space">Withdraw your earnings</p>
+                <h3>Payouts</h3>
+                <p className="dimmed space">Withdraw your earnings</p>
             </div>
         </div>
         <div className="hr space"/>

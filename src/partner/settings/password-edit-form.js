@@ -45,11 +45,13 @@ export default function PasswordEditForm() {
     }, [isValid])
 
     return <div>
-        <div className="space">
-            <p className="label text-small">Password</p>
+        <div className="dual-layout middle double-space">
+            <div className="text-tiny">
+                <strong>Password</strong>
+                <div className="dimmed">********</div>
+            </div>
             <div>
-                <strong>********</strong>&emsp;
-                <a href="#" className="text-tiny" onClick={toggleDialog}>change</a>
+                <Button small secondary onClick={toggleDialog} style={{margin: 0}}>Change</Button>
             </div>
         </div>
         <Dialog dialogOpen={isOpen} className="text-left">
@@ -60,6 +62,7 @@ export default function PasswordEditForm() {
                              onChange={changeInfo} onKeyDown={onKeyDown}/>
             <PasswordSetting title="Confirm new password" name="confirm" credentials={credentials}
                              onChange={changeInfo} onKeyDown={onKeyDown}/>
+            <div className="space"/>
             <div className="row">
                 <div className="column column-33 column-offset-33">
                     <Button outline block onClick={toggleDialog}>Cancel</Button>
@@ -72,7 +75,7 @@ export default function PasswordEditForm() {
     </div>
 }
 
-function PasswordSetting ({title, name, value, onChange, onKeyDown}) {
+function PasswordSetting({title, name, value, onChange, onKeyDown}) {
     const changeValue = useCallback(e => onChange(name, e.target.value), [onChange])
 
     return <div className="micro-space">

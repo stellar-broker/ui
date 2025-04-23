@@ -1,4 +1,4 @@
-import {useCallback, useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import {AssetDescriptor} from '@stellar-expert/asset-descriptor'
 import {fromStroops, formatDateUTC} from '@stellar-expert/formatter'
 import {usePaginatedApi} from '../../utils/hooks/paginated-list-hooks'
@@ -9,7 +9,10 @@ import {Button} from '../../components/ui/button'
 import {Loader} from '../../components/ui/loader'
 import {Amount} from '../../components/ui/amount'
 import {AccountAddress} from '../../components/ui/account-address'
+import {Dropdown} from '../../components/ui/dropdown'
 import './swap-history.scss'
+
+const statusFilterValues = ['All', 'Success', 'Partial', 'Failed']
 
 function parseAsset(asset) {
     const [code, issuer] = asset.split('-')
@@ -21,10 +24,12 @@ function parseAsset(asset) {
 }
 
 export default function SwapHistoryView({compact, endpoint = 'partner/swaps'}) {
+    const [statusFilter, setStatusFilter] = useState(navigation.query.status || statusFilterValues[0])
     const transactions = usePaginatedApi(
         {
             path: endpoint,
             query: {
+                status: statusFilter === statusFilterValues[0] ? '' : statusFilter,
                 cursor: navigation.query.cursor,
                 search: navigation.query.search
             }
@@ -38,16 +43,25 @@ export default function SwapHistoryView({compact, endpoint = 'partner/swaps'}) {
         transactions.load(page)
     }, [])
 
+    const changeStatusFilter = useCallback(status => {
+        setStatusFilter(status)
+    }, [])
+
     if (!transactions.loaded)
         return <Loader/>
 
     return <div>
+        {!compact && <div className="mini-space">
+            <span className="text-tiny dimmed-light">Status:</span>&emsp;
+            <Dropdown className="filter-select" options={statusFilterValues} onChange={changeStatusFilter}
+                      title={<span className="value">{statusFilter}</span>}/>
+        </div>}
         <div className="table space swaps-history">
             {!!compact && <div className="table-header">
-                <h5>Swap history</h5>
+                <h5 className="bold">Swap history</h5>
             </div>}
             <table>
-                <thead className="text-tiny dimmed">
+                <thead className="text-tiny dimmed-light">
                 <tr>
                     <th>Pair</th>
                     <th>Account</th>
@@ -65,8 +79,8 @@ export default function SwapHistoryView({compact, endpoint = 'partner/swaps'}) {
             {!transactions.data.length && <p className="empty-data">You have not made any transactions yet</p>}
         </div>
         {!compact && <div className="button-group space text-center">
-            <Button small disabled={transactions.loading || !transactions.canLoadPrevPage} onClick={() => navigate(-1)}>Prev Page</Button>
-            <Button small disabled={transactions.loading || !transactions.canLoadNextPage} onClick={() => navigate(1)}>Next Page</Button>
+            <Button small secondary disabled={transactions.loading || !transactions.canLoadPrevPage} onClick={() => navigate(-1)}>Prev Page</Button>
+            <Button small secondary disabled={transactions.loading || !transactions.canLoadNextPage} onClick={() => navigate(1)}>Next Page</Button>
         </div>}
     </div>
 }
@@ -97,25 +111,32 @@ function SwapRecord({swap}) {
                 </span>
             </td>
             <td className="desktop-center" data-header="Status: ">
-                <span title={swapStatusInfo[status].info}>{status}</span>
+                <span title={swapStatusInfo[status.toLowerCase()].info} className="dimmed-light">{status}</span>
             </td>
-            <td className="desktop-right" data-header="Date: ">{formatDateUTC(date)}</td>
+            <td className="desktop-right" data-header="Date: "><span className="dimmed-light">{formatDateUTC(date)}</span></td>
             <td>
-                <a href="#" className={expanded ? 'icon-less' : 'icon-more'} title="Show details" onClick={toggleExpanded}>
-                    <span className="mobile-only">Show details</span>
+                <a href="#" className={`dimmed-light text-nano ${expanded ? 'icon-chevron-up' : 'icon-chevron-down'}`} title="Show details" onClick={toggleExpanded}>
+                    <span className="mobile-only"> Show details</span>
                 </a>
             </td>
         </tr>
         {expanded && <tr className="details text-small">
             <td colSpan="7" style={{paddingLeft: '4em'}}>
-                <div className="nano-space">
-                    Quote estimated amount:{' '}
-                    {swap.quote.estimatedBuyingAmount ?
-                        <Amount amount={swap.quote.estimatedBuyingAmount} asset={swap.buyingAsset} adjust issuer={false}/> :
-                        'N/A'
-                    }, slippage tolerance: {swap.quote.slippageTolerance * 100}%
+                <div className="row">
+                    <div className="column column-25">
+                        <span className="dimmed-light">Quote estimated amount:</span><br/>
+                        {swap.quote.estimatedBuyingAmount ?
+                            <Amount amount={swap.quote.estimatedBuyingAmount} asset={swap.buyingAsset} adjust issuer={false}/> :
+                            'N/A'}
+                        <div className="micro-space"/>
+                    </div>
+                    <div className="column column-25">
+                        <span className="dimmed-light">Slippage tolerance:</span><br/>
+                        {swap.quote.slippageTolerance * 100}%
+                        <div className="micro-space"/>
+                    </div>
                 </div>
-                <div className="nano-space"/>
+                <div className="micro-space"/>
                 {swap.trades.map(trade => <SwapTx key={trade.id} trade={trade} swap={swap}/>)}
             </td>
         </tr>}
@@ -123,20 +144,21 @@ function SwapRecord({swap}) {
 }
 
 function SwapTx({trade, swap}) {
-    return <div className="nano-space">
+    return <div className="micro-space">
         <Amount amount={trade.sold || trade.estimatedSold} asset={swap.sellingAsset} adjust issuer={false}/>
-        {' '}<i className="icon-swap"/>{' '}
+        &emsp;<i className="icon-arrow-right text-tiny dimmed-light"/>&emsp;
         <Amount amount={trade.bought || trade.estimatedBought} asset={swap.buyingAsset} adjust issuer={false}/>
-        {!!trade.fee && <> (fee
-            ${fromStroops(trade.fee)})</>} - <span className="dimmed">{decodeTradeStatus(trade.status)}</span>
         &emsp;
-        {trade.status === 'success' || trade.status === 'failed' ?
+        {!!trade.fee && <span className="dimmed-light nowrap">Fee: ${fromStroops(trade.fee)}</span>}
+        &emsp;
+        <span className="dimmed-light">{decodeTradeStatus(trade.status)}</span>
+        &emsp;
+        <span className="dimmed-light nowrap">{formatDateUTC(trade.created)}</span>
+        &emsp;
+        {(trade.status === 'success' || trade.status === 'failed') &&
             <a href={`https://stellar.expert/explorer/public/tx/${trade.tx}`} target="_blank"
-               title="View transaction details">
-                {formatDateUTC(trade.created)} <i className="icon-open-new-window"/></a> :
-            <span className="dimmed">{formatDateUTC(trade.created)}</span>
-        }
-        {!!trade.venues && <div className="dimmed text-tiny">{trade.venues.split('→').map((step, i) => {
+               title="View transaction details" className="icon-link dimmed-light"/>}
+        {!!trade.venues && <div className="dimmed-light text-tiny">{trade.venues.split('→').map((step, i) => {
             let [venue, asset] = step.split(':')
             let renderAs
             if (!asset) {
@@ -154,16 +176,16 @@ function SwapTx({trade, swap}) {
 
 function getSwapStatus(swap) {
     if (!swap.trades.length)
-        return 'dropped'
+        return 'Dropped'
     const totalSold = swap.trades.filter(trade => trade.status === 'success').reduce((acc, trade) => acc + BigInt(trade.sold), 0n)
     if (totalSold > 0n) {
         if (totalSold < BigInt(swap.sellingAmount))
-            return 'partial'
-        return 'success'
+            return 'Partial'
+        return 'Success'
     }
     if (swap.trades.some(trade => trade.status === 'failed'))
-        return 'failed'
-    return 'unconfirmed'
+        return 'Failed'
+    return 'Unconfirmed'
 }
 
 const swapStatusInfo = {
@@ -187,11 +209,11 @@ const swapStatusInfo = {
 function decodeTradeStatus(tradeStatus) {
     switch (tradeStatus) {
         case 'success':
-            return 'success'
+            return 'Success'
         case 'failed':
-            return 'failed'
+            return 'Failed'
         default:
-            return 'unconfirmed'
+            return 'Unconfirmed'
     }
 }
 
@@ -207,7 +229,7 @@ function AssetPair({pair}) {
         <AssetIcon asset={pair[0].asset}/>
         <AssetIcon asset={pair[1].asset}/>&nbsp;
         <span>
-            <span>{assetA.code} <i className="icon-swap text-small"/> {assetB.code}</span>
+            <span>{assetA.code} <i className="icon-arrow-right text-small"/> {assetB.code}</span>
             {(sellingAsset.domain && buyingAsset.domain) && <span className="dimmed block domains">
                 {sellingAsset.domain} / {buyingAsset.domain}
             </span>}

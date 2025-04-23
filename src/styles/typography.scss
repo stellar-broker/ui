@@ -1,9 +1,14 @@
 @import "constants";
 
 b,
+.bold,
 strong,
 .strong {
   font-weight: bold;
+}
+
+.bolder {
+  font-weight: 500;
 }
 
 h1,
@@ -26,39 +31,35 @@ h2 {
 }
 
 h3 {
-  font-size: 2rem;
-  line-height: 1.2;
+  font-size: 1.7rem;
+  line-height: 1;
 }
 
 h4 {
-  font-size: 1.6rem;
-  line-height: 1.2;
+  font-size: 1.5rem;
+  line-height: 1;
 }
 
 h5 {
-  font-size: 1rem;
-  line-height: 1.2;
+  font-size: 1.2rem;
+  line-height: 1;
   font-weight: normal;
 }
 
 .text-small {
-  font-size: 0.85*$font-size-base !important;
+  font-size: 0.925*$font-size-base !important;
 }
 
 .text-tiny {
-  font-size: 0.75*$font-size-base !important;
+  font-size: 0.85*$font-size-base !important;
 }
 
 .text-nano {
-  font-size: 0.65*$font-size-base !important;
+  font-size: 0.79*$font-size-base !important;
 }
 
 .text-large {
-  font-size: 1.125*$font-size-base !important;
-}
-
-.text-huge {
-  font-size: 1.25*$font-size-base !important;
+  font-size: 1.15*$font-size-base !important;
 }
 
 .text-left {
@@ -115,4 +116,12 @@ h5 {
 .label,
 label {
   color: $color-label;
+}
+
+.dimmed-light {
+  color: $color-dimmed-light;
+}
+
+.color-gray {
+  color: $gray;
 }

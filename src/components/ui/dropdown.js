@@ -109,7 +109,6 @@ export const Dropdown = React.memo(function Dropdown({
                  style={getListPosition(headerRef.current, solo)} ref={listRef}>
                 {!!header && <>
                     <div className="dd-list-header" onClick={preventClosing}>{header}</div>
-                    <div className="hr"/>
                 </>}
                 <ul onScroll={scrollList} style={{maxHeight: `min(70vh, ${maxHeight})`}}>
                     {options.filter(opt => !opt.hidden).map((option, i) => {

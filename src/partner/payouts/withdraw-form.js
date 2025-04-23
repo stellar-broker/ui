@@ -24,6 +24,10 @@ export default function WithdrawForm() {
             })
     }, [])
 
+    const setAvailableAmount = useCallback(() => {
+        setPayout(prev => ({...prev, amount: fromStroops(partnerInfo.fees)}))
+    }, [partnerInfo])
+
     const changeAmount = useCallback(e => {
         const amount = e.target.value.trim().replace(/[^\d.]/g, '')
         setPayout(prev => {
@@ -49,23 +53,26 @@ export default function WithdrawForm() {
     if (!partnerInfo)
         return <Loader/>
     return <div>
-        <div className="micro-space">Available for withdrawal: <b className="font-mono">{fromStroops(partnerInfo.fees)}</b> USDC</div>
         <div className="row">
-            <div className="column column-66">
-                <div className="space">
-                    <p className="label text-small">Account address</p>
-                    <input ref={useAutoFocusRef} value={payout.address || ''} onChange={changeAddress} className="styled-input"/>
+            <div className="column column-33">
+                <div className="micro-space">
+                    <p className="label">Withdrawal amount (USDC)</p>
+                    <input ref={useAutoFocusRef} value={payout.amount || ''} onChange={changeAmount} className="styled-input nano-space"/>
+                    <div className="text-tiny dimmed-light">Available for withdrawal:&nbsp;
+                        <a href="#" onClick={setAvailableAmount}>{fromStroops(partnerInfo.fees)} USDC</a>
+                    </div>
                 </div>
             </div>
-            <div className="column column-33">
-                <div className="space">
-                    <p className="label text-small">Withdrawal amount (USDC)</p>
-                    <input value={payout.amount || ''} onChange={changeAmount} className="styled-input text-right"/>
+            <div className="column column-66">
+                <div className="micro-space">
+                    <p className="label">Account address</p>
+                    <input value={payout.address || ''} onChange={changeAddress}
+                           className="styled-input" placeholder='Stellar address (Starts with "G")'/>
                 </div>
             </div>
             <div className="column column-33 column-offset-66 text-right">
-                <div className="label-space"/>
-                <Button block disabled onClick={withdrawEarnings}>Request withdrawal</Button>
+                <div className="space"/>
+                <Button disabled={!isValid} onClick={withdrawEarnings}>Request withdrawal</Button>
             </div>
         </div>
     </div>

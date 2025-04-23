@@ -49,7 +49,7 @@ export default function ExportFileCreator() {
 
     return <div>
         <Dropdown className="export-selector" options={['Swaps', 'Transactions']} onChange={onChange} showToggle={false}
-                  title={<Button stackable outline><i className="icon-download"/>Export to .CSV</Button>}/>
+                  title={<Button stackable outline className="button-micro" style={{margin: 0}}><i className="icon-download"/>Export to .CSV</Button>}/>
         <Dialog dialogOpen={isOpen} className="text-left">
             <div className="micro-space"><h5>Export data</h5></div>
             <div className="space">

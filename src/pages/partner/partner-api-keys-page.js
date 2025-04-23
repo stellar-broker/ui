@@ -22,10 +22,10 @@ export default function PartnerApiKeysPage() {
     })
 
     return <div>
-        <div className="row nano-space">
+        <div className="row">
             <div className="column column-66">
-                <h4>API keys</h4>
-                <p className="text-small dimmed nano-space">Managing your API keys</p>
+                <h3>API keys</h3>
+                <p className="dimmed space">Managing your API keys</p>
             </div>
             <div className="column column-33 text-right desktop-only">
                 <div className="nano-space"/>

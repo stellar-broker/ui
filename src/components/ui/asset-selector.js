@@ -60,10 +60,10 @@ export const AssetSelector = memo(function AssetSelector({value, predefinedAsset
     return <Dropdown solo className="asset-selector" options={options} value={value} onOpen={focusSearch} title={title} expanded={expanded}
                      onChange={onChange} disabled={!onChange} onScroll={e => e.rel === 'bottom' && loadNextPage?.call(this)}
                      header={<>
-                         <h5>SELECT ASSET</h5>
+                         <div className="micro-space"><h4>Select asset</h4></div>
                          <div className="relative">
                              <input type="text" value={search} ref={searchRef} onChange={e => setSearch(e.target.value)}
-                                    placeholder="Search by asset code or website"/>
+                                    placeholder="Search by asset code or website" className="styled-input"/>
                              <i className="icon-search dimmed"/>
                          </div>
                      </>}/>

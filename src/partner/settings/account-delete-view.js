@@ -24,9 +24,10 @@ export default function AccountDeleteView() {
 
     return <div>
         <div>
-            <h5>Destructive actions</h5>
-            <div className="micro-space"></div>
-            <Button outline small onClick={toggleDialog} className="alert">Delete account</Button>
+            <a href="#" onClick={toggleDialog} className="color-red text-tiny">
+                <i className="icon-cross-circle"/>&nbsp;&nbsp;
+                Delete account
+            </a>
         </div>
         <Dialog dialogOpen={isOpen} className="text-left">
             <div className="micro-space"><h5>Delete account</h5></div>

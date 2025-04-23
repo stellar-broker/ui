@@ -33,14 +33,12 @@ export default function LogsView() {
         return <Loader/>
 
     return <div>
+        <LogTopicsView onChangeTopic={onChangeTopic} className="mini-space"/>
         <div className="table compact space swaps-history text-small">
-            <div className="table-header">
-                <LogTopicsView onChangeTopic={onChangeTopic}/>
-            </div>
             <table>
                 <thead className="text-tiny dimmed">
                 <tr>
-                    <th>Log</th>
+                    <th>Log data</th>
                     <th className="desktop-right">Timestamp</th>
                 </tr>
                 </thead>
@@ -51,8 +49,8 @@ export default function LogsView() {
             {!logs.data.length && <p className="empty-data">No matching entries found</p>}
         </div>
         <div className="button-group space text-center">
-            <Button small disabled={logs.loading || !logs.canLoadPrevPage} onClick={() => navigate(-1)}>Prev Page</Button>
-            <Button small disabled={logs.loading || !logs.canLoadNextPage} onClick={() => navigate(1)}>Next Page</Button>
+            <Button small secondary disabled={logs.loading || !logs.canLoadPrevPage} onClick={() => navigate(-1)}>Previous</Button>
+            <Button small secondary disabled={logs.loading || !logs.canLoadNextPage} onClick={() => navigate(1)}>Next</Button>
         </div>
     </div>
 }
@@ -66,7 +64,8 @@ function LogRecord({log, onChangeTopic}) {
             </div>
             <div>
                 {log.topics.map(topic =>
-                    <a key={topic} href="#" className="badge text-tiny" data-topic={topic} onClick={onChangeTopic}>{topic}</a>)}
+                    <a key={topic} href="#" data-topic={topic} onClick={onChangeTopic}
+                       className={cn('badge info text-tiny', {'error': topic === 'error', 'warning': topic === 'warn'})}>{topic}</a>)}
             </div>
         </td>
         <td className="desktop-right nowrap" data-header="Timestamp: ">{formatDateUTC(log.ts)}</td>

@@ -2,10 +2,10 @@ import React, {useCallback, useEffect, useState} from 'react'
 import cn from 'classnames'
 
 const contextIcon = {
-    'info': 'icon-info',
-    'success': 'icon-ok',
-    'warning': 'icon-warning',
-    'error': 'icon-warning'
+    'info': 'icon-info-circle',
+    'success': 'icon-check-circle',
+    'warning': 'icon-warning-circle',
+    'error': 'icon-warning-circle'
 }
 
 function ToastNotification({notification}) {
@@ -38,7 +38,7 @@ function ToastNotification({notification}) {
     return <div className={notificationClass} onMouseEnter={pauseTimer} onMouseLeave={resumeTimer}>
         <i className={cn('toast-notification-icon', contextIcon[type])}/>
         <div>{notification.message}</div>
-        <a href="#" className="toast-notification-icon icon-cancel" onClick={close}/>
+        <a href="#" className="toast-notification-icon icon-cross" onClick={close}/>
         <div className="lifetime" style={{animationDuration: notification.ttl + 'ms'}}/>
     </div>
 }
