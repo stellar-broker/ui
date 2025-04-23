@@ -41,10 +41,11 @@ export default function PartnerDashboardPage() {
             <div className="column column-33">
                 <AssetChartView/>
             </div>
-            <div className="column">
-                <div className="micro-space"/>
-                <SwapHistoryView compact/>
-            </div>
+        </div>
+        <div className="micro-space"/>
+        <SwapHistoryView compact/>
+        <div className="text-center micro-space text-tiny">
+            <a href="/account/transactions">Explore all swaps</a>
         </div>
     </div>
 }

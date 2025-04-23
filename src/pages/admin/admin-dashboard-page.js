@@ -41,10 +41,8 @@ export default function AdminDashboardPage() {
             <div className="column column-33">
                 <AssetChartView/>
             </div>
-            <div className="column">
-                <div className="micro-space"/>
-                <SwapHistoryView compact endpoint="swaps"/>
-            </div>
         </div>
+        <div className="micro-space"/>
+        <SwapHistoryView compact endpoint="swaps"/>
     </div>
 }
