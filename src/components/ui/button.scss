@@ -137,6 +137,18 @@ button {
     }
   }
 
+  &.button-white {
+    color: $primary;
+    background: #fff;
+    border-color: #fff;
+
+    &:hover {
+      color: #fff;
+      background: $info;
+      border-color: $info;
+    }
+  }
+
   [class^="icon-"], [class*=" icon-"] {
     margin-right: 0.75em;
   }
