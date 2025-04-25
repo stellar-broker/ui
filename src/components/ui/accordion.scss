@@ -1,0 +1,44 @@
+@import "../../styles/constants";
+
+.accordion {
+
+  .accordion-header {
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .accordion-collapse {
+    height: 0;
+    overflow-y: hidden;
+  }
+
+  .option {
+    position: relative;
+    padding: $space-standard $space-double $space-standard $space-micro;
+    border-bottom: 1px solid $gray;
+
+    &:before {
+      font-family: "icons";
+      content: "\e908";
+      color: #A9B2C0;
+      font-size: $font-size-base*0.65;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: $space-micro;
+    }
+
+    &.expanded {
+      background: $info-fon;
+      &:before {
+        content: "\e90b";
+      }
+
+      > .accordion-collapse {
+        padding-top: $space-micro;
+        height: auto;
+      }
+    }
+  }
+}
