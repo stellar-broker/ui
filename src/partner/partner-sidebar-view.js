@@ -25,7 +25,7 @@ export default function PartnerSidebarView() {
                 </a>
             </li>
             <li>
-                <a href="mailto:broker@stellar.expert" className="text-small">
+                <a href="mailto:hello@stellar.broker" className="text-small">
                     <span><i className="icon-help"/>Contact support</span>
                 </a>
             </li>

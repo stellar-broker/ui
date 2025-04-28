@@ -13,7 +13,7 @@ export default function PartnersView({partnerList}) {
                 <div className="card outline">
                     <div className="row micro-space">
                         <div className="nano-space column column-50">
-                            <PartnerInfoView partner={partner} inactive={!!partner.inactive}/>
+                            <PartnerInfoView id={partner.id} partner={partner} inactive={!!partner.inactive}/>
                         </div>
                         <div className={cn('nano-space column column-50', {'dimmed-light': partner.inactive})}>
                             <PartnerFees settings={partner.settings}/>

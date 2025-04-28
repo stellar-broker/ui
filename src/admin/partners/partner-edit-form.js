@@ -1,32 +1,22 @@
 import {useCallback, useRef} from 'react'
 import {navigation} from '../../utils/navigation'
 import {generatePassword} from '../../utils/password-generator'
-import {performApiCall} from '../../api/api-call'
-import {Button} from '../../components/ui/button'
 import {useAutoFocusRef} from '../../utils/hooks/auto-focus-ref'
 import {usePartnerSettings} from '../../utils/hooks/partner-settings'
+import {performApiCall} from '../../api/api-call'
+import {Button} from '../../components/ui/button'
+import {resizeImage} from './image-resize'
 
 export default function PartnerEditForm({id}) {
     const [settings, setSettings] = usePartnerSettings(id)
 
-    const changeEmail = useCallback(e => {
-        const email = e.target.value.trim()
-        setSettings(prev => ({...prev, email}))
-    }, [])
+    const changeSettings = useCallback((field, val) => {
+        setSettings(prev => ({...prev, [field]: val}))
+    }, [id])
 
-    const changeName = useCallback(e => {
-        const name = e.target.value.trim()
-        setSettings(prev => ({...prev, name}))
-    }, [])
-
-    const onSettingsChange = useCallback(e => {
-        const {field} = e.target.dataset
-        const val = e.target.value.trim().replace(/[^\d.]/g, '')
-        const fee = val > feeLimit[field] ?
-            feeLimit[field] :
-            val
-        setSettings(prev => ({...prev, [field]: fee}))
-    }, [])
+    const changeFieldSettings = useCallback(e => {
+        changeSettings(e.target.dataset.field, e.target.value.trim())
+    }, [id, changeSettings])
 
     const onSave = useCallback(() => {
         if (id) {
@@ -34,47 +24,44 @@ export default function PartnerEditForm({id}) {
         } else {
             addPartner(settings.email)
         }
-    }, [settings])
+    }, [settings, id])
 
     const onKeyDown = useCallback(e => {
         if (e.keyCode === 13) {
             onSave()
         }
-    }, [onSave])
+    }, [onSave, id])
 
     return <div>
-        <div className="row">
-            <div className="column column-50">
-                <PartnerImage settings={settings} onChange={setSettings}/>
-            </div>
-        </div>
+        <PartnerImage settings={settings} onChange={setSettings}/>
         <div className="row">
             <div className="column column-50">
                 <div className="space">
                     <p className="label text-small">Partner email</p>
-                    <input value={settings.email || ''} onChange={changeEmail} onKeyDown={onKeyDown} ref={useAutoFocusRef} className="styled-input"/>
+                    <input value={settings.email || ''} data-field="email" onChange={changeFieldSettings} onKeyDown={onKeyDown} maxLength={40} ref={useAutoFocusRef} className="styled-input"/>
                 </div>
             </div>
             <div className="column column-50">
                 <div className="space">
                     <p className="label text-small">Project name</p>
-                    <input value={settings.name || ''} onChange={changeName} onKeyDown={onKeyDown} className="styled-input"/>
+                    <input value={settings.project || ''} data-field="project" onChange={changeFieldSettings} onKeyDown={onKeyDown} maxLength={30} className="styled-input"/>
                 </div>
             </div>
         </div>
+        <div className="hr space"/>
         <div className="row micro-space text-small dimmed">
-            <PartnerSetting settings={settings} field="partnerVarFee" title="Partner profit fee" onChange={onSettingsChange} onKeyDown={onKeyDown}>
+            <PartnerFeeParam settings={settings} field="partnerVarFee" title="Partner profit fee" onChange={changeSettings} onKeyDown={onKeyDown}>
                 Variable fee charged from the funds saved during the swap
-            </PartnerSetting>
-            <PartnerSetting settings={settings} field="brokerVarFee" title="Broker profit fee" onChange={onSettingsChange} onKeyDown={onKeyDown}>
+            </PartnerFeeParam>
+            <PartnerFeeParam settings={settings} field="brokerVarFee" title="Broker profit fee" onChange={changeSettings} onKeyDown={onKeyDown}>
                 Variable service fee charged from the funds saved during the swap
-            </PartnerSetting>
-            <PartnerSetting settings={settings} field="partnerFixedFee" title="Partner fixed fee" onChange={onSettingsChange} onKeyDown={onKeyDown}>
+            </PartnerFeeParam>
+            <PartnerFeeParam settings={settings} field="partnerFixedFee" title="Partner fixed fee" onChange={changeSettings} onKeyDown={onKeyDown}>
                 Fixed partner swap fee charged from the transaction amount
-            </PartnerSetting>
-            <PartnerSetting settings={settings} field="brokerFixedFee" title="Broker fixed fee" onChange={onSettingsChange} onKeyDown={onKeyDown}>
+            </PartnerFeeParam>
+            <PartnerFeeParam settings={settings} field="brokerFixedFee" title="Broker fixed fee" onChange={changeSettings} onKeyDown={onKeyDown}>
                 Fixed service swap fee charged from the transaction
-            </PartnerSetting>
+            </PartnerFeeParam>
         </div>
         <div className="row row-right space">
             {id && <div className="column column-50">
@@ -89,12 +76,22 @@ export default function PartnerEditForm({id}) {
     </div>
 }
 
-function PartnerSetting({settings, field, title, children, onChange, onKeyDown}) {
+function PartnerFeeParam({settings, field, title, children, onChange, onKeyDown}) {
+    const onFeeSettingsChange = useCallback(e => {
+        const {field} = e.target.dataset
+        const val = e.target.value.trim().replace(/[^\d.]/g, '')
+        const fee = val > feeLimit[field] ?
+            feeLimit[field] :
+            val
+        onChange('settings', {...settings.settings, [field]: fee})
+    }, [settings, field])
+    if (!settings.settings)
+        return null
     return <div className="column column-50">
         <div className="space">
             <p className="label">{title} (‰)</p>
-            <input value={settings[field] || ''} className="styled-input" placeholder={`0-${feeLimit[field]}‰`}
-                   onChange={onChange} onKeyDown={onKeyDown} data-field={field}/>
+            <input value={settings.settings[field] || ''} className="styled-input" placeholder={`0-${feeLimit[field]}‰`}
+                   onChange={onFeeSettingsChange} onKeyDown={onKeyDown} data-field={field}/>
             <div className="nano-space"/>
             <div className="text-tiny dimmed-light">{children}</div>
         </div>
@@ -106,13 +103,8 @@ function PartnerImage({settings, onChange}) {
     const selectFile = useCallback(e => {
         const [file] = e.target.files
         if (file) {
-            const img = new Image()
-            img.src = URL.createObjectURL(file)
-
-            img.decode()
-                .then(() => {
-                    onChange(prev => ({...prev, image: img.src}))
-                })
+            resizeImage(file)
+                .then(resized => onChange(prev => ({...prev, image: resized})))
                 .catch(() => {
                     notify({type: 'error', message: 'Failed to load image'})
                 })
@@ -123,7 +115,8 @@ function PartnerImage({settings, onChange}) {
         <div>
             <p className="label">Account image</p>
             <label className="upload-input-wrap">
-                <span className="button button-secondary small" style={{margin: 0}}>{settings.image ? 'Update' : 'Upload'}</span>
+                <span className="button button-secondary small" style={{margin: 0}}>
+                    {settings.image ? 'Change' : 'Upload'}</span>
                 <input type="file" ref={inputRef} placeholder="Choose image" onChange={selectFile}/>
             </label>
         </div>
@@ -139,7 +132,7 @@ async function addPartner(email) {
         password: generatePassword()
     }
     await performApiCall('partner', {method: 'POST', params})
-        .then((result) => {
+        .then(result => {
             if (result.error)
                 return notify({type: 'error', message: 'Failed to add partner. ' + result.error})
 

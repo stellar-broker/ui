@@ -1,11 +1,15 @@
-export default function PartnerInfoView({partner, inactive = false}) {
-    if (!partner) return null
-    const caption = partner.name || partner.email
+import {usePartnerSettings} from '../utils/hooks/partner-settings'
+
+export default function PartnerInfoView({id, partner, inactive = false}) {
+    if (!partner)
+        return null
+    const settings = id ? partner : usePartnerSettings()[0]
+    const caption = settings.project || partner.email
 
     return <div className="partner-info">
         <div className="account-image-wrap">
-            {partner.image ?
-                <img src={partner.image} alt="Account image"/> :
+            {settings.image ?
+                <img src={settings.image} alt="Account image"/> :
                 <span>{caption[0]}</span>}
         </div>
         <div className="account-info text-small">

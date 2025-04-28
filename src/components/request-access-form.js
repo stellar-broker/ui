@@ -29,7 +29,7 @@ export default function RequestAccessForm({step, updateStep, stepAmount}) {
     const body= `Company: ${info.name}
 Email: ${info.email}
 Website: ${info.website}`
-    const mailto = `mailto:stellarbroker@stellar.expert?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    const mailto = `mailto:hello@stellar.broker?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 
     return <div className="w-100" style={{maxWidth: '25em'}}>
         <div className="nano-space strong">Tell us about yourself</div>

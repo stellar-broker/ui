@@ -22,7 +22,7 @@ export default function AccountDeleteView() {
             })
     }, [])
 
-    return <div>
+    return <>
         <div>
             <a href="#" onClick={toggleDialog} className="color-red text-tiny">
                 <i className="icon-cross-circle"/>&nbsp;&nbsp;
@@ -30,7 +30,9 @@ export default function AccountDeleteView() {
             </a>
         </div>
         <Dialog dialogOpen={isOpen} className="text-left">
-            <div className="micro-space"><h5>Delete account</h5></div>
+            <div className="micro-space">
+                <h5>Delete account</h5>
+            </div>
             <div className="space">
                 Do you wish to delete this account?
             </div>
@@ -39,9 +41,9 @@ export default function AccountDeleteView() {
                     <Button outline block onClick={toggleDialog}>Cancel</Button>
                 </div>
                 <div className="column column-33">
-                    <Button block onClick={deleteAccount}>Confirm</Button>
+                    <Button block outline className="alert" onClick={deleteAccount}>Confirm</Button>
                 </div>
             </div>
         </Dialog>
-    </div>
+    </>
 }

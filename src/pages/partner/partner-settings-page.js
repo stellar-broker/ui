@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {setPageMetadata} from '../../utils/meta-tags-generator'
-import {performApiCall} from '../../api/api-call'
+import {usePartnerSettings} from '../../utils/hooks/partner-settings'
 import {Loader} from '../../components/ui/loader'
 import EmailEditForm from '../../partner/settings/email-edit-form'
 import PasswordEditForm from '../../partner/settings/password-edit-form'
@@ -11,34 +11,26 @@ export default function PartnerDashboardPage() {
         title: 'Settings',
         description: 'Change partner settings.'
     })
-    const [partnerInfo, setPartnerInfo] = useState()
-    useEffect(() => {
-        performApiCall('partner/info')
-            .then((result) => {
-                if (result.error)
-                    return notify({type: 'error', message: 'Failed to retrieve partners settings. ' + result.error})
-                setPartnerInfo(result)
-            })
-    }, [])
+    const [partnerInfo] = usePartnerSettings()
 
     return <div>
         <h3>Settings</h3>
         <p className="dimmed space">Change account settings</p>
         <div className="hr double-space"/>
         <div className="row">
-            <div className="column column-50">
+            <div className="column column-66">
                 <EmailEditForm/>
                 <PasswordEditForm/>
             </div>
         </div>
         <div className="row">
-            <div className="column column-50">
+            <div className="column column-66">
                 <div className="hr space"/>
                 <PartnerFees settings={partnerInfo?.settings}/>
             </div>
         </div>
         <div className="row">
-            <div className="column column-50">
+            <div className="column column-66">
                 <div className="hr space"/>
                 <AccountDeleteView/>
             </div>

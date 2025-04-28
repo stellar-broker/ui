@@ -6,7 +6,7 @@ import {Button} from '../../components/ui/button'
 export default function ApiKeyListView({keyList, updateKeyList}) {
     return <div>
         {keyList?.map((apiKey) => {
-            return <div key={apiKey} className="card outline micro-space"  style={{maxWidth:'43em'}}>
+            return <div key={apiKey} className="card outline micro-space" style={{maxWidth: '45em', overflow: 'visible'}}>
                 <ApiKeyEntry apiKey={apiKey} updateKeyList={updateKeyList}/>
             </div>
         })}
@@ -29,10 +29,15 @@ function ApiKeyEntry({apiKey, updateKeyList}) {
         }
     }, [apiKey, updateKeyList])
 
+    const half = Math.floor(apiKey.length / 2)
     return <div>
         <div className="dual-layout flex-nowrap middle">
             <div>
-                <code className="word-break">{apiKey}</code>
+                <code className="font-mono">
+                    <span>{apiKey.substring(0, half)}</span>
+                    <wbr/>
+                    <span>{apiKey.substring(half)}</span>
+                </code>
             </div>
             <div className="text-right" style={{width: '3em'}}>
                 <CopyToClipboard text={apiKey}/>

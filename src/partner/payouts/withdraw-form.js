@@ -1,8 +1,8 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import {StrKey} from '@stellar/stellar-sdk'
 import {fromStroops} from '@stellar-expert/formatter'
 import {useAutoFocusRef} from '../../utils/hooks/auto-focus-ref'
-import {performApiCall} from '../../api/api-call'
+import {usePartnerSettings} from '../../utils/hooks/partner-settings'
 import {Button} from '../../components/ui/button'
 import {Loader} from '../../components/ui/loader'
 
@@ -12,17 +12,8 @@ function validate({address, amount} = {}) {
 
 export default function WithdrawForm() {
     const [payout, setPayout] = useState({})
-    const [partnerInfo, setPartnerInfo] = useState()
     const [isValid, setIsValid] = useState(false)
-
-    useEffect(() => {
-        performApiCall('partner/info')
-            .then((result) => {
-                if (result.error)
-                    return notify({type: 'error', message: 'Failed to retrieve partners settings. ' + result.error})
-                setPartnerInfo(result)
-            })
-    }, [])
+    const [partnerInfo] = usePartnerSettings()
 
     const setAvailableAmount = useCallback(() => {
         setPayout(prev => ({...prev, amount: fromStroops(partnerInfo.fees)}))
