@@ -4,6 +4,7 @@ import NavSidebarView from '../components/nav-sidebar-view'
 const navLinks = {
     dashboard: {title: 'Dashboard', link: '/admin', icon: 'dashboard'},
     partners: {title: 'Partners', link: '/admin/partner', icon: 'briefcase'},
+    payouts: {title: 'Payouts', link: '/admin/payouts', icon: 'coins'},
     logs: {title: 'Logs', link: '/admin/logs', icon: 'log'},
 }
 

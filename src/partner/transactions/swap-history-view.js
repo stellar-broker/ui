@@ -4,15 +4,16 @@ import {fromStroops, formatDateUTC} from '@stellar-expert/formatter'
 import {usePaginatedApi} from '../../utils/hooks/paginated-list-hooks'
 import {navigation} from '../../utils/navigation'
 import {useAssetMeta} from '../../utils/hooks/asset-meta-hook'
-import {AssetIcon} from '../../components/ui/asset-link'
-import {Button} from '../../components/ui/button'
-import {Loader} from '../../components/ui/loader'
-import {Amount} from '../../components/ui/amount'
-import {AccountAddress} from '../../components/ui/account-address'
-import {Dropdown} from '../../components/ui/dropdown'
+import {AssetIcon, Loader, Dropdown, Button, AccountAddress, Amount} from '../../components/ui'
+
 import './swap-history.scss'
 
-const statusFilterValues = ['All', 'Success', 'Partial', 'Failed']
+const statusFilterOptions = [
+    {title: 'All', value: ''},
+    {title: 'Success', value: 'success'},
+    {title: 'Partial', value: 'partial'},
+    {title: 'Failed', value: 'failed'}
+]
 
 function parseAsset(asset) {
     const [code, issuer] = asset.split('-')
@@ -24,12 +25,12 @@ function parseAsset(asset) {
 }
 
 export default function SwapHistoryView({compact, endpoint = 'partner/swaps'}) {
-    const [statusFilter, setStatusFilter] = useState(navigation.query.status || statusFilterValues[0])
+    const [statusFilter, setStatusFilter] = useState(navigation.query.status || '')
     const transactions = usePaginatedApi(
         {
             path: endpoint,
             query: {
-                status: statusFilter === statusFilterValues[0] ? '' : statusFilter,
+                status: statusFilter || undefined,
                 cursor: navigation.query.cursor,
                 search: navigation.query.search
             }
@@ -37,25 +38,16 @@ export default function SwapHistoryView({compact, endpoint = 'partner/swaps'}) {
             autoReverseRecordsOrder: true,
             limit: compact ? 10 : 20,
             defaultQueryParams: {order: 'desc'}
-        })
+        }, [statusFilter])
 
-    const navigate = useCallback((page) => {
-        transactions.load(page)
-    }, [])
+    const navigate = useCallback(page => transactions.load(page), [])
 
-    const changeStatusFilter = useCallback(status => {
-        setStatusFilter(status)
-    }, [])
+    const changeStatusFilter = useCallback(status => setStatusFilter(status), [compact, endpoint])
 
     if (!transactions.loaded)
         return <Loader/>
 
     return <div>
-        {!compact && <div className="mini-space">
-            <span className="text-tiny dimmed-light">Status:</span>&emsp;
-            <Dropdown className="filter-select" options={statusFilterValues} onChange={changeStatusFilter}
-                      title={<span className="value">{statusFilter}</span>}/>
-        </div>}
         <div className="table space swaps-history">
             {!!compact && <div className="table-header">
                 <h5 className="bold">Swap history</h5>
@@ -67,7 +59,10 @@ export default function SwapHistoryView({compact, endpoint = 'partner/swaps'}) {
                     <th>Account</th>
                     <th>Sell</th>
                     <th>Fees</th>
-                    <th className="desktop-center">Status</th>
+                    <th className="desktop-center">
+                        <Dropdown options={statusFilterOptions} onChange={changeStatusFilter} value={statusFilter}
+                                  title={statusFilter ? statusFilter : 'Status'}/>
+                    </th>
                     <th className="desktop-right">Date</th>
                     <th className="collapsing text-right">&nbsp;</th>
                 </tr>
@@ -76,11 +71,13 @@ export default function SwapHistoryView({compact, endpoint = 'partner/swaps'}) {
                 {transactions.data?.map(swap => <SwapRecord swap={swap} key={swap.paging_token}/>)}
                 </tbody>
             </table>
-            {!transactions.data.length && <p className="empty-data">You have not made any transactions yet</p>}
+            {!transactions.data.length && <p className="empty-data dimmed">(no transactions)</p>}
         </div>
         {!compact && <div className="button-group space text-center">
-            <Button small secondary disabled={transactions.loading || !transactions.canLoadPrevPage} onClick={() => navigate(-1)}>Prev Page</Button>
-            <Button small secondary disabled={transactions.loading || !transactions.canLoadNextPage} onClick={() => navigate(1)}>Next Page</Button>
+            <Button small secondary disabled={transactions.loading || !transactions.canLoadPrevPage} onClick={() => navigate(-1)}>Prev
+                Page</Button>
+            <Button small secondary disabled={transactions.loading || !transactions.canLoadNextPage} onClick={() => navigate(1)}>Next
+                Page</Button>
         </div>}
     </div>
 }

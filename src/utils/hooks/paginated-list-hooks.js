@@ -137,6 +137,13 @@ class PaginatedListViewModel {
     prevCursor
 
     /**
+     * Current cursor
+     * @type {String}
+     * @private
+     */
+    cursor
+
+    /**
      * @private
      * @type {Function}
      */
@@ -148,11 +155,16 @@ class PaginatedListViewModel {
      * @return {Promise<ApiListResponse>}
      */
     load(page) {
-        const paginationParams = {skip: undefined},
-            navCursor = page < 0 ? this.prevCursor : this.nextCursor
+        const paginationParams = {skip: undefined}
+        const navCursor = page === 0 ?
+            this.cursor :
+            page < 0 ?
+                this.prevCursor :
+                this.nextCursor
 
         if (navCursor) {
             parseQuery(navCursor.split('?')[1] || '', paginationParams)
+            this.cursor = navCursor
         } else {
             this.nextCursor = stringifyQuery({
                 cursor: navigation.query.cursor,
@@ -325,6 +337,7 @@ class PaginatedListViewModel {
         this.canLoadPrevPage = false
         this.nextCursor = undefined
         this.prevCursor = undefined
+        this.cursor = undefined
         this.currentQueryParams = undefined
         this.updateQuery({cursor: undefined, sort: undefined, order: undefined})
     }
@@ -335,7 +348,7 @@ class PaginatedListViewModel {
  * @typedef {Object} ApiListResponse
  * @property {Object[]} data - Data retrieved from the server
  * @property {Boolean} loaded - Response result loaded flag
- * @property {Function} load - Load pgae function
+ * @property {Function} load - Load page function
  * @property {Boolean} canLoadPrevPage - Whether the prev page is available
  * @property {Boolean} canLoadNextPage - Whether the next page is available
  */
@@ -355,17 +368,17 @@ class PaginatedListViewModel {
  * @return {ApiListResponse}
  */
 export function usePaginatedApi(apiEndpoint,
-                                        {
-                                            limit = 20,
-                                            autoReverseRecordsOrder = false,
-                                            defaultSortOrder = 'desc',
-                                            autoLoadLastPage = true,
-                                            defaultQueryParams = {},
-                                            dataProcessingCallback,
-                                            autoLoad = true,
-                                            updateLocation = true
-                                        } = {},
-                                        dependencies = []) {
+                                {
+                                    limit = 20,
+                                    autoReverseRecordsOrder = false,
+                                    defaultSortOrder = 'desc',
+                                    autoLoadLastPage = true,
+                                    defaultQueryParams = {},
+                                    dataProcessingCallback,
+                                    autoLoad = true,
+                                    updateLocation = true
+                                } = {},
+                                dependencies = []) {
     if (!apiEndpoint)
         throw new Error(`Invalid API endpoint: ${apiEndpoint}`)
     const pinRef = useRef(null)

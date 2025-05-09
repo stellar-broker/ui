@@ -66,7 +66,7 @@ export const Dropdown = React.memo(function Dropdown({
         collapseDropdown()
         if (disabled)
             return
-        onChange && onChange(option.value || option)
+        onChange && onChange(option.value === undefined ? option : option.value)
         updateSelectedValue(option)
     }, [collapseDropdown, onChange])
 

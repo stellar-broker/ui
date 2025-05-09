@@ -1,23 +1,37 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {StrKey} from '@stellar/stellar-sdk'
 import {fromStroops} from '@stellar-expert/formatter'
 import {useAutoFocusRef} from '../../utils/hooks/auto-focus-ref'
 import {usePartnerSettings} from '../../utils/hooks/partner-settings'
 import {Button} from '../../components/ui/button'
 import {Loader} from '../../components/ui/loader'
+import {performApiCall} from '../../api/api-call'
 
 function validate({address, amount} = {}) {
     return StrKey.isValidEd25519PublicKey(address) && amount > 0
 }
 
-export default function WithdrawForm() {
+export default function WithdrawFormView() {
     const [payout, setPayout] = useState({})
     const [isValid, setIsValid] = useState(false)
-    const [partnerInfo] = usePartnerSettings()
+    const [available, setAvailable] = useState(undefined)
 
-    const setAvailableAmount = useCallback(() => {
-        setPayout(prev => ({...prev, amount: fromStroops(partnerInfo.fees)}))
-    }, [partnerInfo])
+    const setAvailableAmount = useCallback(available => {
+        const amount = fromStroops(available)
+        setPayout(prev => ({...prev, amount}))
+        setAvailable(amount)
+    }, [setPayout])
+
+    useEffect(() => {
+        performApiCall('partner/earned')
+            .then(result => {
+                if (result.error) {
+                    console.error(result.error)
+                    return notify({type: 'error', message: 'Failed to retrieve available earning amount.'})
+                }
+                setAvailableAmount(BigInt(result.amount))
+            })
+    }, [setAvailableAmount])
 
     const changeAmount = useCallback(e => {
         const amount = e.target.value.trim().replace(/[^\d.]/g, '')
@@ -37,11 +51,14 @@ export default function WithdrawForm() {
         })
     }, [])
 
-    const withdrawEarnings = useCallback(() => {
+    const withdrawEarnings = () => {
+        if (!isValid)
+            return
+        performApiCall('partner/withdraw', {method: 'POST', params: payout})
+            .then(() => notify({type: 'info', message: 'Payout transaction has been submitted'})) //TODO: check status
+    }
 
-    }, [])
-
-    if (!partnerInfo)
+    if (available === undefined)
         return <Loader/>
     return <div>
         <div className="row">
@@ -50,7 +67,7 @@ export default function WithdrawForm() {
                     <p className="label">Withdrawal amount (USDC)</p>
                     <input ref={useAutoFocusRef} value={payout.amount || ''} onChange={changeAmount} className="styled-input nano-space"/>
                     <div className="text-tiny dimmed-light">Available for withdrawal:&nbsp;
-                        <a href="#" onClick={setAvailableAmount}>{fromStroops(partnerInfo.fees)} USDC</a>
+                        <a href="#" onClick={setAvailableAmount}>{available} USDC</a>
                     </div>
                 </div>
             </div>
