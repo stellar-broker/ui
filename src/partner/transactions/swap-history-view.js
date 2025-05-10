@@ -60,8 +60,9 @@ export default function SwapHistoryView({compact, endpoint = 'partner/swaps'}) {
                     <th>Sell</th>
                     <th>Fees</th>
                     <th className="desktop-center">
-                        <Dropdown options={statusFilterOptions} onChange={changeStatusFilter} value={statusFilter}
-                                  title={statusFilter ? statusFilter : 'Status'}/>
+                        Status
+                        {/*<Dropdown options={statusFilterOptions} onChange={changeStatusFilter} value={statusFilter}
+                                  title={statusFilter ? statusFilter : 'Status'}/>*/}
                     </th>
                     <th className="desktop-right">Date</th>
                     <th className="collapsing text-right">&nbsp;</th>
