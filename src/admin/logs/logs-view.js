@@ -3,8 +3,7 @@ import {formatDateUTC} from '@stellar-expert/formatter'
 import cn from 'classnames'
 import {usePaginatedApi} from '../../utils/hooks/paginated-list-hooks'
 import {navigation} from '../../utils/navigation'
-import {Loader} from '../../components/ui/loader'
-import {Button} from '../../components/ui/button'
+import {Button, Loader} from '../../components/ui'
 import LogTopicsView from './log-topics-view'
 
 export default function LogsView() {
@@ -59,7 +58,7 @@ function LogRecord({log, onChangeTopic}) {
     return <tr>
         <td data-header="Log: " className="word-break">
             <div className={cn({error: log.topics.includes('error')})}>
-                {log.message}
+                {log.message.split('\n').map((line, i) => <div key={`${log.paging_token}.${i}`}>{line}</div>)}
                 <span className="mobile-only">&emsp;</span>
             </div>
             <div>
