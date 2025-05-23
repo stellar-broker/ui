@@ -15,12 +15,15 @@ export default function WithdrawFormView() {
     const [payout, setPayout] = useState({})
     const [isValid, setIsValid] = useState(false)
     const [available, setAvailable] = useState(undefined)
+    const [counter, setCounter] = useState(0)
 
     const setAvailableAmount = useCallback(available => {
         const amount = fromStroops(available)
         setPayout(prev => ({...prev, amount}))
         setAvailable(amount)
     }, [setPayout])
+
+    const refresh = useCallback(() => setCounter(prev => prev + 1), [])
 
     useEffect(() => {
         performApiCall('partner/earned')
@@ -31,7 +34,13 @@ export default function WithdrawFormView() {
                 }
                 setAvailableAmount(BigInt(result.amount))
             })
-    }, [setAvailableAmount])
+    }, [setAvailableAmount, counter])
+
+    //refresh available earning every 5 minutes
+    useEffect(() => {
+        const interval = setInterval(refresh, 5 * 60 * 1000)
+        return () => clearInterval(interval)
+    }, [])
 
     const changeAmount = useCallback(e => {
         const amount = e.target.value.trim().replace(/[^\d.]/g, '')
@@ -55,7 +64,10 @@ export default function WithdrawFormView() {
         if (!isValid)
             return
         performApiCall('partner/withdraw', {method: 'POST', params: payout})
-            .then(() => notify({type: 'info', message: 'Payout transaction has been submitted'})) //TODO: check status
+            .then(() => {
+                notify({type: 'info', message: 'Payout transaction has been submitted'})
+                refresh()
+            }) //TODO: check status
     }
 
     if (available === undefined)
