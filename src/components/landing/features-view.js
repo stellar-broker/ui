@@ -8,39 +8,39 @@ export default function FeaturesView() {
                 <div className="column column-33">
                     <div className="card white space">
                         <div className="space"><i className="icon-swap color-primary"/></div>
-                        <div className="micro-space"><strong>Best Exchange Rates</strong></div>
+                        <div className="micro-space"><strong>Best swap rates</strong></div>
                         <p className="text-tiny dimmed micro-space flex-grow">
-                            We navigate through various liquidity pools to unlock the optimal conversion paths, ensuring
-                            swift and the most cost-effective swaps on Stellar.
+                            Our router efficiently scans through classic Stellar DEX, AMMs, and major liquidity pool protocols on Soroban
+                            to find the most cost-effective quotes every time.
                         </p>
                         <div className="preview">
-                            <img src="img/front/widget.png" alt="Best exchange rates"/>
+                            <img src="img/front/widget.png" alt="Best swap rates"/>
                         </div>
                     </div>
                 </div>
                 <div className="column column-33">
                     <div className="card white space">
                         <div className="space"><i className="icon-chart-up color-primary"/></div>
-                        <div className="micro-space"><strong>Analytics Dashboard</strong></div>
+                        <div className="micro-space"><strong>Powerful analytics dashboard</strong></div>
                         <p className="text-tiny dimmed micro-space flex-grow">
-                            Understand how your integration performs with transparent data on executed swaps,
-                            daily activity, and your passive income.
+                            Track how your StellarBroker integration performs and gain insights into swap activity, volumes,
+                            and revenue through our intuitive partner dashboard.
                         </p>
                         <div className="preview">
-                            <img src="img/front/volume.png" alt="Earn commissions"/>
+                            <img src="img/front/volume.png" alt="Powerful analytics dashboard"/>
                         </div>
                     </div>
                 </div>
                 <div className="column column-33">
                     <div className="card white space">
                         <div className="space"><i className="icon-console color-primary"/></div>
-                        <div className="micro-space"><strong>Seamless API Integration</strong></div>
+                        <div className="micro-space"><strong>Seamless integration</strong></div>
                         <p className="text-tiny dimmed micro-space flex-grow">
-                            Easily integrate StellarBroker API into your existing infrastructure, ensuring a smooth transition
-                            and uninterrupted access to the best exchange rates in the market.
+                            Easily integrate the StellarBroker API into your product’s swap interface to give users access
+                            to the best exchange rates on Stellar.
                         </p>
                         <div className="preview">
-                            <img src="img/front/integration.png" alt="Seamless API integration"/>
+                            <img src="img/front/integration.png" alt="Seamless integration"/>
                         </div>
                     </div>
                 </div>
