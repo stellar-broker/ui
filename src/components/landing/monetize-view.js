@@ -8,11 +8,11 @@ export default function MonetizeView() {
             <div className="monetize-block dual-layout middle">
                 <div>
                     <div className="micro-space" style={{fontSize: '1.25rem'}}>$</div>
-                    <h3>Monetize swaps with  our API integration</h3>
-                    <div className="mini-space text-tiny" style={{maxWidth: '28em'}}>
-                        Set the fee rate you wish to collect from each transaction, and watch your earnings grow
-                        as users leverage the efficient swap routes provided by our API.</div>
-                    <Button white href="/request-access">Try it now</Button>
+                    <h3>Integrate StellarBroker <br/> and earn revenue on every swap</h3>
+                    <div className="mini-space text-tiny" style={{maxWidth: '38em'}}>
+                        Leverage StellarBroker’s optimized routes to give users better swap rates —
+                        and earn revenue on every transaction.</div>
+                    <Button white href="/request-access">Start earning</Button>
                 </div>
                 <div>
                     <img src="img/front/monetize-value.png" alt="Monetize"/>

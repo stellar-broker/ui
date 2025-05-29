@@ -20,9 +20,9 @@ export default function HowItWorksView() {
                     </div>
                     <div className="nano-space"/>
                     <div className="card-info">
-                        <strong>User initiates an asset swap</strong>
+                        <strong>User is looking to swap Stellar assets</strong>
                         <div className="micro-space"/>
-                        <p className="text-tiny">The user opens your app and wants to swap assets using their wallet.</p>
+                        <p className="text-tiny">The user selects assets and enters the amount they want to swap within your app.</p>
                     </div>
                 </div>
                 <div className="card white connection">
@@ -34,7 +34,8 @@ export default function HowItWorksView() {
                     <div className="card-info">
                     <strong>Your app requests the best available rate</strong>
                         <div className="micro-space"/>
-                        <p className="text-tiny">Your app sends a request to our API to fetch the best swap rate.</p>
+                        <p className="text-tiny">
+                            Your app uses the StellarBroker API to request the best swap rate for the selected assets.</p>
                     </div>
                 </div>
                 <div className="card white">
@@ -48,7 +49,8 @@ export default function HowItWorksView() {
                         <strong>Smart quote generation</strong>
                         <div className="micro-space"/>
                         <p className="text-tiny">
-                            Stellar Broker finds the best price by combining routes from orderbooks, AMMs, SoroSwap, and Aquarius pools.</p>
+                            StellarBroker finds the best swap quote by combining routes across classic Stellar DEX, AMMs,
+                            and liquidity protocols on Soroban.</p>
                     </div>
                 </div>
             </div>
