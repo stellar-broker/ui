@@ -4,7 +4,8 @@ import './accordion.scss'
 
 /**
  * Group of collapsible panels
- * @param {{key: String, title: String|JSX.Element, content:*}[]} options - Accordion options
+ * @param {{key: [String], title: String|JSX.Element, content:*}[]} options - Accordion options
+ * @param {{}} otherProps
  */
 export function Accordion({options, ...otherProps}) {
     const [selectedOption, setSelectedOption] = useState()
