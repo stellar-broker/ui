@@ -79,6 +79,17 @@
     background: $light;
   }
 
+  &.white {
+    background: #fff;
+    border: none;
+
+    .preview {
+      margin: 0 auto;
+      max-width: 430px;
+      background: linear-gradient(0, #fff 10%, $info-fon 90%);
+    }
+  }
+
   .preview {
     width: 100%;
     min-height: 15em;

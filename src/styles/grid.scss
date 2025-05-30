@@ -90,6 +90,12 @@
     width: 100%;
     padding: 0 $space-micro;
 
+    &.column-flex {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: center;
+    }
+
     &.v-top {
       align-self: flex-start;
     }
@@ -276,6 +282,10 @@
 
 .flex-grow {
   flex-grow: 1;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
 }
 
 .flex-center {
