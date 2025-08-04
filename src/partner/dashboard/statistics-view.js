@@ -43,7 +43,7 @@ function EntryStatisticView({title, value, prefix = '', changes = '0'}) {
             {value !== '0' && <>
                 {' '}
                 <span className={cn('badge text-tiny', direction)} style={{verticalAlign: 'top'}}>
-                    {parseFloat(changes) < 0 ? '-' : '+'}
+                    {parseFloat(changes) > 0 && '+'}
                     {changes}%
                 </span>
             </>}
