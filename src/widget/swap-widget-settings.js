@@ -71,7 +71,7 @@ export default class SwapWidgetSettings {
 
     async connectToBroker() {
         const client = new StellarBrokerClient({
-            partnerKey: '5Z1F4hiq1bGL1JKYnGXFojhg1bmjQTdPjLowJySVuEX7ajx1Xszr9yMQXN6m8ZCRdo',
+            partnerKey: '8h4giZyS7ydJKfN7C2uZGUDevkxdPr5gpJHF39M1wSJhWRoqCgDQw7a85mhmG4zSAX',
             account: 'GBW7T3IVZWUF5AEUYUFG5FXBFJNEJCJYEMCG23NIZI36CNUBOPLDKBPA',
             authorization: payload => {
                 throw new Error('Not implemented')
