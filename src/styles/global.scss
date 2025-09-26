@@ -11,8 +11,6 @@
   @include scrollbars(6px, $color-dimmed-light, $gray);
 }
 
-@include scrollbars(6px, $color-dimmed-light, $gray);
-
 input, textarea, button {
   font-family: $font-face-primary, sans-serif;
   font-size: $font-size-base;

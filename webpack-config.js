@@ -16,16 +16,10 @@ module.exports = initWebpackConfig({
     },
     devServer: {
         host: '0.0.0.0',
-        https: true,
+        server: {
+            type: 'https'
+        },
         port: 9001
     },
-    inlineSvg: true,
-    ignoreCallback: function (resource, context) {
-        if (/bip39[/\\]src$/.test(context)) {
-            if (resource.includes('/wordlists/')) {
-                return !resource.includes('english.json')
-            }
-        }
-        return false
-    }
+    inlineSvg: true
 })
