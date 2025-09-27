@@ -151,13 +151,13 @@ class PaginatedListViewModel {
 
     /**
      * Load portion of data from the server
-     * @param {1|-1} page
+     * @param {1|0|-1} page
      * @return {Promise<ApiListResponse>}
      */
     load(page) {
         const paginationParams = {skip: undefined}
         const navCursor = page === 0 ?
-            this.cursor :
+            undefined :
             page < 0 ?
                 this.prevCursor :
                 this.nextCursor
@@ -170,6 +170,8 @@ class PaginatedListViewModel {
                 cursor: navigation.query.cursor,
                 order: navigation.query.order
             })
+            this.cursor = null
+            paginationParams.cursor = null
         }
         //prepare query params
         const queryParams = Object.assign({}, this.defaultQueryParams, this.query, paginationParams, {limit: this.limit})
@@ -407,7 +409,7 @@ export function usePaginatedApi(apiEndpoint,
         pinRef.current = res
         if (autoLoad) {
             setTimeout(() => {
-                res.load()
+                res.load(0)
             }, 100)
         }
         return res.toJSON()

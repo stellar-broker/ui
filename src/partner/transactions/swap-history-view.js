@@ -4,10 +4,11 @@ import {fromStroops, formatDateUTC} from '@stellar-expert/formatter'
 import {usePaginatedApi} from '../../utils/hooks/paginated-list-hooks'
 import {navigation} from '../../utils/navigation'
 import {useAssetMeta} from '../../utils/hooks/asset-meta-hook'
-import {AssetIcon, Loader, Button, AccountAddress, Amount, Dropdown} from '../../components/ui'
+import {AssetIcon, Loader, AccountAddress, Amount, Dropdown} from '../../components/ui'
 
 import './swap-history.scss'
 import PartnerLink from '../../components/partner-link'
+import {PaginationNavigation} from '../../components/ui/pagination-navigation'
 
 const statusFilterOptions = [
     {title: 'All', value: ''},
@@ -30,9 +31,7 @@ export default function SwapHistoryView({compact, endpoint = 'partner/swaps'}) {
         {
             path: endpoint,
             query: {
-                status: statusFilter || undefined,
-                cursor: navigation.query.cursor,
-                search: navigation.query.search
+                status: statusFilter || undefined
             }
         }, {
             autoReverseRecordsOrder: true,
@@ -72,26 +71,8 @@ export default function SwapHistoryView({compact, endpoint = 'partner/swaps'}) {
             </table>
             {!transactions.data.length && <p className="empty-data dimmed">(no transactions)</p>}
         </div>
-        {!compact && <div className="button-group space text-center">
-            <HistoryNavButton transactions={transactions} direction={-1}>Prev Page</HistoryNavButton>
-            <HistoryNavButton transactions={transactions} direction={1}>Next Page</HistoryNavButton>
-        </div>}
+        {!compact && <PaginationNavigation data={transactions}/>}
     </div>
-}
-
-function HistoryNavButton({transactions, direction, children}) {
-    const navigate = useCallback(e => {
-        e.preventDefault()
-        e.stopPropagation()
-        const direction = parseInt(e.target.dataset.direction)
-        transactions.load(direction)
-        return false
-    }, [transactions])
-    const disabled = transactions.loading ||
-        !(direction === 1 ? transactions.canLoadNextPage : transactions.canLoadPrevPage)
-    return <Button small secondary disabled={disabled} data-direction={direction} onClick={navigate}>
-        {children}
-    </Button>
 }
 
 function SwapRecord({swap, showPartner = false}) {

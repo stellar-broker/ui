@@ -1,9 +1,10 @@
-import {useCallback, useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import {formatDateUTC} from '@stellar-expert/formatter'
 import cn from 'classnames'
 import {usePaginatedApi} from '../../utils/hooks/paginated-list-hooks'
 import {navigation} from '../../utils/navigation'
-import {Button, Loader} from '../../components/ui'
+import {Loader} from '../../components/ui'
+import {PaginationNavigation} from '../../components/ui/pagination-navigation'
 import LogTopicsView from './log-topics-view'
 
 export default function LogsView() {
@@ -12,16 +13,13 @@ export default function LogsView() {
         {
             path: 'admin/logs',
             query: {
-                topic: topicFilter,
-                cursor: navigation.query.cursor
+                topic: topicFilter
             }
         }, {
             autoReverseRecordsOrder: true,
             limit: 20,
             defaultQueryParams: {order: 'desc'}
-        })
-
-    const navigate = useCallback((page) => logs.load(page), [])
+        }, [topicFilter])
 
     const onChangeTopic = useCallback(e => {
         const {topic} = e.target.dataset
@@ -47,10 +45,7 @@ export default function LogsView() {
             </table>
             {!logs.data.length && <p className="empty-data">No matching entries found</p>}
         </div>
-        <div className="button-group space text-center">
-            <Button small secondary disabled={logs.loading || !logs.canLoadPrevPage} onClick={() => navigate(-1)}>Previous</Button>
-            <Button small secondary disabled={logs.loading || !logs.canLoadNextPage} onClick={() => navigate(1)}>Next</Button>
-        </div>
+        <PaginationNavigation data={logs}/>
     </div>
 }
 
@@ -64,7 +59,10 @@ function LogRecord({log, onChangeTopic}) {
             <div>
                 {log.topics.map(topic =>
                     <a key={topic} href="#" data-topic={topic} onClick={onChangeTopic}
-                       className={cn('badge info text-tiny', {'error': topic === 'error', 'warning': topic === 'warn'})}>{topic}</a>)}
+                       className={cn('badge info text-tiny', {
+                           'error': topic === 'error',
+                           'warning': topic === 'warn'
+                       })}>{topic}</a>)}
             </div>
         </td>
         <td className="desktop-right nowrap" data-header="Timestamp: ">{formatDateUTC(log.ts)}</td>
