@@ -22,7 +22,7 @@ export default function AdminDashboardPage() {
 
     setPageMetadata({
         title: 'Admin dashboard',
-        description: 'Statistics of connected partners.'
+        description: 'Platform statistics.'
     })
 
     if (!stats)
@@ -30,7 +30,7 @@ export default function AdminDashboardPage() {
 
     return <div>
         <h3>Dashboard</h3>
-        <p className="dimmed space">Statistics of connected partners</p>
+        <p className="dimmed space">Platform statistics</p>
         <div className="hr space"/>
         <StatisticsView isAdmin/>
         <div className="micro-space"/>
@@ -44,5 +44,8 @@ export default function AdminDashboardPage() {
         </div>
         <div className="micro-space"/>
         <SwapHistoryView compact endpoint="swaps"/>
+        <div className="text-center micro-space text-tiny">
+            <a href="/admin/transactions">swap history →</a>
+        </div>
     </div>
 }

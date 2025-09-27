@@ -4,15 +4,15 @@ import {fromStroops, formatDateUTC} from '@stellar-expert/formatter'
 import {usePaginatedApi} from '../../utils/hooks/paginated-list-hooks'
 import {navigation} from '../../utils/navigation'
 import {useAssetMeta} from '../../utils/hooks/asset-meta-hook'
-import {AssetIcon, Loader, Dropdown, Button, AccountAddress, Amount} from '../../components/ui'
+import {AssetIcon, Loader, Button, AccountAddress, Amount, Dropdown} from '../../components/ui'
 
 import './swap-history.scss'
+import PartnerLink from '../../components/partner-link'
 
 const statusFilterOptions = [
     {title: 'All', value: ''},
     {title: 'Success', value: 'success'},
-    {title: 'Partial', value: 'partial'},
-    {title: 'Failed', value: 'failed'}
+    {title: 'Cancelled', value: 'cancelled'}
 ]
 
 function parseAsset(asset) {
@@ -40,13 +40,11 @@ export default function SwapHistoryView({compact, endpoint = 'partner/swaps'}) {
             defaultQueryParams: {order: 'desc'}
         }, [statusFilter])
 
-    const navigate = useCallback(page => transactions.load(page), [])
-
     const changeStatusFilter = useCallback(status => setStatusFilter(status), [compact, endpoint])
 
     if (!transactions.loaded)
         return <Loader/>
-
+    const isPartnerHistory = endpoint.startsWith('partner')
     return <div>
         <div className="table space swaps-history">
             {!!compact && <div className="table-header">
@@ -60,30 +58,43 @@ export default function SwapHistoryView({compact, endpoint = 'partner/swaps'}) {
                     <th>Sell</th>
                     <th>Fees</th>
                     <th className="desktop-center">
-                        Status
-                        {/*<Dropdown options={statusFilterOptions} onChange={changeStatusFilter} value={statusFilter}
-                                  title={statusFilter ? statusFilter : 'Status'}/>*/}
+                        <Dropdown options={statusFilterOptions} onChange={changeStatusFilter} value={statusFilter}
+                                  title={statusFilter ? statusFilter : 'Status'}/>
                     </th>
                     <th className="desktop-right">Date</th>
                     <th className="collapsing text-right">&nbsp;</th>
                 </tr>
                 </thead>
                 <tbody>
-                {transactions.data?.map(swap => <SwapRecord swap={swap} key={swap.paging_token}/>)}
+                {transactions.data?.map(swap => <SwapRecord swap={swap} showPartner={!isPartnerHistory}
+                                                            key={swap.paging_token}/>)}
                 </tbody>
             </table>
             {!transactions.data.length && <p className="empty-data dimmed">(no transactions)</p>}
         </div>
         {!compact && <div className="button-group space text-center">
-            <Button small secondary disabled={transactions.loading || !transactions.canLoadPrevPage} onClick={() => navigate(-1)}>Prev
-                Page</Button>
-            <Button small secondary disabled={transactions.loading || !transactions.canLoadNextPage} onClick={() => navigate(1)}>Next
-                Page</Button>
+            <HistoryNavButton transactions={transactions} direction={-1}>Prev Page</HistoryNavButton>
+            <HistoryNavButton transactions={transactions} direction={1}>Next Page</HistoryNavButton>
         </div>}
     </div>
 }
 
-function SwapRecord({swap}) {
+function HistoryNavButton({transactions, direction, children}) {
+    const navigate = useCallback(e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const direction = parseInt(e.target.dataset.direction)
+        transactions.load(direction)
+        return false
+    }, [transactions])
+    const disabled = transactions.loading ||
+        !(direction === 1 ? transactions.canLoadNextPage : transactions.canLoadPrevPage)
+    return <Button small secondary disabled={disabled} data-direction={direction} onClick={navigate}>
+        {children}
+    </Button>
+}
+
+function SwapRecord({swap, showPartner = false}) {
     const [expanded, setExpanded] = useState(false)
     const pair = [parseAsset(swap.sellingAsset), parseAsset(swap.buyingAsset)]
     const date = formatDateUTC(swap.created)
@@ -111,9 +122,15 @@ function SwapRecord({swap}) {
             <td className="desktop-center" data-header="Status: ">
                 <span title={swapStatusInfo[status.toLowerCase()].info} className="dimmed-light">{status}</span>
             </td>
-            <td className="desktop-right" data-header="Date: "><span className="dimmed-light">{formatDateUTC(date)}</span></td>
+            <td className="desktop-right" data-header="Date: ">
+                <div className="dimmed-light">{formatDateUTC(date)}</div>
+                {showPartner && <div className="text-tiny dimmed-light condensed">
+                    <PartnerLink id={swap.partner} apikey={swap.apikey}/>
+                </div>}
+            </td>
             <td>
-                <a href="#" className={`dimmed-light text-nano ${expanded ? 'icon-chevron-up' : 'icon-chevron-down'}`} title="Show details" onClick={toggleExpanded}>
+                <a href="#" className={`dimmed-light text-nano ${expanded ? 'icon-chevron-up' : 'icon-chevron-down'}`}
+                   title="Show details" onClick={toggleExpanded}>
                     <span className="mobile-only"> Show details</span>
                 </a>
             </td>
@@ -124,7 +141,8 @@ function SwapRecord({swap}) {
                     <div className="column column-25">
                         <span className="dimmed-light">Quote estimated amount:</span><br/>
                         {swap.quote.estimatedBuyingAmount ?
-                            <Amount amount={swap.quote.estimatedBuyingAmount} asset={swap.buyingAsset} adjust issuer={false}/> :
+                            <Amount amount={swap.quote.estimatedBuyingAmount} asset={swap.buyingAsset} adjust
+                                    issuer={false}/> :
                             'N/A'}
                         <div className="micro-space"/>
                     </div>

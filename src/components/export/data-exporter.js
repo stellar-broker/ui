@@ -9,7 +9,7 @@ import {Dialog} from '../ui/dialog'
 import {Dropdown} from '../ui/dropdown'
 import './export-selector.scss'
 
-export default function ExportFileCreator() {
+export default function DataExporter() {
     const [type, setType] = useState()
     const [isOpen, setIsOpen] = useState(false)
     const [isProcessing, setIsProcessing] = useState(false)
@@ -18,7 +18,7 @@ export default function ExportFileCreator() {
 
     const downloadFile = useCallback(async () => {
         const params = {
-            limit: 100,
+            limit: 200,
             order: 'desc'
         }
         setIsProcessing(true)

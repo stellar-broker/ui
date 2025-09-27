@@ -9,6 +9,7 @@ import AdminPartnerEditPage from './pages/admin/admin-partner-edit-page'
 import AdminSetPasswordView from './admin/partners/admin-set-password-view'
 import AdminLogsPage from './pages/admin/admin-logs-page'
 import AdminPayoutsPage from './pages/admin/admin-payouts-page'
+import AdminTransactionsPage from './pages/admin/admin-transactions-page'
 import NotFoundPage from './pages/not-found-page'
 
 export default function AdminRouter({match}) {
@@ -22,6 +23,7 @@ export default function AdminRouter({match}) {
                 <Route path={`${path}/partner/:id/password`} component={AdminSetPasswordView}/>
                 <Route path={`${path}/partner/:id`} component={AdminPartnerEditPage}/>
                 <Route path={`${path}/partner`} component={AdminPartnersPage}/>
+                <Route path={`${path}/transactions`} component={AdminTransactionsPage}/>
                 <Route path={`${path}/payouts`} component={AdminPayoutsPage}/>
                 <Route path={`${path}/logs`} component={AdminLogsPage}/>
                 <Route path={`${path}/`} exact component={AdminDashboardPage}/>

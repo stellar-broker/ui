@@ -45,7 +45,7 @@ export default function PartnerDashboardPage() {
         <div className="micro-space"/>
         <SwapHistoryView compact/>
         <div className="text-center micro-space text-tiny">
-            <a href="/account/transactions">Explore all swaps</a>
+            <a href="/account/transactions">swap history →</a>
         </div>
     </div>
 }

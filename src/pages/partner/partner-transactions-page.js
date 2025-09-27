@@ -1,12 +1,12 @@
 import React from 'react'
 import {setPageMetadata} from '../../utils/meta-tags-generator'
 import SwapHistoryView from '../../partner/transactions/swap-history-view'
-import ExportFileCreator from '../../components/export-file/export-file-creator'
+import DataExporter from '../../components/export/data-exporter'
 
 export default function PartnerTransactionsPage() {
     setPageMetadata({
         title: 'Swap history',
-        description: 'All swaps executed with partner key.'
+        description: 'Transaction executed by partner\'s users.'
     })
 
     return <div>
@@ -19,7 +19,7 @@ export default function PartnerTransactionsPage() {
             </div>
             <div className="column column-25 text-right">
                 <div className="nano-space"/>
-                <ExportFileCreator/>
+                <DataExporter/>
             </div>
         </div>
         <div className="mobile-only space"/>
