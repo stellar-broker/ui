@@ -1,15 +1,16 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
+import {StrKey} from '@stellar/stellar-sdk'
 import {Mediator} from '@stellar-broker/client'
-import {fromStroops, toStroops} from '@stellar-expert/formatter'
+import {formatWithAutoPrecision} from '@stellar-expert/formatter'
 import {Button, AssetSelector, Dropdown} from '../components/ui'
-import {connectWalletsKit, signTx} from './wallet-kit'
+import {connectWalletsKit, setWallet, signTx} from './wallet-kit'
 import accountLedgerData from './account-ledger-data'
 import AvailableAmountLink from './available-amount-link-view'
 import SwapWidgetSettings from './swap-widget-settings'
 import './swap-widget.scss'
 
 export const SwapWidget = function SmartSwapWidget({className}) {
-    const connectedAddress = accountLedgerData.address
+    const connectedAddress = getActiveAccount()
     const [update, setUpdate] = useState(0)
     const refresh = useCallback(() => setUpdate(v => ++v), [setUpdate])
     const [settings] = useState(() => {
@@ -22,14 +23,15 @@ export const SwapWidget = function SmartSwapWidget({className}) {
     })
     let change
     let diff
-    if (settings.direct) {
-        change = fromStroops(toStroops(settings.amount[1]) - toStroops(settings.direct))
-        diff = (((settings.amount[1] / settings.direct) - 1) * 100).toPrecision(3) + '%'
+    if (settings.profit) {
+        change = formatWithAutoPrecision(settings.profit)
+        diff = formatWithAutoPrecision(parseFloat(settings.profit) * 100 / parseFloat(settings.amount[1])) + '%'
     }
 
     const changeSlippage = useCallback(val => settings.setSlippage(val), [settings])
 
     const retrieveFunds = useCallback(async (address) => {
+        notify({type: 'info', message: 'The refund process has started. Please wait, it will take some time.'})
         while (Mediator.hasObsoleteMediators(address)) {
             try {
                 await Mediator.disposeObsoleteMediators(address, signTx)
@@ -43,14 +45,17 @@ export const SwapWidget = function SmartSwapWidget({className}) {
         }
     }, [settings])
 
+    useEffect(() => {
+        if (Mediator.hasObsoleteMediators(connectedAddress)) {
+            notify({type: 'info', message: <span><strong>Retrieve Tokens from Mediator Account</strong>
+                <p><a href="#" onClick={() => retrieveFunds(connectedAddress)}>Retrieve funds</a> to your main account.</p></span>})
+        }
+    }, [connectedAddress, retrieveFunds])
+
     const startSwap = useCallback(async() => {
         const connect = await connectWalletsKit()
         accountLedgerData.init(connect.address)
-        if (Mediator.hasObsoleteMediators(connect.address)) {
-            notify({type: 'info', message: <span><strong>Retrieve Tokens from Mediator Account</strong>
-                <p><a href="#" onClick={() => retrieveFunds(connect.address)}>Retrieve funds</a> to your main account.</p></span>})
-        }
-    }, [retrieveFunds])
+    }, [])
 
     const initSwap = useCallback(() => {
         settings.confirmSwap(connectedAddress)
@@ -68,9 +73,10 @@ export const SwapWidget = function SmartSwapWidget({className}) {
         <SwapAmount className="micro-space" placeholder="To (estimated)" amount={settings.amount[1]}
                     asset={settings.asset[1]} onAssetChange={!settings.inProgress ? v => settings.setBuyingAsset(v) : null}/>
         <div style={{paddingLeft: '0.5em'}}>
-            {settings.message ? <div className="dimmed text-small">
-                <div className="space"/>
-                <i className="icon-warning-circle"/> {settings.message}
+            {(settings.message || settings.errorMessage) ? <div className="dimmed text-tiny text-center micro-space">
+                <div className="micro-space"/>
+                <i className="icon-warning-circle"/> {settings.message || settings.errorMessage}
+                {!!settings.message && <>&nbsp;<a href='#' onClick={() => settings.recalculateSwap()}>Resume</a>?</>}
             </div> : <div>
                 <div className="dual-layout middle nano-space text-tiny">
                     <div className="dimmed">Max slippage:</div>
@@ -85,17 +91,12 @@ export const SwapWidget = function SmartSwapWidget({className}) {
                         </div>
                     </>}
                 </div>
-                {connectedAddress ?
-                    <Button block secondary disabled={!settings.isValid || settings.inProgress} onClick={initSwap}>
-                        {settings.inProgress ? <span className="loader" style={{margin: '0 auto'}}/> : 'Swap'}
-                    </Button> :
-                    <Button block secondary onClick={startSwap}>Start swap</Button>}
             </div>}
-            {/*<div className="dimmed text-small micro-space">1 AQUA = 0,0079528 XLM</div>
-            <div className="dual-layout middle micro-space text-small">
-                <div className="dimmed">Price impact</div>
-                <span>{'<0.1%'}</span>
-            </div>*/}
+            {connectedAddress ?
+                <Button block secondary disabled={!settings.isValid || settings.inProgress || settings.message} onClick={initSwap}>
+                    {settings.inProgress ? <span className="loader" style={{margin: '0 auto'}}/> : 'Swap'}
+                </Button> :
+                <Button block secondary onClick={startSwap}>Start swap</Button>}
         </div>
     </div>
 }
@@ -112,4 +113,18 @@ function SwapAmount({amount, asset, onChange, onAssetChange, placeholder, classN
         <input value={amount || ''} {...props}/>
         <AssetSelector value={asset} onChange={onAssetChange}/>
     </div>
+}
+
+function getActiveAccount() {
+    const address = localStorage.getItem('activeAccount')
+    try {
+        const usedWalletsIds = JSON.parse(localStorage.getItem('@StellarWalletsKit/usedWalletsIds') || '')
+        setWallet(usedWalletsIds[0])
+    } catch (e) {
+        return null
+    }
+    if (!accountLedgerData.address && StrKey.isValidEd25519PublicKey(address)) {
+        accountLedgerData.init(address)
+    }
+    return accountLedgerData.address
 }

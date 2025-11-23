@@ -71,6 +71,8 @@ export default class SwapWidgetSettings {
 
     message
 
+    errorMessage
+
     inProgress
 
     isFinished
@@ -87,11 +89,11 @@ export default class SwapWidgetSettings {
         client.on('error', e => {
             this.inProgress = false
             this.isFinished = true
-            this.message = e.error
+            this.errorMessage = e.error
             this.onUpdate()
         })
         client.on('paused', e => {
-            this.message = 'Quotation paused. Change parameters to continue.'
+            this.message = 'Quotation paused.'
             this.onUpdate()
         })
         //subscribe to the quote notifications
@@ -111,7 +113,7 @@ export default class SwapWidgetSettings {
                 this.quote.directTrade.buying :
                 this.quote.estimatedBuyingAmount
             this.amount[1] = withSlippage(estimated, this.conversionSlippage)
-            this.direct = e.quote.directTrade?.buying
+            this.profit = e.quote.profit
             this.conversionPathLoaded = true
             this.conversionFeasible = e.quote.status === 'success' || !!e.quote.directTrade
             this.onUpdate()
@@ -205,7 +207,8 @@ export default class SwapWidgetSettings {
         this.conversionFeasible = false
         this.conversionPathLoaded = false
         this.message = undefined
-        this.direct = undefined
+        this.errorMessage = undefined
+        this.profit = undefined
         this.amount[1] = ''
         this.isFinished = false
         this.inProgress = false
@@ -237,6 +240,11 @@ export default class SwapWidgetSettings {
         this.inProgress = true
         this.onUpdate()
         try {
+            //show notification only if the swap has started
+            setTimeout(() => {
+                if (this.inProgress)
+                    notify({type: 'info', message: 'The swap has started. Please wait, it will take some time.'})
+            }, 500)
             mediator = new Mediator(
                 address,
                 this.asset[0],

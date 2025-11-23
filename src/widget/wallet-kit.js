@@ -2,10 +2,7 @@ import {Networks, TransactionBuilder} from '@stellar/stellar-sdk'
 import {
     StellarWalletsKit,
     WalletNetwork,
-    FreighterModule,
-    AlbedoModule,
-    LobstrModule,
-    xBullModule,
+    allowAllModules,
     ALBEDO_ID,
     ModalThemes
 } from '@creit.tech/stellar-wallets-kit'
@@ -16,12 +13,7 @@ const kit = new StellarWalletsKit({
     network,
     theme: ModalThemes.DARK,
     selectedWalletId: ALBEDO_ID,
-    modules: [
-        new AlbedoModule(),
-        new FreighterModule(),
-        new LobstrModule(),
-        new xBullModule()
-    ]
+    modules: allowAllModules()
 })
 
 let connected
@@ -36,6 +28,7 @@ export function connectWalletsKit() {
                 try {
                     kit.setWallet(selected.id)
                     const {address} = await kit.getAddress()
+                    localStorage.setItem('activeAccount', address)
                     connected = {kit, address}
                     resolve(connected)
                 } catch (e) {
@@ -49,4 +42,8 @@ export function connectWalletsKit() {
 export async function signTx(tx) {
     const {signedTxXdr} = await kit.signTransaction(tx.toXDR())
     return TransactionBuilder.fromXDR(signedTxXdr, Networks.PUBLIC)
+}
+
+export function setWallet(walletId) {
+    kit.setWallet(walletId)
 }
