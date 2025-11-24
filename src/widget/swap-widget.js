@@ -72,7 +72,7 @@ export const SwapWidget = function SmartSwapWidget({className}) {
         <div className="flex-center nano-space"><i className="icon-arrow-down color-gray"/></div>
         <SwapAmount className="micro-space" placeholder="To (estimated)" amount={settings.amount[1]}
                     asset={settings.asset[1]} onAssetChange={!settings.inProgress ? v => settings.setBuyingAsset(v) : null}/>
-        <div style={{paddingLeft: '0.5em'}}>
+        <div>
             {(settings.message || settings.errorMessage) ? <div className="dimmed text-tiny text-center micro-space">
                 <div className="micro-space"/>
                 <i className="icon-warning-circle"/> {settings.message || settings.errorMessage}

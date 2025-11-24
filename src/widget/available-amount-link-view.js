@@ -15,6 +15,9 @@ export default function AvailableAmountLink({settings}) {
         settings.setAmount(fromStroops(toStroops(availableBalance)))
     }, [settings, availableBalance])
 
+    if (!accountLedgerData.loaded)
+        return null
+
     return <div className="dimmed condensed text-tiny text-right">
         <a className="dimmed" href="#" onClick={setAmount} data-balance={100}>
             {formatWithAutoPrecision(availableBalance)} {AssetDescriptor.parse(asset).toCurrency()}
