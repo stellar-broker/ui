@@ -11,8 +11,13 @@ import './swap-widget.scss'
 
 export const SwapWidget = function SmartSwapWidget({className}) {
     const connectedAddress = getActiveAccount()
+    const [widgetStatus, setWidgetStatus] = useState('ready')
     const [update, setUpdate] = useState(0)
-    const refresh = useCallback(() => setUpdate(v => ++v), [setUpdate])
+    const refresh = useCallback(status => {
+        if (status)
+            setWidgetStatus(status)
+        setUpdate(v => ++v)
+    }, [setUpdate])
     const [settings] = useState(() => {
         const settings = new SwapWidgetSettings(refresh)
         settings.asset = ['XLM', 'AQUA-GBNZILSTVQZ4R7IKQDGHYGY2QXL5QOFJYQMXPKWRRM5PAV7Y4M67AQUA-1']
@@ -41,7 +46,7 @@ export const SwapWidget = function SmartSwapWidget({className}) {
         }
         if (!Mediator.hasObsoleteMediators(address)) {
             await settings.refreshBalances()
-            notify({type: 'success', message: 'Funds returned to main account'})
+            notify({type: 'success', message: 'Funds returned to main account.'})
         }
     }, [settings])
 
@@ -52,14 +57,23 @@ export const SwapWidget = function SmartSwapWidget({className}) {
         }
     }, [connectedAddress, retrieveFunds])
 
-    const startSwap = useCallback(async() => {
-        const connect = await connectWalletsKit()
-        accountLedgerData.init(connect.address)
+    const startSwap = useCallback(() => {
+        setWidgetStatus('confirmation')
+        connectWalletsKit()
+            .then(connect => {
+                if (!connect)
+                    throw Error
+                accountLedgerData.init(connect.address)
+                setWidgetStatus('authenticated')
+                notify({type: 'info', message: 'Authenticated, now you can swap with StellarBroker!'})
+            })
+            .catch(() => setWidgetStatus('ready'))
     }, [])
 
     const initSwap = useCallback(() => {
         settings.confirmSwap(connectedAddress)
             .catch(err => notify({type: 'error', message: 'Swap failed: ' + err}))
+            .finally(() => setWidgetStatus('ready'))
     }, [connectedAddress, settings])
 
     return <div className={`swap-widget ${className}`}>
@@ -93,12 +107,18 @@ export const SwapWidget = function SmartSwapWidget({className}) {
                 </div>
             </div>}
             {connectedAddress ?
-                <Button block secondary disabled={!settings.isValid || settings.inProgress || settings.message} onClick={initSwap}>
-                    {settings.inProgress ? <span className="loader" style={{margin: '0 auto'}}/> : 'Swap'}
-                </Button> :
-                <Button block secondary onClick={startSwap}>Start swap</Button>}
+                <SwapButton disabled={!settings.isValid || settings.inProgress || settings.message}
+                            status={widgetStatus} onClick={initSwap}>
+                    {settings.inProgress ? <span className="loader" style={{margin: '0 auto'}}/> : 'Swap'}</SwapButton> :
+                <SwapButton status={widgetStatus} onClick={startSwap}>Start swap</SwapButton>}
         </div>
     </div>
+}
+
+function SwapButton({disabled, status, onClick, children}) {
+    return <Button block secondary disabled={disabled || status === 'confirmation'} onClick={onClick}>
+        {status === 'confirmation' ? 'Waiting for confirmation' : children}
+    </Button>
 }
 
 function SwapAmount({amount, asset, onChange, onAssetChange, placeholder, className}) {

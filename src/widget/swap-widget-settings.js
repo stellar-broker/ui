@@ -237,20 +237,13 @@ export default class SwapWidgetSettings {
      */
     async confirmSwap(address) {
         let mediator
-        this.inProgress = true
-        this.onUpdate()
         try {
-            //show notification only if the swap has started
-            setTimeout(() => {
-                if (this.inProgress)
-                    notify({type: 'info', message: 'The swap has started. Please wait, it will take some time.'})
-            }, 500)
             mediator = new Mediator(
                 address,
                 this.asset[0],
                 this.asset[1],
                 this.amount[0] || undefined,
-                signTx,
+                this.signSwapTx,
                 MEDIATOR_FEE_RESERVE
             )
             const secret = await mediator.init()
@@ -258,7 +251,7 @@ export default class SwapWidgetSettings {
         } catch (error) {
             notify({type: 'error', message: error.message})
             this.inProgress = false
-            this.onUpdate()
+            this.onUpdate('ready')
         }
         return this.finishSwap(mediator)
     }
@@ -303,6 +296,15 @@ export default class SwapWidgetSettings {
     async refreshBalances() {
         await accountLedgerData.loadAccountInfo()
             .finally(() => this.onUpdate())
+    }
+
+    signSwapTx = async (tx) => {
+        this.onUpdate('confirmation')
+        const signedTx = await signTx(tx)
+        this.inProgress = true
+        this.onUpdate('ready')
+        notify({type: 'info', message: 'Please wait, swap is in progress.'})
+        return signedTx
     }
 
     async dispose(mediator) {

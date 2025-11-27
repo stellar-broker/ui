@@ -32,9 +32,11 @@ export function connectWalletsKit() {
                     connected = {kit, address}
                     resolve(connected)
                 } catch (e) {
+                    reject(e)
                     notify({type: 'error', message: e.message})
                 }
-            }
+            },
+            onClosed: () => resolve(null)
         })
     })
 }
