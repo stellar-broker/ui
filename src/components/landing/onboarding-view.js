@@ -21,7 +21,7 @@ export default function OnboardingView() {
                         <div className="mobile-only double-space"></div>
                     </div>
                 </div>
-                <div className="column column-33" style={{marginLeft: 'auto'}}>
+                <div className="column column-40">
                     <div className="widget-block">
                         <SwapWidget/>
                     </div>
