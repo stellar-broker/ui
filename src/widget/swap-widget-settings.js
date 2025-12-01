@@ -1,14 +1,20 @@
 import {debounce} from 'throttle-debounce'
-import {Asset} from '@stellar/stellar-sdk'
+import {Asset, Keypair} from '@stellar/stellar-sdk'
 import {AssetDescriptor} from '@stellar-expert/asset-descriptor'
 import {fromStroops, toStroops} from '@stellar-expert/formatter'
-import {StellarBrokerClient} from '@stellar-broker/client'
+import {Mediator, StellarBrokerClient} from '@stellar-broker/client'
+import {signTx} from './wallet-kit'
+import accountLedgerData from './account-ledger-data'
+
+const partnerKey = '8h4giZyS7ydJKfN7C2uZGUDevkxdPr5gpJHF39M1wSJhWRoqCgDQw7a85mhmG4zSAX'
+const dummyBrokerAccount = 'GBW7T3IVZWUF5AEUYUFG5FXBFJNEJCJYEMCG23NIZI36CNUBOPLDKBPA'
+const MEDIATOR_FEE_RESERVE = 5
 
 export default class SwapWidgetSettings {
     constructor(onUpdate) {
         this.asset = ['XLM', 'XLM']
         this.amount = ['0', '0']
-        this.conversionSlippage = 0
+        this.conversionSlippage = 1
         this.fee = 'normal'
         if (!onUpdate)
             return
@@ -65,24 +71,29 @@ export default class SwapWidgetSettings {
 
     message
 
+    errorMessage
+
+    inProgress
+
+    isFinished
+
     get isValid() {
         return !this.validationStatus
     }
 
     async connectToBroker() {
         const client = new StellarBrokerClient({
-            partnerKey: '8h4giZyS7ydJKfN7C2uZGUDevkxdPr5gpJHF39M1wSJhWRoqCgDQw7a85mhmG4zSAX',
-            account: 'GBW7T3IVZWUF5AEUYUFG5FXBFJNEJCJYEMCG23NIZI36CNUBOPLDKBPA',
-            authorization: payload => {
-                throw new Error('Not implemented')
-            }
+            partnerKey,
+            account: dummyBrokerAccount
         })
         client.on('error', e => {
-            this.message = e.error
+            this.inProgress = false
+            this.isFinished = true
+            this.errorMessage = e.error
             this.onUpdate()
         })
         client.on('paused', e => {
-            this.message = 'Quotation paused. Change parameters to continue.'
+            this.message = 'Quotation paused.'
             this.onUpdate()
         })
         //subscribe to the quote notifications
@@ -102,7 +113,7 @@ export default class SwapWidgetSettings {
                 this.quote.directTrade.buying :
                 this.quote.estimatedBuyingAmount
             this.amount[1] = withSlippage(estimated, this.conversionSlippage)
-            this.direct = e.quote.directTrade?.buying
+            this.profit = e.quote.profit
             this.conversionPathLoaded = true
             this.conversionFeasible = e.quote.status === 'success' || !!e.quote.directTrade
             this.onUpdate()
@@ -112,7 +123,7 @@ export default class SwapWidgetSettings {
             const tradeResult = `${e.result.sold} ${this.quote.sellingAsset.split('-')[0]} → ${e.result.bought} ${this.quote.buyingAsset.split('-')[0]}`
             switch (e.result.status) {
                 case 'success':
-                    notify({type: 'success', message: 'Swapped ' + tradeResult})
+                    notify({type: 'success', message: 'Success! Swapped ' + tradeResult})
                     break
                 case 'cancelled':
                     if (parseFloat(e.result.sold) > 0) {
@@ -123,19 +134,21 @@ export default class SwapWidgetSettings {
                     break
             }
             this.resetOperationAmount()
-            refreshBalances()
+            this.refreshBalances()
+            this.inProgress = false
+            this.isFinished = true
+            this.onUpdate()
         })
         client.on('progress', e => {
             console.log('Progress', e.status)
             if (parseFloat(e.status.bought) > parseFloat(this.bought || 0)) { //TODO: calculate and show percentage
-                refreshBalances()
+                this.refreshBalances()
             }
             this.bought = e.status.bought
         })
         this.brokerClient = client
         //connect...
         await client.connect()
-        console.log('Connected to StellarBroker')
     }
 
     /**
@@ -150,10 +163,10 @@ export default class SwapWidgetSettings {
 
     /**
      * Maximum allowed price slippage
-     * @param {Number} slippage
+     * @param {Number | String} slippage
      */
     setSlippage(slippage) {
-        this.conversionSlippage = slippage
+        this.conversionSlippage = parseFloat(slippage)
         this.recalculateSwap()
     }
 
@@ -193,8 +206,11 @@ export default class SwapWidgetSettings {
         this.conversionFeasible = false
         this.conversionPathLoaded = false
         this.message = undefined
-        this.direct = undefined
+        this.errorMessage = undefined
+        this.profit = undefined
         this.amount[1] = ''
+        this.isFinished = false
+        this.inProgress = false
         this.validationStatus = validateSwap(this)
         this.onUpdate()
         this.updateQuote()
@@ -215,6 +231,67 @@ export default class SwapWidgetSettings {
     }
 
     /**
+     * Confirm swap
+     * @return {Promise}
+     */
+    async confirmSwap(address) {
+        let mediator
+        try {
+            mediator = new Mediator(
+                address,
+                this.asset[0],
+                this.asset[1],
+                this.amount[0] || undefined,
+                this.signSwapTx,
+                MEDIATOR_FEE_RESERVE
+            )
+            const secret = await mediator.init()
+            await this.confirmQuote(secret)
+        } catch (error) {
+            notify({type: 'error', message: error.message})
+            this.inProgress = false
+            this.onUpdate('ready')
+        }
+        return this.finishSwap(mediator)
+    }
+
+    async confirmQuote(secret) {
+        const kp = Keypair.fromSecret(secret)
+
+        const signTx = async payload => {
+            if (payload.sign) {
+                payload.sign(kp)
+                return payload
+            }
+            return kp.sign(payload)
+        }
+
+        await this.brokerClient.confirmQuote(kp.publicKey(), signTx)
+    }
+
+    finishSwap(mediator) {
+        return new Promise((resolve, reject) => {
+            setInterval(() => {
+                if (this.isFinished) return resolve() //immediately finish the swap
+            }, 1000)
+            setTimeout(() => reject('timeout'), 60 * 1000)
+        })
+            .then(result => result)
+            .catch(e => {
+                if (e === 'timeout') {
+                    notify({
+                        type: 'warning',
+                        message: 'Timed out, your funds will be returned in a few seconds, please wait'
+                    })
+                } else {
+                    console.error(e)
+                    notify({type: 'warning', message: 'Failed to execute swap, please try again later'})
+                }
+            })
+            .finally(() => setTimeout(() => this.dispose(mediator), 2000))
+    }
+
+    /**
      * Set amounts to zero
      */
     resetOperationAmount() {
@@ -222,14 +299,30 @@ export default class SwapWidgetSettings {
         this.setAmount('0')
     }
 
-    async confirmSwap() {
-        this.brokerClient.confirmQuote()
+    /**
+     * Refresh connected account balances
+     */
+    async refreshBalances() {
+        await accountLedgerData.loadAccountInfo()
+            .finally(() => this.onUpdate())
     }
 
-    dispose() {
+    signSwapTx = async (tx) => {
+        this.onUpdate('confirmation')
+        const signedTx = await signTx(tx)
+        this.inProgress = true
+        this.onUpdate('ready')
+        notify({type: 'info', message: 'Swapping, please do not leave this page'})
+        return signedTx
+    }
+
+    async dispose(mediator) {
         try {
             this.brokerClient.stop()
+            await mediator.dispose()
+            await this.refreshBalances()
         } catch (e) {
+            console.error(e)
         }
         this.brokerClient?.close()
     }
@@ -239,10 +332,6 @@ function withSlippage(amount, slippage) {
     if (!slippage)
         return amount
     return fromStroops(BigInt((1 - slippage / 100) * 100000000) * toStroops(amount) / 100000000n)
-}
-
-function refreshBalances() {
-
 }
 
 function validateSwap(swap) {

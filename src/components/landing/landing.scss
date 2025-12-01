@@ -59,7 +59,7 @@
     &:after {
       position: absolute;
       bottom: -11em;
-      right: 17.5em;
+      right: 18.5em;
       content: "";
       width: 392px;
       height: 392px;
@@ -91,6 +91,22 @@
         display: none;
       }
     }
+  }
+}
+
+.widget-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 28em;
+  min-height: 28em;
+  margin-left: auto;
+  position: relative;
+  z-index: 1;
+
+  @media (max-width: $responsive-mobile-browser-width) {
+    max-width: initial;
+    min-height: 25em;
   }
 }
 
