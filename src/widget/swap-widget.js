@@ -36,7 +36,7 @@ export const SwapWidget = function SmartSwapWidget({className}) {
     const changeSlippage = useCallback(val => settings.setSlippage(val), [settings])
 
     const retrieveFunds = useCallback(async (address) => {
-        notify({type: 'info', message: 'Sending funds ot your account, please wait'})
+        notify({type: 'info', message: 'Sending funds to your account, please wait'})
         while (Mediator.hasObsoleteMediators(address)) {
             try {
                 await Mediator.disposeObsoleteMediators(address, signTx)
