@@ -3,11 +3,12 @@ import {StrKey} from '@stellar/stellar-sdk'
 import {Mediator} from '@stellar-broker/client'
 import {formatWithAutoPrecision} from '@stellar-expert/formatter'
 import {Button, AssetSelector, Dropdown} from '../components/ui'
-import {connectWalletsKit, setWallet, signTx} from './wallet-kit'
+import {setWallet, signTx} from './wallet-kit'
 import accountLedgerData from './account-ledger-data'
 import AvailableAmountLink from './available-amount-link-view'
 import SwapWidgetSettings from './swap-widget-settings'
 import './swap-widget.scss'
+import ConnectWalletView, {connectWallets} from './connect-wallet-view'
 
 export const SwapWidget = function SmartSwapWidget({className}) {
     const connectedAddress = getActiveAccount()
@@ -69,14 +70,8 @@ export const SwapWidget = function SmartSwapWidget({className}) {
 
     const startSwap = useCallback(() => {
         setWidgetStatus('confirmation')
-        connectWalletsKit()
-            .then(connect => {
-                if (!connect)
-                    throw Error
-                accountLedgerData.init(connect.address)
-                setWidgetStatus('authenticated')
-                notify({type: 'info', message: 'Great! Now you can swap with StellarBroker!'})
-            })
+        connectWallets(setWidgetStatus)
+            .then(() => setWidgetStatus('authenticated'))
             .catch(() => setWidgetStatus('ready'))
     }, [])
 
@@ -90,7 +85,10 @@ export const SwapWidget = function SmartSwapWidget({className}) {
     }, [connectedAddress, settings])
 
     return <div className={`swap-widget ${className}`}>
-        <div style={{minHeight: '1.7em'}}>
+        <div style={{minHeight: '1.7em'}} className="dual-layout">
+            <div style={{margin: '0 auto 0 0'}}>
+                <ConnectWalletView/>
+            </div>
             {!!connectedAddress && <AvailableAmountLink settings={settings}/>}
         </div>
         <SwapAmount className="nano-space" placeholder="From" amount={settings.amount[0]}
@@ -142,6 +140,11 @@ function SwapButton({disabled, status, onClick, children}) {
 }
 
 function SwapAmount({amount, asset, onChange, onAssetChange, placeholder, className}) {
+    const balances = Object.values(accountLedgerData.balances) || []
+    const predefinedAssets = balances.filter(a => !StrKey.isValidLiquidityPool(a.id)).map(a => {
+        return {asset: a.id, balance: a.balance}
+    })
+
     const changeAmount = useCallback(e => {
         const val = e.target.value.replace(/[^\d.]/g, '')
         onChange(val)
@@ -151,7 +154,7 @@ function SwapAmount({amount, asset, onChange, onAssetChange, placeholder, classN
     return <div className={`asset-value ${className}`}>
         <div className="dimmed-light text-tiny">{placeholder}</div>
         <input value={amount || ''} placeholder="0" {...props}/>
-        <AssetSelector value={asset} onChange={onAssetChange}/>
+        <AssetSelector value={asset} predefinedAssets={predefinedAssets} onChange={onAssetChange} restricted/>
     </div>
 }
 
