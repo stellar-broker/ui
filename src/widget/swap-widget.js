@@ -132,7 +132,7 @@ function SwapButton({disabled, status, onClick, children}) {
 
 function SwapAmount({amount, asset, onChange, onAssetChange, placeholder, className}) {
     const changeAmount = useCallback(e => {
-        const val = e.target.value.replace(/\D/g, '')
+        const val = e.target.value.replace(/[^\d.]/g, '')
         onChange(val)
     }, [onChange])
 
