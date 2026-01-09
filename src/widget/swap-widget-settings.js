@@ -300,6 +300,17 @@ export default class SwapWidgetSettings {
     }
 
     /**
+     * Reverse swap direction
+     */
+    reverse() {
+        if (this.inProgress)
+            return
+        this.amount = this.amount.slice().reverse()
+        this.asset = this.asset.slice().reverse()
+        this.recalculateSwap()
+    }
+
+    /**
      * Refresh connected account balances
      */
     async refreshBalances() {

@@ -33,6 +33,8 @@ export const SwapWidget = function SmartSwapWidget({className}) {
         diff = formatWithAutoPrecision(parseFloat(settings.profit) * 100 / parseFloat(settings.amount[1])) + '%'
     }
 
+    const reverseAsset = useCallback(() => settings.reverse(), [settings])
+
     const changeSlippage = useCallback(val => settings.setSlippage(val), [settings])
 
     const retrieveFunds = useCallback(async (address) => {
@@ -90,7 +92,9 @@ export const SwapWidget = function SmartSwapWidget({className}) {
                     onChange={!settings.inProgress ? v => settings.setAmount(v) : null}
                     asset={settings.asset[0]}
                     onAssetChange={!settings.inProgress ? v => settings.setSellingAsset(v) : null}/>
-        <div className="flex-center nano-space"><i className="icon-arrow-down color-gray"/></div>
+        <div className="flex-center nano-space">
+            {settings.inProgress ? <i className="icon-swap color-gray"/> : <a href="#" className="icon-swap" onClick={reverseAsset}/>}
+        </div>
         <SwapAmount className="micro-space" placeholder="To (estimated)" amount={settings.amount[1]}
                     asset={settings.asset[1]}
                     onAssetChange={!settings.inProgress ? v => settings.setBuyingAsset(v) : null}/>
@@ -139,7 +143,7 @@ function SwapAmount({amount, asset, onChange, onAssetChange, placeholder, classN
     const props = onChange ? {onChange: changeAmount} : {readOnly: true}
     return <div className={`asset-value ${className}`}>
         <div className="dimmed-light text-tiny">{placeholder}</div>
-        <input value={amount || ''} {...props}/>
+        <input value={amount || ''} placeholder="0" {...props}/>
         <AssetSelector value={asset} onChange={onAssetChange}/>
     </div>
 }
