@@ -1,4 +1,5 @@
 import React, {useCallback, useRef, useState, memo} from 'react'
+import {formatWithAutoPrecision} from '@stellar-expert/formatter'
 import {useAssetList} from '../../utils/hooks/asset-list-hook'
 import {Dropdown} from './dropdown'
 import {AssetLink} from './asset-link'
@@ -23,10 +24,13 @@ export const AssetSelector = memo(function AssetSelector({value, predefinedAsset
     }, [])
 
     if (predefinedAssets) {
-        for (const asset of predefinedAssets) {
+        for (const {asset, balance} of predefinedAssets) {
             options.push({
                 value: asset,
-                title: <>{asset}</>,
+                title: <div className="dual-layout">
+                    <AssetLink link={false} asset={asset}/>
+                    <span className="text-tiny text-right">{formatWithAutoPrecision(balance)}</span>
+                </div>,
                 hidden: search && !asset.split('-')[0].toLowerCase().includes(search.toLowerCase())
             })
         }
