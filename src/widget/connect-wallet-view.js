@@ -6,15 +6,16 @@ import accountLedgerData from './account-ledger-data'
 export default function ConnectWalletView() {
     const connectWallet = useCallback(() => {
         connectWallets()
-            .catch(() => {})
+            .catch(() => {
+            })
     }, [])
 
     if (!accountLedgerData.address)
         return null
 
-    return <div className="dimmed condensed text-tiny" onClick={connectWallet} style={{cursor: 'pointer'}}>
-        <AccountAddress address={accountLedgerData.address} chars={8} link={false} className="color-primary"/>&nbsp;
-    </div>
+    return <a href="#" onClick={connectWallet}>
+        <AccountAddress address={accountLedgerData.address} chars={8} link={false} className="dimmed text-tiny"/>
+    </a>
 }
 
 export async function connectWallets() {
