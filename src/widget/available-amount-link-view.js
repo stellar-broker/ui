@@ -18,7 +18,7 @@ export default function AvailableAmountLink({settings}) {
     if (!accountLedgerData.loaded)
         return null
 
-    return <div className="dimmed condensed text-tiny text-right">
+    return <div className="dimmed condensed text-tiny" style={{float: 'right'}}>
         <a className="dimmed" href="#" onClick={setAmount} data-balance={100}>
             {formatWithAutoPrecision(availableBalance)} {AssetDescriptor.parse(asset).toCurrency()}&nbsp;available
         </a>
@@ -26,7 +26,7 @@ export default function AvailableAmountLink({settings}) {
 }
 
 function getBalance(asset) {
-    const res = accountLedgerData.getAvailableBalance(asset,  asset === 'XLM' ? 1 : 0)
+    const res = accountLedgerData.getAvailableBalance(asset, asset === 'XLM' ? 1 : 0)
     if (parseFloat(res) < 0)
         return '0'
     return res

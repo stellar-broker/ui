@@ -13,7 +13,6 @@ import './swap-widget.scss'
 export const SwapWidget = function SmartSwapWidget({className}) {
     const connectedAddress = getActiveAccount()
     const [widgetStatus, setWidgetStatus] = useState('ready')
-    const [isReverseAssets, setIsReverseAssets] = useState(false)
     const [update, setUpdate] = useState(0)
     const refresh = useCallback(status => {
         if (status)
@@ -35,7 +34,10 @@ export const SwapWidget = function SmartSwapWidget({className}) {
         diff = formatWithAutoPrecision(parseFloat(settings.profit) * 100 / parseFloat(settings.amount[1])) + '%'
     }
 
-    const reverseAsset = useCallback(() => settings.reverse(), [settings])
+    const reverseAsset = useCallback(() => {
+        settings.reverse()
+        //setTimeout(()=>refresh(), 100)
+    }, [settings])
 
     const changeSlippage = useCallback(val => settings.setSlippage(val), [settings])
 
@@ -64,10 +66,6 @@ export const SwapWidget = function SmartSwapWidget({className}) {
         }
     }, [connectedAddress, retrieveFunds])
 
-    useEffect(() => {
-        setIsReverseAssets(!!accountLedgerData.balances[settings.asset[1]])
-    }, [accountLedgerData.balances[settings.asset[1]]])
-
     const startSwap = useCallback(() => {
         setWidgetStatus('confirmation')
         connectWallets(setWidgetStatus)
@@ -88,20 +86,21 @@ export const SwapWidget = function SmartSwapWidget({className}) {
     }, [connectedAddress, settings])
 
     return <div className={`swap-widget ${className}`}>
-        <div style={{minHeight: '1.7em'}} className="dual-layout">
-            <div style={{margin: '0 auto 0 0'}}>
+        <div style={{minHeight: '1.7em'}} className="dual-layout nano-space">
+            <div style={{fontWeight: 'bold', opacity: 0.07, transform: 'scale(1.8)', transformOrigin: 'center left'}}>
+                <i className="icon-swap" style={{fontSize: '0.85em'}}/> SWAP
+            </div>
+            <div>
                 <ConnectWalletView/>
             </div>
-            {!!connectedAddress && <AvailableAmountLink settings={settings}/>}
         </div>
         <SwapAmount className="nano-space" placeholder="From" amount={settings.amount[0]}
                     onChange={!settings.inProgress ? v => settings.setAmount(v) : null}
                     asset={settings.asset[0]}
                     onAssetChange={!settings.inProgress ? v => settings.setSellingAsset(v) : null}/>
-        <div className="flex-center nano-space">
-            {(settings.inProgress || !isReverseAssets) ?
-                <i className="icon-swap color-gray"/> :
-                <a href="#" className="icon-swap" onClick={reverseAsset}/>}
+        {!!connectedAddress && <AvailableAmountLink settings={settings}/>}
+        <div style={{width: '53%'}} className="text-right nano-space">
+            <a href="#" className="icon-swap color-gray" onClick={reverseAsset}/>
         </div>
         <SwapAmount className="micro-space" placeholder="To (estimated)" amount={settings.amount[1]}
                     asset={settings.asset[1]}
@@ -130,8 +129,8 @@ export const SwapWidget = function SmartSwapWidget({className}) {
                 <SwapButton disabled={!settings.isValid || settings.inProgress || settings.message}
                             status={widgetStatus} onClick={initSwap}>
                     {settings.inProgress ?
-                        <span className="loader" style={{margin: '0 auto'}}/> : 'Swap'}</SwapButton> :
-                <SwapButton status={widgetStatus} onClick={startSwap}>Start swap</SwapButton>}
+                        <span className="loader" style={{margin: '0 auto'}}/> : 'SWAP'}</SwapButton> :
+                <SwapButton status={widgetStatus} onClick={startSwap}>START SWAP</SwapButton>}
         </div>
     </div>
 }
