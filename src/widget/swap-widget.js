@@ -3,7 +3,7 @@ import {StrKey} from '@stellar/stellar-sdk'
 import {Mediator} from '@stellar-broker/client'
 import {formatWithAutoPrecision} from '@stellar-expert/formatter'
 import {Button, AssetSelector, Dropdown} from '../components/ui'
-import {signTx} from './wallet-kit'
+import {isConnected, setWallet, signTx} from './wallet-kit'
 import ConnectWalletView, {connectWallets} from './connect-wallet-view'
 import accountLedgerData from './account-ledger-data'
 import AvailableAmountLink from './available-amount-link-view'
@@ -42,7 +42,7 @@ export const SwapWidget = function SmartSwapWidget({className}) {
     const changeSlippage = useCallback(val => settings.setSlippage(val), [settings])
 
     const retrieveFunds = useCallback(async (address) => {
-        notify({type: 'info', message: 'Sending funds to your account, please confirm in your wallet'})
+        notify({type: 'info', message: 'Sending funds to your account, please wait'})
         while (Mediator.hasObsoleteMediators(address)) {
             try {
                 await Mediator.disposeObsoleteMediators(address, signTx)
@@ -67,16 +67,15 @@ export const SwapWidget = function SmartSwapWidget({className}) {
     }, [connectedAddress, retrieveFunds])
 
     const startSwap = useCallback(() => {
-        setWidgetStatus('confirmation')
         connectWallets(setWidgetStatus)
             .then(() => setWidgetStatus('authenticated'))
-            .catch(err => {
-                setWidgetStatus('ready')
-                notify({type: 'error', message: err.message || 'Failed to connect wallet'})
-            })
+            .catch(() => setWidgetStatus('ready'))
     }, [])
 
-    const initSwap = useCallback(() => {
+    const initSwap = useCallback(async () => {
+        const isWalletConnected = await isConnected(connectedAddress)
+        if (!isWalletConnected)
+            return null
         settings.confirmSwap(connectedAddress)
             .catch(err => {
                 console.error(err)
@@ -161,7 +160,13 @@ function SwapAmount({amount, asset, onChange, onAssetChange, placeholder, classN
 }
 
 function getActiveAccount() {
-    const address = localStorage.getItem('@StellarWalletsKit/activeAddress')
+    const address = localStorage.getItem('activeAccount')
+    try {
+        const usedWalletsIds = JSON.parse(localStorage.getItem('@StellarWalletsKit/usedWalletsIds') || '')
+        setWallet(usedWalletsIds[0])
+    } catch (e) {
+        return null
+    }
     if (!accountLedgerData.address && StrKey.isValidEd25519PublicKey(address)) {
         accountLedgerData.init(address)
     }
