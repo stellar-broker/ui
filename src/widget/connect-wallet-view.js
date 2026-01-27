@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react'
+import {StellarWalletsKit} from "@creit-tech/stellar-wallets-kit"
 import {AccountAddress} from '../components/ui'
-import {connectWalletsKit} from './wallet-kit'
 import accountLedgerData from './account-ledger-data'
 
 export default function ConnectWalletView() {
@@ -19,10 +19,10 @@ export default function ConnectWalletView() {
 }
 
 export async function connectWallets() {
-    return await connectWalletsKit()
+    return StellarWalletsKit.authModal()
         .then(connect => {
             if (!connect)
-                throw Error
+                throw Error('Failed to connect wallet')
             accountLedgerData.init(connect.address)
             notify({type: 'info', message: 'Great! Now you can swap with StellarBroker!'})
         })
