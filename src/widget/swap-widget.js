@@ -3,7 +3,7 @@ import {StrKey} from '@stellar/stellar-sdk'
 import {Mediator} from '@stellar-broker/client'
 import {formatWithAutoPrecision} from '@stellar-expert/formatter'
 import {Button, AssetSelector, Dropdown} from '../components/ui'
-import {isConnected, setWallet, signTx} from './wallet-kit'
+import {setWallet, signTx} from './wallet-kit'
 import ConnectWalletView, {connectWallets} from './connect-wallet-view'
 import accountLedgerData from './account-ledger-data'
 import AvailableAmountLink from './available-amount-link-view'
@@ -72,10 +72,7 @@ export const SwapWidget = function SmartSwapWidget({className}) {
             .catch(() => setWidgetStatus('ready'))
     }, [])
 
-    const initSwap = useCallback(async () => {
-        const isWalletConnected = await isConnected(connectedAddress)
-        if (!isWalletConnected)
-            return null
+    const initSwap = useCallback(() => {
         settings.confirmSwap(connectedAddress)
             .catch(err => {
                 console.error(err)

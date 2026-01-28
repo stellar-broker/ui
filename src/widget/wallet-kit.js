@@ -10,6 +10,7 @@ import {
     WalletConnectAllowedMethods,
     WalletConnectModule
 } from '@creit.tech/stellar-wallets-kit/modules/walletconnect.module.mjs'
+import accountLedgerData from './account-ledger-data'
 
 const network = WalletNetwork.PUBLIC
 
@@ -20,6 +21,7 @@ const kit = new StellarWalletsKit({
     modules: [
         ...allowAllModules(),
         new WalletConnectModule({
+            url: 'https://stellar.broker',
             projectId: 'f7e12b9f871e5da52e5faa88ff7b5d30',
             method: WalletConnectAllowedMethods.SIGN,
             network,
@@ -55,24 +57,13 @@ export function connectWalletsKit() {
 }
 
 export async function signTx(tx) {
-    const {signedTxXdr} = await kit.signTransaction(tx.toXDR())
+    const {signedTxXdr} = await kit.signTransaction(tx.toXDR(), {
+        address: accountLedgerData.address,
+        networkPassphrase: network
+    })
     return TransactionBuilder.fromXDR(signedTxXdr, Networks.PUBLIC)
 }
 
 export function setWallet(walletId) {
     kit.setWallet(walletId)
-}
-
-export async function isConnected(account) {
-    try {
-        const usedWalletsIds = JSON.parse(localStorage.getItem('@StellarWalletsKit/usedWalletsIds') || '')
-        if (usedWalletsIds[0] !== 'wallet_connect')
-            return true
-        //create session WalletConnect
-        const {address} = await kit.getAddress()
-        return address === account
-    } catch (e) {
-        notify({type: 'error', message: e.message})
-        return false
-    }
 }
