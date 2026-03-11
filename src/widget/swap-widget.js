@@ -139,9 +139,12 @@ function SwapButton({disabled, status, onClick, children}) {
 
 function SwapAmount({amount, asset, onChange, onAssetChange, placeholder, className}) {
     const balances = Object.values(accountLedgerData.balances) || []
-    const predefinedAssets = balances.filter(a => !StrKey.isValidLiquidityPool(a.id)).map(a => {
+    let predefinedAssets = balances.filter(a => !StrKey.isValidLiquidityPool(a.id)).map(a => {
         return {asset: a.id, balance: a.balance}
     })
+    if (!predefinedAssets?.length) {
+        predefinedAssets = undefined
+    }
 
     const changeAmount = useCallback(e => {
         const val = e.target.value.replace(/[^\d.]/g, '')
@@ -152,7 +155,7 @@ function SwapAmount({amount, asset, onChange, onAssetChange, placeholder, classN
     return <div className={`asset-value ${className}`}>
         <div className="dimmed-light text-tiny">{placeholder}</div>
         <input value={amount || ''} placeholder="0" {...props}/>
-        <AssetSelector value={asset} predefinedAssets={predefinedAssets} onChange={onAssetChange} restricted/>
+        <AssetSelector value={asset} predefinedAssets={predefinedAssets} onChange={onAssetChange} restricted={!!predefinedAssets}/>
     </div>
 }
 

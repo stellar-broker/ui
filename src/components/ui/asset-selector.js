@@ -37,11 +37,11 @@ export const AssetSelector = memo(function AssetSelector({value, predefinedAsset
     }
 
     let loadNextPage
+    const {assets, loadPage, loading} = useAssetList({
+        limit: 50,
+        search: search?.trim() || undefined
+    })
     if (!restricted) {
-        const {assets, loadPage, loading} = useAssetList({
-            limit: 50,
-            search: search?.trim() || undefined
-        })
         for (let {asset} of assets) {
             if (!predefinedAssets || !predefinedAssets.includes(asset)) {
                 options.push({value: asset, title: <AssetLink link={false} asset={asset}/>})
@@ -58,8 +58,8 @@ export const AssetSelector = memo(function AssetSelector({value, predefinedAsset
                 })
             }
         }
-        loadNextPage = loadPage
     }
+    loadNextPage = loadPage
     const title = <AssetLink link={false} asset={value}/>
     return <Dropdown solo className="asset-selector" options={options} value={value} onOpen={focusSearch} title={title} expanded={expanded}
                      onChange={onChange} disabled={!onChange} onScroll={e => e.rel === 'bottom' && loadNextPage?.call(this)}
