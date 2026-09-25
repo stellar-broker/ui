@@ -50,6 +50,7 @@ button {
   }
 
   &:hover {
+    color: #fff; //anchor buttons otherwise pick up the global a:hover color
     text-decoration: none;
     outline-color: rgba(1,83,225, .25);
   }

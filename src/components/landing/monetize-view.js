@@ -12,7 +12,7 @@ export default function MonetizeView() {
                     <div className="mini-space text-tiny" style={{maxWidth: '38em'}}>
                         Leverage StellarBroker’s optimized routes to give users better swap rates —
                         and earn revenue on every transaction.</div>
-                    <Button white href="/request-access">Start earning</Button>
+                    <Button white href="/sign-up">Start earning</Button>
                 </div>
                 <div>
                     <img src="img/front/monetize-value.png" alt="Monetize"/>

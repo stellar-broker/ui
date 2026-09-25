@@ -16,7 +16,7 @@ export default function OnboardingView() {
                             and earn passive revenue on every transaction.</p>
                     </div>
                     <div className="w-100">
-                        <Button href="/request-access">Get started</Button>
+                        <Button href="/sign-up">Get started</Button>
                         <Button href="/account" outline>{getAuth() ? 'Account' : 'Partner login'}</Button>
                         <div className="mobile-only double-space"></div>
                     </div>

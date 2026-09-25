@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react'
-import {navigation} from '../utils/navigation'
+import navigateToDashboard from '../utils/navigate-to-dashboard'
 import {setPageMetadata} from '../utils/meta-tags-generator'
 import SignInForm from '../components/sign-in-form'
 import Logo from '../layout/logo'
@@ -9,7 +9,7 @@ import PageLayout from '../layout/page-layout'
 export default function SignInPage({onLogin}) {
     const login = useCallback((authenticated) => {
         if (authenticated) {
-            onLogin ? onLogin() : navigation.navigate('/')
+            onLogin ? onLogin() : navigateToDashboard()
         }
     }, [onLogin])
 

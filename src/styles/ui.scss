@@ -28,6 +28,11 @@ input {
   &.styled-input:focus {
     border-color: $info;
   }
+
+  //invalid value, field not focused
+  &.styled-input.invalid:not(:focus) {
+    border-color: $red;
+  }
 }
 
 .info-block {
