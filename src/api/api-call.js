@@ -47,6 +47,9 @@ export async function performApiCall(endpointWithQuery, {method = 'GET', auth = 
         if (e.ext && e.ext.status) {
             e.status = e.ext.status
         }
+        if (e.ext && e.ext.code) {
+            e.code = e.ext.code //machine-readable error identifier
+        }
         return e
     }
 }
